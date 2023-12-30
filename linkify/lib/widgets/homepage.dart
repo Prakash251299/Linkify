@@ -20,7 +20,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 // }
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  // const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -36,7 +36,7 @@ class _HomepageState extends State<Homepage> {
 // var musicUrl1 = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your music URL
 String thumbnailImgUrl = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your thumbnail URL
 // var player = AudioPlayer(); 
-PlayerState audioplayerstate = PlayerState.paused;
+PlayerState playerState = PlayerState.paused;
 bool loaded = false; 
 bool playing = false; 
 SongPlayerController songPlayerController = Get.put(SongPlayerController());
@@ -69,8 +69,10 @@ void loadMusic() async {
 } 
 
 @override 
-void initState(){
-loadMusic(); // Can be made await
+void initState()  {
+  
+  // await read();
+loadMusic();
 // print(player.playerState);
 // if(player.playerState==ProcessingState.completed){
 
@@ -78,11 +80,11 @@ loadMusic(); // Can be made await
 super.initState(); 
 } 
 
-@override 
-void dispose() {
-songPlayerController.player.dispose();
-super.dispose();
-}
+// @override 
+// void dispose() {
+// songPlayerController.player.dispose();
+// super.dispose();
+// }
 
 @override
 Widget build(BuildContext context) {
@@ -121,7 +123,7 @@ Widget build(BuildContext context) {
 		// ), 
 		const Spacer(), 
 		Padding( 
-			padding: const EdgeInsets.symmetric(horizontal: 8), 
+			padding: const EdgeInsets.symmetric(horizontal: 8),
 			child: StreamBuilder(
 				stream: songPlayerController.player.positionStream,
 				builder: (context, snapshot1) {
@@ -133,10 +135,10 @@ Widget build(BuildContext context) {
         };
 
         // print(songPlayerController.player.playerState);
-        if(songPlayerController.player.playerState.playing){
-          songPlayerController.playing = true;
-          // print("object");
-        }
+        // if(songPlayerController.player.playerState.playing){
+        //   songPlayerController.playing = true;
+        //   // print("object");
+        // }
 
 				final Duration duration = loaded
 					? snapshot1.data as Duration 

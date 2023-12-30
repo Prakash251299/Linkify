@@ -6,10 +6,10 @@ class SongPlayerController extends GetxController{
   var playing = false;
   var paused = false;
 
-  void initState() {
-    print("heeee");
-    this.initState();
-  }
+  // void initState() {
+  //   print("heeee");
+  //   this.initState();
+  // }
 
 
 
@@ -20,6 +20,7 @@ class SongPlayerController extends GetxController{
       player.play();
     }else{
       await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+      // player.seek(Duration(milliseconds:player.position.inMilliseconds));
       player.play();
     }
     paused=false;
