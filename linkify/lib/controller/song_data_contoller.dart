@@ -25,6 +25,8 @@ class SongDataController extends GetxController{
   final audioQuery = OnAudioQuery();
   // RxList<SongModel> songList = <SongModel>[].obs;
   final songList = <SongModel>[].obs;
+  static var currSong = 0; // static variable stores variable value in local cache, so state iis preserved
+  // static var loginHandler = 0;
 
 
 
@@ -49,8 +51,8 @@ class SongDataController extends GetxController{
       ignoreCase: false,
       orderType: OrderType.ASC_OR_SMALLER,
       sortType: null,
-      uriType: UriType.EXTERNAL,
-      // uriType: UriType.INTERNAL,
+      // uriType: UriType.EXTERNAL,
+      uriType: UriType.INTERNAL,
     );
     
     // for(int i=0;i<songList.length;i++){
@@ -175,21 +177,47 @@ class SongDataController extends GetxController{
 
   Future<int> getPermission() async {
     try{
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
       final status = await Permission.audio.status;
-      if (status != PermissionStatus.granted) {
-        // if(status==PermissionStatus.permanentlyDenied){
-            await openAppSettings();
-            if(await Permission.audio.status==PermissionStatus.granted){
-              // Navigator.of().push(MaterialPageRoute(builder: (context) => Homepage(),));
-              // Navigator.pop();
+      // var a = DeviceInfoPlugin();
+
+      if(androidInfo.version.sdkInt<33){
+        final status1 = await Permission.storage.status;
+        if(status1 != PermissionStatus.granted){
+          if(status1 == PermissionStatus.permanentlyDenied){
+            openAppSettings();
+            if(await Permission.storage.status==PermissionStatus.granted){
               return 1;
             }else{
               return 0;
             }
-        // }
+          }
+          var s = await Permission.storage.request();
+          // await openAppSettings();
+          if(await Permission.storage.status.isGranted==true){
+            return 1;
+          }else{
+            return 0;
+          }
+        }
+        return 1;
+      }else{
 
+        if (status != PermissionStatus.granted) {
+          // if(status==PermissionStatus.permanentlyDenied){
+              await openAppSettings();
+              if(await Permission.audio.status==PermissionStatus.granted){
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage(),));
+                // Navigator.pop();
+                return 1;
+              }else{
+                return 0;
+              }
+          // }
+
+        }
+        return 1;
       }
-      return 1;
     }
     catch(e){
       return 0;

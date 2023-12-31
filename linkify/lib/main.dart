@@ -13,10 +13,10 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   SongDataController c = SongDataController();
-  LoginPage l = LoginPage();
+  LoginPage loginController = LoginPage();
   Homepage h = Homepage();
 
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return 
@@ -26,10 +26,14 @@ class MyApp extends StatelessWidget {
           child: ElevatedButton(
             child: Text("Click here"),
             onPressed: () async => {
-              if(await l.Login()==1){ // Go to login ( implementation pending )
+              if(LoginPage.loginStatus==1){ // Go to login ( implementation pending )
                 if(await c.getPermission()==1)
-                // await c.read(),
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage())),
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage())),
+              }else{
+                await loginController.Login(),
+                if(await c.getPermission()==1){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage())),
+                }
               }
             },
           ),

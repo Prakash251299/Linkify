@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -16,7 +17,8 @@ class LocalSongList extends StatefulWidget {
 class _LocalSongListState extends State<LocalSongList> {
   _LocalSongListState({required this.songList});
   RxList<SongModel> songList;
-
+  SongDataController songDataController = SongDataController();
+  SongPlayerController _songPlayerController = SongPlayerController();
 
 //   SongDataController songDataController = Get.put(SongDataController());
 //   bool loaded = false;
@@ -119,6 +121,12 @@ class _LocalSongListState extends State<LocalSongList> {
           child:InkWell(
             borderRadius: BorderRadius.circular(15),
             onTap:(){
+              // print(songList[index].title);
+              // setState(() {
+
+                SongPlayerController.playing==true?_songPlayerController.pauseLocalSong():_songPlayerController.playLocalSong(songList[index].data);
+                SongDataController.currSong = index;
+              // });
               // Navigator.push(context,MaterialPageRoute(builder: ((context) => ChatScreen(user:widget.user))));
 
 

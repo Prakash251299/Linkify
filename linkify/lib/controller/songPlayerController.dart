@@ -3,7 +3,7 @@ import 'package:just_audio/just_audio.dart';
 
 class SongPlayerController extends GetxController{
   var player = AudioPlayer();
-  var playing = false;
+  static var playing = false;
   var paused = false;
 
   // void initState() {
@@ -17,11 +17,13 @@ class SongPlayerController extends GetxController{
     playing = true;
     if(paused==true){
       player.seek(Duration(milliseconds:player.position.inMilliseconds)); // For resuming
-      player.play();
+      player.play().then((value) => playing = false);
+      // playing = false;
     }else{
       await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
       // player.seek(Duration(milliseconds:player.position.inMilliseconds));
-      player.play();
+      player.play().then((value) => playing = false);
+      // playing = false;
     }
     paused=false;
   }

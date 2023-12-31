@@ -10,6 +10,7 @@ import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:linkify/widgets/local_songs.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+// var index=0;
 
 // class SongPlayer extends GetxController{
 //   final player = AudioPlayer();
@@ -39,6 +40,7 @@ String thumbnailImgUrl = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ
 PlayerState playerState = PlayerState.paused;
 bool loaded = false; 
 bool playing = false; 
+// var currSong = 0; 
 SongPlayerController songPlayerController = Get.put(SongPlayerController());
 SongDataController songDataController = Get.put(SongDataController());
 RxList<SongModel> songList = <SongModel>[].obs;
@@ -130,7 +132,7 @@ Widget build(BuildContext context) {
         /* Returning to start after completion */ 
         if (songPlayerController.player.processingState == ProcessingState.completed){  ////// Add code for loop and shuffle
           songPlayerController.player.seek(Duration(milliseconds: 0));
-          songPlayerController.playing = false;
+          SongPlayerController.playing = false;
           songPlayerController.player.stop();
         };
 
@@ -223,7 +225,7 @@ Widget build(BuildContext context) {
 
 
           loaded 
-          ? (songPlayerController.playing?songPlayerController.pauseLocalSong():songPlayerController.playLocalSong(songList.value[0].data)):null;
+          ? (SongPlayerController.playing?songPlayerController.pauseLocalSong():songPlayerController.playLocalSong(songList[SongDataController.currSong].data)):null;
 						// ? () {
 						// 	if (playing) {
 						// 	pauseMusic();
@@ -236,7 +238,7 @@ Widget build(BuildContext context) {
 					// onPressed: 
 					// 	: null, 
 					icon: Icon( 
-					songPlayerController.playing ? Icons.pause : Icons.play_arrow,
+					SongPlayerController.playing ? Icons.pause : Icons.play_arrow,
 					color: Colors.white, 
 					)), 
 			), 
