@@ -51,8 +51,8 @@ class SongDataController extends GetxController{
       ignoreCase: false,
       orderType: OrderType.ASC_OR_SMALLER,
       sortType: null,
-      // uriType: UriType.EXTERNAL,
-      uriType: UriType.INTERNAL,
+      uriType: UriType.EXTERNAL,
+      // uriType: UriType.INTERNAL,
     );
     
     // for(int i=0;i<songList.length;i++){
@@ -125,6 +125,7 @@ class SongDataController extends GetxController{
     try{
       if(androidInfo.version.sdkInt<33){
         final status = await Permission.storage.status;
+        Permission.audio.status;
         if (status != PermissionStatus.granted) {
           if(status==PermissionStatus.permanentlyDenied){
             openAppSettings();
@@ -204,7 +205,7 @@ class SongDataController extends GetxController{
       }else{
 
         if (status != PermissionStatus.granted) {
-          // if(status==PermissionStatus.permanentlyDenied){
+          if(status==PermissionStatus.permanentlyDenied){
               await openAppSettings();
               if(await Permission.audio.status==PermissionStatus.granted){
                 // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage(),));
@@ -213,8 +214,14 @@ class SongDataController extends GetxController{
               }else{
                 return 0;
               }
-          // }
-
+          }else{
+            var a = await Permission.audio.request();
+            if(a==PermissionStatus.granted){
+              return 1;
+            }else{
+              return 0;
+            }
+          }
         }
         return 1;
       }

@@ -127,14 +127,23 @@ Widget build(BuildContext context) {
 		Padding( 
 			padding: const EdgeInsets.symmetric(horizontal: 8),
 			child: StreamBuilder(
-				stream: songPlayerController.player.positionStream,
+				stream: SongPlayerController.player.positionStream,
 				builder: (context, snapshot1) {
+          // setState(() {
+            
+          // });
         /* Returning to start after completion */ 
-        if (songPlayerController.player.processingState == ProcessingState.completed){  ////// Add code for loop and shuffle
-          songPlayerController.player.seek(Duration(milliseconds: 0));
+        // setState(() {
+          
+        if (SongPlayerController.player.processingState == ProcessingState.completed){  ////// Add code for loop and shuffle
+          SongPlayerController.player.seek(Duration(milliseconds: 0));
           SongPlayerController.playing = false;
-          songPlayerController.player.stop();
+          SongPlayerController.player.stop();
+          SongPlayerController.paused = false;
+          // SongPlayerController.completed = true;
+
         };
+        // });
 
         // print(songPlayerController.player.playerState);
         // if(songPlayerController.player.playerState.playing){
@@ -146,7 +155,7 @@ Widget build(BuildContext context) {
 					? snapshot1.data as Duration 
 					: const Duration(seconds: 0); 
 				return StreamBuilder(
-					stream: songPlayerController.player.bufferedPositionStream, 
+					stream: SongPlayerController.player.bufferedPositionStream,
 					builder: (context, snapshot2) {
             // if (songPlayerController.player.processingState == ProcessingState.completed) {
             //   print("Completed");
@@ -166,7 +175,7 @@ Widget build(BuildContext context) {
 							child: ProgressBar( 
 							progress: duration, 
 							total: 
-								songPlayerController.player.duration ?? const Duration(seconds: 0), 
+								SongPlayerController.player.duration ?? const Duration(seconds: 0), 
 							buffered: bufferedDuration, 
 							timeLabelPadding: -1, 
 							timeLabelTextStyle: const TextStyle( 
@@ -177,7 +186,7 @@ Widget build(BuildContext context) {
 							thumbColor: Colors.red, 
 							onSeek: loaded 
 								? (duration) async { 
-									await songPlayerController.player.seek(duration);
+									await SongPlayerController.player.seek(duration);
 									} 
 								: null, 
 							), 
@@ -198,10 +207,10 @@ Widget build(BuildContext context) {
 			IconButton( 
 				onPressed: loaded 
 					? () async { 
-						if (songPlayerController.player.position.inSeconds > 10) {
-              await songPlayerController.player.seek(Duration(seconds: songPlayerController.player.position.inSeconds-10));
+						if (SongPlayerController.player.position.inSeconds > 10) {
+              await SongPlayerController.player.seek(Duration(seconds: SongPlayerController.player.position.inSeconds-10));
 						} else {
-							await songPlayerController.player.seek(const Duration(seconds: 0));
+							await SongPlayerController.player.seek(const Duration(seconds: 0));
 						} 
 						} 
 					: null, 
@@ -214,43 +223,47 @@ Widget build(BuildContext context) {
 				child: 
         IconButton(    ///// Icon for playing songs
           onPressed: (){
-            // print(songPlayerController.player.duration?.inMilliseconds);
-            // loadMusic();
-            // songPlayerController.playLocalSongs(songList.value[0].data);
-            // songDataController.getLocalSongs();
-
-            // playMusic();
-
-          // print(player.playerState);
 
 
-          loaded 
-          ? (SongPlayerController.playing?songPlayerController.pauseLocalSong():songPlayerController.playLocalSong(songList[SongDataController.currSong].data)):null;
-						// ? () {
-						// 	if (playing) {
-						// 	pauseMusic();
-						// 	} else { 
-						// 	songPlayerController.playLocalSongs(songList.value[0].data);
-						// 	}
-						// }:
-            // null;
+            setState((){
+                if(SongPlayerController.playing==true){
+                  songPlayerController.pauseLocalSong();
+                  // SongPlayerController.playing = false;
+                  // SongPlayerController.paused = true;
+                }else{
+                  if(SongPlayerController.playing==false){
+                    songPlayerController.playLocalSong(songList[SongDataController.currSong].data);
+                    // SongPlayerController.playing = true;
+                    // SongPlayerController.paused = false;
+                  }
+                }
+              });
+
+
+
+
+
+
+          // loaded 
+          // ? (SongPlayerController.playing?songPlayerController.pauseLocalSong():songPlayerController.playLocalSong(songList[SongDataController.currSong].data)):null;
+
+
+
           },
-					// onPressed: 
-					// 	: null, 
-					icon: Icon( 
-					SongPlayerController.playing ? Icons.pause : Icons.play_arrow,
-					color: Colors.white, 
+					icon: Icon(
+          SongPlayerController.playing==true ? Icons.pause :Icons.play_arrow,
+					color: Colors.white,
 					)), 
 			), 
 			IconButton( 
 				onPressed: loaded 
 					? () async { 
-						if (songPlayerController.player.position.inSeconds + 10 <= 
-							songPlayerController.player.duration!.inSeconds) { 
-							await songPlayerController.player.seek(Duration( 
-								seconds: songPlayerController.player.position.inSeconds + 10));
+						if (SongPlayerController.player.position.inSeconds + 10 <= 
+							SongPlayerController.player.duration!.inSeconds) { 
+							await SongPlayerController.player.seek(Duration( 
+								seconds: SongPlayerController.player.position.inSeconds + 10));
 						} else { 
-							await songPlayerController.player.seek(const Duration(seconds: 0));
+							await SongPlayerController.player.seek(const Duration(seconds: 0));
 						} 
 						} 
 					: null, 

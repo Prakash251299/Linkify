@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+// import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
+import 'package:linkify/widgets/homepage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class LocalSongList extends StatefulWidget {
@@ -63,7 +64,7 @@ class _LocalSongListState extends State<LocalSongList> {
       appBar: AppBar(
         leading:IconButton(onPressed: (){
             Navigator.pop(context);
-            // Navigator.push(context,MaterialPageRoute(builder: (context) => LoginPage(title: "title")));
+            Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage()));
         },
         icon:Icon(Icons.home)),
         actions:[
@@ -122,10 +123,43 @@ class _LocalSongListState extends State<LocalSongList> {
             borderRadius: BorderRadius.circular(15),
             onTap:(){
               // print(songList[index].title);
-              // setState(() {
+              setState((){
+                // SongPlayerController.playing=true;
 
-                SongPlayerController.playing==true?_songPlayerController.pauseLocalSong():_songPlayerController.playLocalSong(songList[index].data);
-                SongDataController.currSong = index;
+                if(SongPlayerController.playing==true && SongDataController.currSong == index){
+                  _songPlayerController.pauseLocalSong();
+                  // SongPlayerController.playing = false;
+                  // SongPlayerController.paused = true;
+                  // SongDataController.currSong = index;
+                }else{
+                  if(SongPlayerController.playing==false && SongDataController.currSong == index){
+                    _songPlayerController.playLocalSong(songList[index].data);
+                    // SongPlayerController.playing = true;
+                    // SongPlayerController.paused = false;
+                    // SongDataController.currSong = index;
+                  }else{
+                    if(SongPlayerController.playing==false && SongDataController.currSong != index){
+                      // SongPlayerController.player.pause();
+                      _songPlayerController.stopLocalSong();
+                        SongPlayerController.paused = false;
+                      SongDataController.currSong = index;
+                      // SongPlayerController.playing==true;
+                      _songPlayerController.playLocalSong(songList[index].data);
+                      // SongPlayerController.paused = false;
+                    }else{
+                      if(SongPlayerController.playing==true && SongDataController.currSong != index){
+                        SongPlayerController.player.stop();
+                        // SongPlayerController.playing==false;
+                        SongPlayerController.paused = false;
+                        SongDataController.currSong = index;
+                        _songPlayerController.playLocalSong(songList[index].data);
+                        // SongPlayerController.playing==true;
+                      }
+                    }
+                  }
+                }
+              });
+              // SongPlayerController.playing==true?_songPlayerController.pauseLocalSong():_songPlayerController.playLocalSong(songList[index].data);
               // });
               // Navigator.push(context,MaterialPageRoute(builder: ((context) => ChatScreen(user:widget.user))));
 
