@@ -1,11 +1,13 @@
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:just_audio/just_audio.dart';
 
 class SongPlayerController extends GetxController{
   static var player = AudioPlayer();
-  static var playing = false;
+  // static var playing = false;
+  static RxBool playing = false.obs;
   static var paused = false;
-  static var completed = false;
+  var completed = false;
 
   // void initState() {
   //   print("heeee");
@@ -15,10 +17,10 @@ class SongPlayerController extends GetxController{
 
 
   Future<void> playLocalSong(String url) async {
-    playing = true;
+    playing.value = true;
     completed = false;
     if(paused==true){
-      player.seek(Duration(milliseconds:player.position.inMilliseconds)); // For resuming
+      // player.seek(Duration(milliseconds:player.position.inMilliseconds)); // For resuming
       player.play();
       paused = false;
       // .then((value) => playing = false);
@@ -36,20 +38,19 @@ class SongPlayerController extends GetxController{
   Future<void> pauseLocalSong() async {
     player.pause();
     paused = true;
-    playing = false;
+    playing.value = false;
     completed = false;
   }
 
   Future<void> stopLocalSong() async {
     player.stop();
-    playing = false;
+    playing.value = false;
     completed = false;
   }
 
 
   @override
   void dispose() {
-    player.stop();
     player.dispose();
     super.dispose();
   }

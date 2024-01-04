@@ -9,6 +9,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:linkify/widgets/local_songs.dart';
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 // var index=0;
 
@@ -35,7 +36,7 @@ class _HomepageState extends State<Homepage> {
   // String musicUrl = "Users/amankumarsaw/Downloads"; // Insert your music URL 
 // String musicUrl = "/Users/amankumarsaw/Downloads/Main-Dhoondne-Ko-Zamaane-Mein_320(PaglaSongs).mp3"; // Insert your music URL 
 // var musicUrl1 = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your music URL
-String thumbnailImgUrl = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your thumbnail URL
+String thumbnailImgUrl=""; // Insert your thumbnail URL
 // var player = AudioPlayer(); 
 PlayerState playerState = PlayerState.paused;
 bool loaded = false; 
@@ -88,6 +89,20 @@ super.initState();
 // super.dispose();
 // }
 
+// Future<int> stopper()async{
+//   setState(() {
+//     SongPlayerController.playing.value = false;
+//     // songPlayerController.completed = true;
+//   });
+//   return 1;
+// }
+
+
+
+
+
+
+
 @override
 Widget build(BuildContext context) {
 	return Scaffold( 
@@ -102,6 +117,7 @@ Widget build(BuildContext context) {
         onPressed: () {
           // do something
           // print(songList[0].title);
+          Navigator.pop(context);
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => LocalSongList(songList:songList)));
         },
       )
@@ -117,13 +133,64 @@ Widget build(BuildContext context) {
 		// ClipRRect( 
 		// 	borderRadius: BorderRadius.circular(8),
 		// 	child: Image.network( 
-		// 	thumbnailImgUrl, 
+		// 	thumbnailImgUrl,
+    //   // songList[SongDataController.currSong].uri!,
 		// 	height: 350, 
 		// 	width: 350, 
 		// 	fit: BoxFit.cover, 
 		// 	), 
 		// ), 
 		const Spacer(), 
+		
+    
+    Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+      // loaded?
+      // Flexible(
+      //   child: Text(songList.length>0?
+      //     "${songList[SongDataController.currSong].title}":"",
+      //     maxLines: 1,
+      //     style: Theme.of(context).textTheme.bodyLarge,
+      //   ),
+      // )
+      songList.length>0?
+      Padding(
+        padding: EdgeInsets.all(16),
+        child:
+        Container(
+          width:MediaQuery.of(context).size.width-100,
+          child:Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              // padding: EdgeInsets.only(top: 50),
+              child: 
+              // Text("sad"),
+                Text("${songList[SongDataController.currSong].title}",style:TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+              // ],
+            ),
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              // padding: EdgeInsets.only(top: 50),
+              child:
+                Text("${songList[SongDataController.currSong].artist}",style:TextStyle(fontSize: 14)),
+              // ],
+            )
+          ],),
+        )
+      )
+    :Container()
+      // :Container()
+      ,
+    ],),
+    
+    
+    // const Spacer(), 
+
 		Padding( 
 			padding: const EdgeInsets.symmetric(horizontal: 8),
 			child: StreamBuilder(
@@ -134,12 +201,38 @@ Widget build(BuildContext context) {
           // });
         /* Returning to start after completion */ 
         // setState(() {
+
+        // if(SongPlayerController.player.position==(SongPlayerController.player.duration)){
+        //   print("completed");
+        //   SongPlayerController.playing = false;
+        // }
           
         if (SongPlayerController.player.processingState == ProcessingState.completed){  ////// Add code for loop and shuffle
-          SongPlayerController.player.seek(Duration(milliseconds: 0));
-          SongPlayerController.playing = false;
+          /* After completion song name not updating */
+
+
+
+          // SongPlayerController.playing.value = false;
+          // SongPlayerController.player.seek(Duration(milliseconds: 0));
           SongPlayerController.player.stop();
           SongPlayerController.paused = false;
+
+          SongDataController.currSong = (SongDataController.currSong+1)%songList.length;
+          songPlayerController.playLocalSong(songList[SongDataController.currSong].data);
+
+
+          // songPlayerController.completed=true;
+
+          // Future.wait([
+          //     stopper(),
+          //   ]);
+
+
+          
+          // this.setState(() {
+            // SongPlayerController.playing = false;
+          // });
+          // stopper();
           // SongPlayerController.completed = true;
 
         };
@@ -157,11 +250,18 @@ Widget build(BuildContext context) {
 				return StreamBuilder(
 					stream: SongPlayerController.player.bufferedPositionStream,
 					builder: (context, snapshot2) {
+            
             // if (songPlayerController.player.processingState == ProcessingState.completed) {
             //   print("Completed");
             // }
             //  },
 
+            // if (SongPlayerController.player.processingState == ProcessingState.completed){ 
+              // this.setState(() {
+              //   var a = stopper();
+              // });
+              // SongPlayerController.playing = false;
+            // }
 
 
 
@@ -172,8 +272,8 @@ Widget build(BuildContext context) {
 						height: 30, 
 						child: Padding( 
 							padding: const EdgeInsets.symmetric(horizontal: 16), 
-							child: ProgressBar( 
-							progress: duration, 
+							child: ProgressBar(
+							progress: duration,
 							total: 
 								SongPlayerController.player.duration ?? const Duration(seconds: 0), 
 							buffered: bufferedDuration, 
@@ -215,7 +315,7 @@ Widget build(BuildContext context) {
 						} 
 					: null, 
 				icon: const Icon(Icons.fast_rewind_rounded)),
-			Container( 
+			songPlayerController.completed==false?Container(
 				height: 50, 
 				width: 50, 
 				decoration: const BoxDecoration( 
@@ -244,17 +344,21 @@ Widget build(BuildContext context) {
 
 
 
-          // loaded 
-          // ? (SongPlayerController.playing?songPlayerController.pauseLocalSong():songPlayerController.playLocalSong(songList[SongDataController.currSong].data)):null;
+
+
+
+
+
+
 
 
 
           },
 					icon: Icon(
-          SongPlayerController.playing==true ? Icons.pause :Icons.play_arrow,
+          SongPlayerController.playing.value==true? Icons.pause :Icons.play_arrow,
 					color: Colors.white,
 					)), 
-			), 
+			):Container(), 
 			IconButton( 
 				onPressed: loaded 
 					? () async { 

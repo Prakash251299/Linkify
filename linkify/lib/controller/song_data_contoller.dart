@@ -91,85 +91,85 @@ class SongDataController extends GetxController{
   // }
 
 
-  Future<void> getPermission2() async {
-        try{
-          // await read();
-          // final status = await Permission.manageExternalStorage.status;
-          final status = await Permission.audio.status;
-          if (status != PermissionStatus.granted) {
-            if(status==PermissionStatus.permanentlyDenied){
-              openAppSettings();
-              await read();
-              return;
-            }else{
-              var request = await Permission.audio.request();
-              if(request.isGranted==true){
-                await read();
-              }else{
-                openAppSettings();
-              }
-            }
-          }else{
-            await read();
-          }
-        }catch(e){
-          await openAppSettings();
-          await read();
-        }
-  }
+  // Future<void> getPermission2() async {
+  //       try{
+  //         // await read();
+  //         // final status = await Permission.manageExternalStorage.status;
+  //         final status = await Permission.audio.status;
+  //         if (status != PermissionStatus.granted) {
+  //           if(status==PermissionStatus.permanentlyDenied){
+  //             openAppSettings();
+  //             await read();
+  //             return;
+  //           }else{
+  //             var request = await Permission.audio.request();
+  //             if(request.isGranted==true){
+  //               await read();
+  //             }else{
+  //               openAppSettings();
+  //             }
+  //           }
+  //         }else{
+  //           await read();
+  //         }
+  //       }catch(e){
+  //         await openAppSettings();
+  //         await read();
+  //       }
+  // }
 
 
 
-  Future<void> getPermission1() async {
-    var androidInfo = await DeviceInfoPlugin().androidInfo;
-    try{
-      if(androidInfo.version.sdkInt<33){
-        final status = await Permission.storage.status;
-        Permission.audio.status;
-        if (status != PermissionStatus.granted) {
-          if(status==PermissionStatus.permanentlyDenied){
-            openAppSettings();
-            await read();
-            return;
-          }
-          final result = await Permission.storage.request();
-          if (result == PermissionStatus.granted) {
-            await read();
-          }
-        } else {
-          await read();
-        }
-      }
-      else{
-        // final status = await Permission.manageExternalStorage.status;
-        // if (status != PermissionStatus.granted) {
-        //   final result = await Permission.manageExternalStorage.request();
-        //   if (result == PermissionStatus.granted) {
-            await read();
-        //   }
-        // } else {
-        //   await read();
-        // }
-      }
+  // Future<void> getPermission1() async {
+  //   var androidInfo = await DeviceInfoPlugin().androidInfo;
+  //   try{
+  //     if(androidInfo.version.sdkInt<33){
+  //       final status = await Permission.storage.status;
+  //       Permission.audio.status;
+  //       if (status != PermissionStatus.granted) {
+  //         if(status==PermissionStatus.permanentlyDenied){
+  //           openAppSettings();
+  //           await read();
+  //           return;
+  //         }
+  //         final result = await Permission.storage.request();
+  //         if (result == PermissionStatus.granted) {
+  //           await read();
+  //         }
+  //       } else {
+  //         await read();
+  //       }
+  //     }
+  //     else{
+  //       // final status = await Permission.manageExternalStorage.status;
+  //       // if (status != PermissionStatus.granted) {
+  //       //   final result = await Permission.manageExternalStorage.request();
+  //       //   if (result == PermissionStatus.granted) {
+  //           await read();
+  //       //   }
+  //       // } else {
+  //       //   await read();
+  //       // }
+  //     }
 
 
 
 
-      // var perm = await Permission.manageExternalStorage.request();
-      // // var perm = await Permission.storage.request();
-      // if(perm.isGranted){
-      // // if(await Permission.manageExternalStorage.request().isGranted==true){
-      // // if(await Permission.manageExternalStorage.isGranted){
-      //   print("permission granted");
-      //   await read();
-      // }else{
-      //   // print("Permission denied");
-      // }
-    }
-    catch(e){
-      print("Error");
-    }
-  }
+  //     // var perm = await Permission.manageExternalStorage.request();
+  //     // // var perm = await Permission.storage.request();
+  //     // if(perm.isGranted){
+  //     // // if(await Permission.manageExternalStorage.request().isGranted==true){
+  //     // // if(await Permission.manageExternalStorage.isGranted){
+  //     //   print("permission granted");
+  //     //   await read();
+  //     // }else{
+  //     //   // print("Permission denied");
+  //     // }
+  //   }
+  //   catch(e){
+  //     print("Error");
+  //   }
+  // }
 
 
 
@@ -179,7 +179,7 @@ class SongDataController extends GetxController{
   Future<int> getPermission() async {
     try{
       var androidInfo = await DeviceInfoPlugin().androidInfo;
-      final status = await Permission.audio.status;
+      // final status = await Permission.audio.status;
       // var a = DeviceInfoPlugin();
 
       if(androidInfo.version.sdkInt<33){
@@ -203,7 +203,7 @@ class SongDataController extends GetxController{
         }
         return 1;
       }else{
-
+        final status = await Permission.audio.status;
         if (status != PermissionStatus.granted) {
           if(status==PermissionStatus.permanentlyDenied){
               await openAppSettings();
