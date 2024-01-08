@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:linkify/controller/login.dart';
 import 'package:linkify/controller/login.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
+import 'package:linkify/widgets/homeNav.dart';
 import 'package:linkify/widgets/homepage.dart';
 // import 'package:linkify/app.dart';
 // import 'package:music_player1/app.dart';
@@ -28,11 +29,11 @@ class MyApp extends StatelessWidget {
             onPressed: () async => {
               if(LoginPage.loginStatus==1){ // Go to login ( implementation pending )
                 if(await c.getPermission()==1)
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage())),
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
               }else{
                 await loginController.Login(),
                 if(await c.getPermission()==1){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage())),
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
                 }
               }
             },

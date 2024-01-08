@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:linkify/controller/song_data_contoller.dart';
 
 class SongPlayerController extends GetxController{
   static var player = AudioPlayer();
@@ -21,16 +22,27 @@ class SongPlayerController extends GetxController{
     completed = false;
     if(paused==true){
       // player.seek(Duration(milliseconds:player.position.inMilliseconds)); // For resuming
-      player.play();
       paused = false;
+      try{
+        player.play();
+      }
+      catch(e){
+        // SongDataController.currSong = (SongDataController.currSong+1)%SongDataController.songList.length;
+        // playLocalSong(SongDataController.songList[SongDataController.currSong].data);
+      }
       // .then((value) => playing = false);
       // playing = false;
     }else{
-      await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-      // player.seek(Duration(milliseconds:player.position.inMilliseconds));
-      player.play();
-      // .then((value) => playing = false);
-      // playing = false;
+      try{
+        await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+        // player.seek(Duration(milliseconds:player.position.inMilliseconds));
+        player.play();
+        // .then((value) => playing = false);
+        // playing = false;
+      }
+      catch(e){
+        // playing.value = false;
+      }
     }
     // paused=false;
   }

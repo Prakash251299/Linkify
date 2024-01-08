@@ -24,7 +24,7 @@ import 'package:permission_handler/permission_handler.dart';
 class SongDataController extends GetxController{
   final audioQuery = OnAudioQuery();
   // RxList<SongModel> songList = <SongModel>[].obs;
-  final songList = <SongModel>[].obs;
+  static var songList = <SongModel>[].obs;
   static var currSong = 0; // static variable stores variable value in local cache, so state iis preserved
   // static var loginHandler = 0;
 
