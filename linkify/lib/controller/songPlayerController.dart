@@ -7,13 +7,37 @@ class SongPlayerController extends GetxController{
   static var player = AudioPlayer();
   // static var playing = false;
   static RxBool playing = false.obs;
+  // static var totalTime = 0.obs;
+  // static var currentTime = 0;
+  static var currentTime = Duration(seconds:0).obs;
+  static var totalTime = Duration(seconds:0).obs;
   static var paused = false;
+
   var completed = false;
+  static RxString songName = SongDataController.songList[SongDataController.currSong.value].title.obs;
 
   // void initState() {
   //   print("heeee");
   //   this.initState();
   // }
+
+
+
+  void updatePosition(){
+    try{
+      player.durationStream.listen((d) {
+        totalTime.value = d!;
+      });
+      player.positionStream.listen((p) {
+        // currentTime = p.toString().split(".")[0];
+        currentTime.value = p;
+      });
+    }
+    catch(e){
+
+    }
+
+  }
 
 
 
@@ -25,6 +49,8 @@ class SongPlayerController extends GetxController{
       paused = false;
       try{
         player.play();
+        // print(player.duration);
+        updatePosition();
       }
       catch(e){
         // SongDataController.currSong = (SongDataController.currSong+1)%SongDataController.songList.length;
@@ -37,6 +63,7 @@ class SongPlayerController extends GetxController{
         await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
         // player.seek(Duration(milliseconds:player.position.inMilliseconds));
         player.play();
+        updatePosition();
         // .then((value) => playing = false);
         // playing = false;
       }

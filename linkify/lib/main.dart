@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   SongDataController c = SongDataController();
   LoginPage loginController = LoginPage();
-  Homepage h = Homepage();
+  // Homepage h = Homepage();
 
   // This widget is the root of the application.
   @override
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
               if(LoginPage.loginStatus==1){ // Go to login ( implementation pending )
                 if(await c.getPermission()==1)
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
+                  // h.loadMusic(),
               }else{
                 await loginController.Login(),
                 if(await c.getPermission()==1){
