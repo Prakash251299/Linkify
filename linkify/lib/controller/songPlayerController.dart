@@ -23,14 +23,16 @@ class SongPlayerController extends GetxController{
 
 
 
-  void updatePosition(){
+  static Future<void> updatePosition()async{
     try{
       player.durationStream.listen((d) {
         totalTime.value = d!;
+        // print(totalTime.value);
       });
       player.positionStream.listen((p) {
         // currentTime = p.toString().split(".")[0];
         currentTime.value = p;
+        // print(currentTime.value);
       });
     }
     catch(e){
@@ -50,7 +52,7 @@ class SongPlayerController extends GetxController{
       try{
         player.play();
         // print(player.duration);
-        updatePosition();
+        await updatePosition();
       }
       catch(e){
         // SongDataController.currSong = (SongDataController.currSong+1)%SongDataController.songList.length;
@@ -63,7 +65,7 @@ class SongPlayerController extends GetxController{
         await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
         // player.seek(Duration(milliseconds:player.position.inMilliseconds));
         player.play();
-        updatePosition();
+        await updatePosition();
         // .then((value) => playing = false);
         // playing = false;
       }

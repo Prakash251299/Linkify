@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/widgets/homepage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -31,7 +32,8 @@ class SongDataController extends GetxController{
 
 
 
-  Future<RxList<SongModel>> getLocalSongs()async{
+  // Future<RxList<SongModel>> getLocalSongs()async{
+  Future<int> getLocalSongs()async{
     // print("hi");
 
     // if (platform == TargetPlatform.android) {
@@ -40,10 +42,15 @@ class SongDataController extends GetxController{
       // print(androidInfo.version.sdkInt);
     // }
 
-    // await getPermission();
-    await read();
+    int a = await getPermission();
+    if(a==1){
+      await read();
+      await SongPlayerController.updatePosition();
+      SongDataController.loaded = true;
+      return 1;
+    }
     // print(Permission.values);
-    return songList;
+    return 0;
   }
 
 /* Readin file */

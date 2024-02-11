@@ -11,6 +11,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:linkify/main.dart';
+import 'package:linkify/model/spotify_caller.dart';
 import 'package:linkify/widgets/homeNav.dart';
 import 'package:linkify/widgets/local_songs.dart';
 // import 'package:marquee/marquee.dart';
@@ -25,16 +26,16 @@ import 'package:on_audio_query/on_audio_query.dart';
 // }
 // }
 
-class Homepage extends StatefulWidget {
+class CloudPlay extends StatefulWidget {
   // const Homepage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<CloudPlay> createState() => _HomepageState();
 }
 
 enum PlayerState { playing, paused }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<CloudPlay> {
   // String musicUrl = "Users/amankumarsaw/Downloads"; // Insert your music URL
 // String musicUrl = "/Users/amankumarsaw/Downloads/Main-Dhoondne-Ko-Zamaane-Mein_320(PaglaSongs).mp3"; // Insert your music URL
 // var musicUrl1 = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your music URL
@@ -48,6 +49,9 @@ class _HomepageState extends State<Homepage> {
   SongPlayerController songPlayerController = Get.put(SongPlayerController());
   SongDataController songDataController = Get.put(SongDataController());
   RxList<SongModel> songList = <SongModel>[].obs;
+  int showSearch=0;
+  TextEditingController _textController = TextEditingController();
+  SpotifyHandler spotifyPlayer = SpotifyHandler();
 // var player = songPlayerController.player;
 
 // void playMusic(String url) async {
@@ -56,22 +60,22 @@ class _HomepageState extends State<Homepage> {
 //   player.play();
 // }
 
-  void loadMusic() async {
-    try {
-      // songList = await songDataController.getLocalSongs();
-      songList = SongDataController.songList;
-      setState(() {
-        // SongDataController.loaded = true;
-      });
-    } catch (e) {
-      print("Nothing found");
-    }
-  }
+  // void loadMusic() async {
+  //   try {
+  //     // songList = await songDataController.getLocalSongs();
+  //     songList = SongDataController.songList;
+  //     setState(() {
+  //       // SongDataController.loaded = true;
+  //     });
+  //   } catch (e) {
+  //     print("Nothing found");
+  //   }
+  // }
 
   @override
   void initState() {
     // await read();
-    loadMusic();
+    // loadMusic();
 // print(player.playerState);
 // if(player.playerState==ProcessingState.completed){
 
@@ -100,6 +104,19 @@ class _HomepageState extends State<Homepage> {
         title: Text("${title}"),
         actions: <Widget>[
           IconButton(
+            onPressed: (){
+              if(_textController.text!=""){
+                SpotifyHandler.songName = _textController.text;
+                spotifyPlayer.spotify_conn();
+                // print(_textController.text);
+              }
+              setState(() {
+                showSearch=1;
+              });
+            }, 
+            icon: Icon(Icons.search),
+          ),
+          IconButton(
             icon: Icon(
               Icons.more_vert,
               color: Colors.black,
@@ -116,304 +133,37 @@ class _HomepageState extends State<Homepage> {
       ),
       body: Column(
         children: [
-          const Spacer(
-            flex: 2,
-          ),
-
-          ////////  UNCOMMENT IT  //////////
-          // ClipRRect(
-          // 	borderRadius: BorderRadius.circular(8),
-          // 	child: Image.network(
-          // 	thumbnailImgUrl,
-          //   // songList[SongDataController.currSong.value].uri!,
-          // 	height: 350,
-          // 	width: 350,
-          // 	fit: BoxFit.cover,
-          // 	),
-          // ),
-          const Spacer(),
-
-
-          
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     // SongDataController.loaded?
-          //     // Flexible(
-          //     //   child: Text(songList.length>0?
-          //     //     "${songList[SongDataController.currSong.value].title}":"",
-          //     //     maxLines: 1,
-          //     //     style: Theme.of(context).textTheme.bodyLarge,
-          //     //   ),
-          //     // )
-          //     songList.length > 0
-          //         ? 
-          //         Padding(
-          //             padding: EdgeInsets.all(16),
-          //             child: Container(
-          //               width: MediaQuery.of(context).size.width - 100,
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child:
-          //                         // Text("sad"),
-          //                         // Obx(() =>
-          //                         Text(
-          //                             "${songList[SongDataController.currSong.value].title}", ////// Title
-          //                             // "${SongPlayerController.songName.value}",
-          //                             style: TextStyle(
-          //                                 fontSize: 18,
-          //                                 fontWeight: FontWeight.bold)),
-
-          //                         // ),
-          //                     // ],
-          //                   ),
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child: Text(
-          //                         "${songList[SongDataController.currSong.value].artist}",
-          //                         style: TextStyle(fontSize: 14)),
-          //                     // ],
-          //                   )
-          //                 ],
-          //               ),
-          //             ))
-          //         : Container()
-          //     // :Container()
-          //     ,
-          //   ],
-          // ),
-
-          // const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: StreamBuilder(
-                stream: SongPlayerController.player.positionStream,
-                builder: (context, snapshot1) {
-                  // setState(() {
-
-                  // });
-                  /* Returning to start after completion */
-                  // setState(() {
-
-                  // if(SongPlayerController.player.position==(SongPlayerController.player.duration)){
-                  //   print("completed");
-                  //   SongPlayerController.playing = false;
-                  // }
-
-                  if (SongPlayerController.player.processingState ==
-                      ProcessingState.completed) {
-
-
-                        // Future.delayed(Duration(milliseconds: 10)).then((value) => SongPlayerController.playing.value=false,);
-
-
-                    ////// Add code for loop and shuffle
-                    /* After completion song name not updating */
-
-                    // SongPlayerController.playing.value = false;
-                    // SongPlayerController.player.seek(Duration(milliseconds: 0));
-
-
-
-
-                    SongPlayerController.player.stop();
-                    SongPlayerController.paused = false;
-                    SongPlayerController.playing.value = false;
-                    // SongDataController.currSong.value =
-                    //     (SongDataController.currSong.value + 1) % songList.length;
-
-                    // try {
-                    //   // playNext();
-                    //   songPlayerController.playLocalSong(
-                    //       songList[SongDataController.currSong.value].data);
-                    //   // if (SongPlayerController.playing.value == false) {
-                    //   //   ++SongDataController.currSong.value;
-                    //   //   title = "Not playing";
-                    //   // }
-
-                    //   // Navigator.pop(context);
-                    //   // Navigator.of(context).push(MaterialPageRoute(
-                    //   //   builder: (context) => HomeNav(),
-                    //   // ));
-
-                    // } catch (e) {
-                    //   SongDataController.currSong.value =
-                    //       (SongDataController.currSong.value + 1) % songList.length;
-                    // }
-
-                  }
-
-
-
-
-
-                  // ;
-                  // });
-
-                  // print(songPlayerController.player.playerState);
-                  // if(songPlayerController.player.playerState.playing){
-                  //   songPlayerController.playing = true;
-                  //   // print("object");
-                  // }
-
-
-
-                  Duration duration = SongPlayerController.totalTime.value;
-                  // print(duration);
-                  // const Duration duration = Duration(seconds: 0);
-                  // final Duration duration = SongDataController.loaded
-                  //     ? snapshot1.data as Duration
-                  //     : const Duration(seconds: 0);
-
-
-
-                      // : Duration(seconds: SongPlayerController.player.duration!.inSeconds);
-                  return StreamBuilder(
-                      stream:
-                          SongPlayerController.player.bufferedPositionStream,
-                      builder: (context, snapshot2) {
-                        // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
-                        //   print("end it");
-                        //   SongPlayerController.playing.value = false;
-                        // }
-
-
-
-                        //  },
-
-                        // if (SongPlayerController.player.processingState == ProcessingState.completed){
-                        // this.setState(() {
-                        //   var a = stopper();
-                        // });
-                        // SongPlayerController.playing = false;
-                        // }
-
-
-
-                        Duration bufferedDuration = SongPlayerController.currentTime.value;
-                        // Duration(seconds: 0);
-                        // final Duration bufferedDuration = SongDataController.loaded
-                        //     ? snapshot2.data as Duration
-                        //     : const Duration(seconds: 0);
-                            // print(SongPlayerController.currentTime);
-                        return 
-                        
-                        
-                        
-                        
-                        
-                        Column(children: [
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // SongDataController.loaded?
-                              // Flexible(
-                              //   child: Text(songList.length>0?
-                              //     "${songList[SongDataController.currSong.value].title}":"",
-                              //     maxLines: 1,
-                              //     style: Theme.of(context).textTheme.bodyLarge,
-                              //   ),
-                              // )
-                              songList.length > 0
-                                  ? 
-                                  Padding(
-                                      padding: EdgeInsets.all(16),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width - 100,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              // padding: EdgeInsets.only(top: 50),
-                                              child:
-                                                  // Text("sad"),
-                                                  // Obx(() =>
-                                                  Text(
-                                                      "${songList[SongDataController.currSong.value].title}", ////// Title
-                                                      // "${SongPlayerController.songName.value}",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold)),
-
-                                                  // ),
-                                              // ],
-                                            ),
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              // padding: EdgeInsets.only(top: 50),
-                                              child: Text(
-                                                  "${songList[SongDataController.currSong.value].artist}",
-                                                  style: TextStyle(fontSize: 14)),
-                                              // ],
-                                            )
-                                          ],
-                                        ),
-                                      ))
-                                  : Container()
-                              // :Container()
-                              ,
-                            ],
-                          ),
-
-
-                        SizedBox(
-                          height: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ProgressBar(
-                              // progress: duration,
-                              progress: SongPlayerController.currentTime.value,
-                              total: 
-                              SongPlayerController.totalTime.value,
-                              // SongPlayerController.player.duration ??
-                              //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
-                                  // Duration(seconds: songList[0].duration!),
-
-                              // total: SongPlayerController.player.duration ??
-                              //     const Duration(seconds: 100),
-                              buffered: bufferedDuration,
-                              timeLabelPadding: -1,
-                              timeLabelTextStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                              progressBarColor: Colors.red,
-                              baseBarColor: Colors.grey[200],
-                              bufferedBarColor: Colors.grey[350],
-                              thumbColor: Colors.red,
-                              onSeek: 
-                              SongDataController.loaded
-                                  ? (duration) async {
-                                      await SongPlayerController.player
-                                          .seek(duration);
-                                    }
-                                  : null,
-                            ),
-                          ),
-                        ),
-
-
-
-
-                        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const SizedBox(
-                width: 10,
+          if(showSearch==1)...{
+            Stack(children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height:40,
+                color: Colors.grey,
+                child: TextField(
+                  controller: _textController,
+                  
+                  decoration: const InputDecoration(
+                    hintText: "Song name...",
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      _textController.text = val.toString();
+                    });
+                  },
+                ),
               ),
-              IconButton(
+              
+            ],),
+          },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            IconButton(
                   onPressed: SongDataController.loaded
                       ? () async {
-                          if (SongPlayerController.player.position.inSeconds >
-                              10) {
-                            await SongPlayerController.player.seek(Duration(
+                          // if (SpotifyHandler.player.position.inSeconds >
+                          if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds > 10) {
+                            await SpotifyHandler.player.seek(Duration(
                                 seconds: SongPlayerController
                                         .player.position.inSeconds -
                                     10));
@@ -434,23 +184,25 @@ class _HomepageState extends State<Homepage> {
                           ///// Icon for playing songs
                           onPressed: () {
                             setState(() {
-                              if (SongPlayerController.playing.value == true) {
-                                songPlayerController.pauseLocalSong();
-                                // SongPlayerController.playing = false;
+                              if (SpotifyHandler.playing == true) {
+                                // songPlayerController.pauseLocalSong();
+                                SpotifyHandler.player.stop();
+                                SpotifyHandler.playing = false;
                                 // SongPlayerController.paused = true;
                               } else {
-                                if (SongPlayerController.playing.value == false) {
-                                  songPlayerController.playLocalSong(
-                                      songList[SongDataController.currSong.value]
-                                          .data);
-                                  // SongPlayerController.playing = true;
+                                if (SpotifyHandler.playing == false) {
+                                  spotifyPlayer.spotify_conn();
+                                  // songPlayerController.playLocalSong(
+                                  //     songList[SpotifyHandler.currSong.value]
+                                  //         .data);
+                                  SpotifyHandler.playing = true;
                                   // SongPlayerController.paused = false;
                                 }
                               }
                             });
                           },
                           icon: Icon(
-                            SongPlayerController.playing.value == true
+                            SpotifyHandler.playing == true
                                 ? Icons.pause
                                 : Icons.play_arrow,
                             color: Colors.white,
@@ -460,25 +212,382 @@ class _HomepageState extends State<Homepage> {
               IconButton(
                   onPressed: SongDataController.loaded
                       ? () async {
-                          if (SongPlayerController.player.position.inSeconds +
+                          if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
                                   10 <=
-                              SongPlayerController.player.duration!.inSeconds) {
-                            await SongPlayerController.player.seek(Duration(
-                                seconds: SongPlayerController
-                                        .player.position.inSeconds +
+                              (await SpotifyHandler.player.getDuration())!.inSeconds) {
+                            await SpotifyHandler.player.seek(Duration(
+                                seconds: (await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
                                     10));
                           } else {
-                            await SongPlayerController.player
+                            await SpotifyHandler.player
                                 .seek(const Duration(seconds: 0));
                           }
                         }
                       : null,
                   icon: const Icon(Icons.fast_forward_rounded)),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
-          ),
+          ],)
+      //     const Spacer(
+      //       flex: 2,
+      //     ),
+
+      //     ////////  UNCOMMENT IT  //////////
+      //     // ClipRRect(
+      //     // 	borderRadius: BorderRadius.circular(8),
+      //     // 	child: Image.network(
+      //     // 	thumbnailImgUrl,
+      //     //   // songList[SongDataController.currSong.value].uri!,
+      //     // 	height: 350,
+      //     // 	width: 350,
+      //     // 	fit: BoxFit.cover,
+      //     // 	),
+      //     // ),
+      //     const Spacer(),
+
+
+          
+
+      //     // Row(
+      //     //   mainAxisAlignment: MainAxisAlignment.start,
+      //     //   children: [
+      //     //     // SongDataController.loaded?
+      //     //     // Flexible(
+      //     //     //   child: Text(songList.length>0?
+      //     //     //     "${songList[SongDataController.currSong.value].title}":"",
+      //     //     //     maxLines: 1,
+      //     //     //     style: Theme.of(context).textTheme.bodyLarge,
+      //     //     //   ),
+      //     //     // )
+      //     //     songList.length > 0
+      //     //         ? 
+      //     //         Padding(
+      //     //             padding: EdgeInsets.all(16),
+      //     //             child: Container(
+      //     //               width: MediaQuery.of(context).size.width - 100,
+      //     //               child: Column(
+      //     //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //     //                 children: [
+      //     //                   SingleChildScrollView(
+      //     //                     scrollDirection: Axis.horizontal,
+      //     //                     // padding: EdgeInsets.only(top: 50),
+      //     //                     child:
+      //     //                         // Text("sad"),
+      //     //                         // Obx(() =>
+      //     //                         Text(
+      //     //                             "${songList[SongDataController.currSong.value].title}", ////// Title
+      //     //                             // "${SongPlayerController.songName.value}",
+      //     //                             style: TextStyle(
+      //     //                                 fontSize: 18,
+      //     //                                 fontWeight: FontWeight.bold)),
+
+      //     //                         // ),
+      //     //                     // ],
+      //     //                   ),
+      //     //                   SingleChildScrollView(
+      //     //                     scrollDirection: Axis.horizontal,
+      //     //                     // padding: EdgeInsets.only(top: 50),
+      //     //                     child: Text(
+      //     //                         "${songList[SongDataController.currSong.value].artist}",
+      //     //                         style: TextStyle(fontSize: 14)),
+      //     //                     // ],
+      //     //                   )
+      //     //                 ],
+      //     //               ),
+      //     //             ))
+      //     //         : Container()
+      //     //     // :Container()
+      //     //     ,
+      //     //   ],
+      //     // ),
+
+      //     // const Spacer(),
+
+      //     Padding(
+      //       padding: const EdgeInsets.symmetric(horizontal: 8),
+      //       child: StreamBuilder(
+      //           stream: SongPlayerController.player.positionStream,
+      //           builder: (context, snapshot1) {
+      //             // setState(() {
+
+      //             // });
+      //             /* Returning to start after completion */
+      //             // setState(() {
+
+      //             // if(SongPlayerController.player.position==(SongPlayerController.player.duration)){
+      //             //   print("completed");
+      //             //   SongPlayerController.playing = false;
+      //             // }
+
+      //             if (SongPlayerController.player.processingState ==
+      //                 ProcessingState.completed) {
+
+
+      //                   // Future.delayed(Duration(milliseconds: 10)).then((value) => SongPlayerController.playing.value=false,);
+
+
+      //               ////// Add code for loop and shuffle
+      //               /* After completion song name not updating */
+
+      //               // SongPlayerController.playing.value = false;
+      //               // SongPlayerController.player.seek(Duration(milliseconds: 0));
+
+
+
+
+      //               SongPlayerController.player.stop();
+      //               SongPlayerController.paused = false;
+      //               SongPlayerController.playing.value = false;
+      //               // SongDataController.currSong.value =
+      //               //     (SongDataController.currSong.value + 1) % songList.length;
+
+      //               // try {
+      //               //   // playNext();
+      //               //   songPlayerController.playLocalSong(
+      //               //       songList[SongDataController.currSong.value].data);
+      //               //   // if (SongPlayerController.playing.value == false) {
+      //               //   //   ++SongDataController.currSong.value;
+      //               //   //   title = "Not playing";
+      //               //   // }
+
+      //               //   // Navigator.pop(context);
+      //               //   // Navigator.of(context).push(MaterialPageRoute(
+      //               //   //   builder: (context) => HomeNav(),
+      //               //   // ));
+
+      //               // } catch (e) {
+      //               //   SongDataController.currSong.value =
+      //               //       (SongDataController.currSong.value + 1) % songList.length;
+      //               // }
+
+      //             }
+
+
+
+
+
+      //             // ;
+      //             // });
+
+      //             // print(songPlayerController.player.playerState);
+      //             // if(songPlayerController.player.playerState.playing){
+      //             //   songPlayerController.playing = true;
+      //             //   // print("object");
+      //             // }
+
+
+
+      //             Duration duration = SongPlayerController.totalTime.value;
+      //             // print(duration);
+      //             // const Duration duration = Duration(seconds: 0);
+      //             // final Duration duration = SongDataController.loaded
+      //             //     ? snapshot1.data as Duration
+      //             //     : const Duration(seconds: 0);
+
+
+
+      //                 // : Duration(seconds: SongPlayerController.player.duration!.inSeconds);
+      //             return StreamBuilder(
+      //                 stream:
+      //                     SongPlayerController.player.bufferedPositionStream,
+      //                 builder: (context, snapshot2) {
+      //                   // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
+      //                   //   print("end it");
+      //                   //   SongPlayerController.playing.value = false;
+      //                   // }
+
+
+
+      //                   //  },
+
+      //                   // if (SongPlayerController.player.processingState == ProcessingState.completed){
+      //                   // this.setState(() {
+      //                   //   var a = stopper();
+      //                   // });
+      //                   // SongPlayerController.playing = false;
+      //                   // }
+
+
+
+      //                   Duration bufferedDuration = SongPlayerController.currentTime.value;
+      //                   // Duration(seconds: 0);
+      //                   // final Duration bufferedDuration = SongDataController.loaded
+      //                   //     ? snapshot2.data as Duration
+      //                   //     : const Duration(seconds: 0);
+      //                       // print(SongPlayerController.currentTime);
+      //                   return 
+                        
+                        
+                        
+                        
+                        
+      //                   Column(children: [
+
+      //                     Row(
+      //                       mainAxisAlignment: MainAxisAlignment.start,
+      //                       children: [
+      //                         // SongDataController.loaded?
+      //                         // Flexible(
+      //                         //   child: Text(songList.length>0?
+      //                         //     "${songList[SongDataController.currSong.value].title}":"",
+      //                         //     maxLines: 1,
+      //                         //     style: Theme.of(context).textTheme.bodyLarge,
+      //                         //   ),
+      //                         // )
+      //                         songList.length > 0
+      //                             ? 
+      //                             Padding(
+      //                                 padding: EdgeInsets.all(16),
+      //                                 child: Container(
+      //                                   width: MediaQuery.of(context).size.width - 100,
+      //                                   child: Column(
+      //                                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                                     children: [
+      //                                       SingleChildScrollView(
+      //                                         scrollDirection: Axis.horizontal,
+      //                                         // padding: EdgeInsets.only(top: 50),
+      //                                         child:
+      //                                             // Text("sad"),
+      //                                             // Obx(() =>
+      //                                             Text(
+      //                                                 "${songList[SongDataController.currSong.value].title}", ////// Title
+      //                                                 // "${SongPlayerController.songName.value}",
+      //                                                 style: TextStyle(
+      //                                                     fontSize: 18,
+      //                                                     fontWeight: FontWeight.bold)),
+
+      //                                             // ),
+      //                                         // ],
+      //                                       ),
+      //                                       SingleChildScrollView(
+      //                                         scrollDirection: Axis.horizontal,
+      //                                         // padding: EdgeInsets.only(top: 50),
+      //                                         child: Text(
+      //                                             "${songList[SongDataController.currSong.value].artist}",
+      //                                             style: TextStyle(fontSize: 14)),
+      //                                         // ],
+      //                                       )
+      //                                     ],
+      //                                   ),
+      //                                 ))
+      //                             : Container()
+      //                         // :Container()
+      //                         ,
+      //                       ],
+      //                     ),
+
+
+      //                   SizedBox(
+      //                     height: 30,
+      //                     child: Padding(
+      //                       padding: const EdgeInsets.symmetric(horizontal: 16),
+      //                       child: ProgressBar(
+      //                         progress: duration,
+      //                         total: 
+      //                         // SongPlayerController.totalTime.value,
+      //                         SongPlayerController.player.duration ??
+      //                             // Duration(seconds: songList[SongDataController.currSong.value].duration!),
+      //                             Duration(seconds: songList[0].duration!),
+
+      //                         // total: SongPlayerController.player.duration ??
+      //                         //     const Duration(seconds: 100),
+      //                         buffered: bufferedDuration,
+      //                         timeLabelPadding: -1,
+      //                         timeLabelTextStyle: const TextStyle(
+      //                             fontSize: 14, color: Colors.black),
+      //                         progressBarColor: Colors.red,
+      //                         baseBarColor: Colors.grey[200],
+      //                         bufferedBarColor: Colors.grey[350],
+      //                         thumbColor: Colors.red,
+      //                         onSeek: 
+      //                         SongDataController.loaded
+      //                             ? (duration) async {
+      //                                 await SongPlayerController.player
+      //                                     .seek(duration);
+      //                               }
+      //                             : null,
+      //                       ),
+      //                     ),
+      //                   ),
+
+
+
+
+      //                   Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //       children: [
+      //         const SizedBox(
+      //           width: 10,
+      //         ),
+      //         IconButton(
+      //             onPressed: SongDataController.loaded
+      //                 ? () async {
+      //                     if (SongPlayerController.player.position.inSeconds >
+      //                         10) {
+      //                       await SongPlayerController.player.seek(Duration(
+      //                           seconds: SongPlayerController
+      //                                   .player.position.inSeconds -
+      //                               10));
+      //                     } else {
+      //                       await SongPlayerController.player
+      //                           .seek(const Duration(seconds: 0));
+      //                     }
+      //                   }
+      //                 : null,
+      //             icon: const Icon(Icons.fast_rewind_rounded)),
+      //         songPlayerController.completed == false
+      //             ? Container(
+      //                 height: 50,
+      //                 width: 50,
+      //                 decoration: const BoxDecoration(
+      //                     shape: BoxShape.circle, color: Colors.red),
+      //                 child: IconButton(
+      //                     ///// Icon for playing songs
+      //                     onPressed: () {
+      //                       setState(() {
+      //                         if (SongPlayerController.playing.value == true) {
+      //                           songPlayerController.pauseLocalSong();
+      //                           // SongPlayerController.playing = false;
+      //                           // SongPlayerController.paused = true;
+      //                         } else {
+      //                           if (SongPlayerController.playing.value == false) {
+      //                             songPlayerController.playLocalSong(
+      //                                 songList[SongDataController.currSong.value]
+      //                                     .data);
+      //                             // SongPlayerController.playing = true;
+      //                             // SongPlayerController.paused = false;
+      //                           }
+      //                         }
+      //                       });
+      //                     },
+      //                     icon: Icon(
+      //                       SongPlayerController.playing.value == true
+      //                           ? Icons.pause
+      //                           : Icons.play_arrow,
+      //                       color: Colors.white,
+      //                     )),
+      //               )
+      //             : Container(),
+      //         IconButton(
+      //             onPressed: SongDataController.loaded
+      //                 ? () async {
+      //                     if (SongPlayerController.player.position.inSeconds +
+      //                             10 <=
+      //                         SongPlayerController.player.duration!.inSeconds) {
+      //                       await SongPlayerController.player.seek(Duration(
+      //                           seconds: SongPlayerController
+      //                                   .player.position.inSeconds +
+      //                               10));
+      //                     } else {
+      //                       await SongPlayerController.player
+      //                           .seek(const Duration(seconds: 0));
+      //                     }
+      //                   }
+      //                 : null,
+      //             icon: const Icon(Icons.fast_forward_rounded)),
+      //         const SizedBox(
+      //           width: 10,
+      //         ),
+      //       ],
+      //     ),
 
 
 
@@ -487,7 +596,7 @@ class _HomepageState extends State<Homepage> {
 
                         
 
-        ]);
+      //   ]);
 
 
 
@@ -502,93 +611,12 @@ class _HomepageState extends State<Homepage> {
 
 
 
-                      });
-                }),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-
-
-
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: [
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     IconButton(
-          //         onPressed: SongDataController.loaded
-          //             ? () async {
-          //                 if (SongPlayerController.player.position.inSeconds >
-          //                     10) {
-          //                   await SongPlayerController.player.seek(Duration(
-          //                       seconds: SongPlayerController
-          //                               .player.position.inSeconds -
-          //                           10));
-          //                 } else {
-          //                   await SongPlayerController.player
-          //                       .seek(const Duration(seconds: 0));
-          //                 }
-          //               }
-          //             : null,
-          //         icon: const Icon(Icons.fast_rewind_rounded)),
-          //     songPlayerController.completed == false
-          //         ? Container(
-          //             height: 50,
-          //             width: 50,
-          //             decoration: const BoxDecoration(
-          //                 shape: BoxShape.circle, color: Colors.red),
-          //             child: IconButton(
-          //                 ///// Icon for playing songs
-          //                 onPressed: () {
-          //                   setState(() {
-          //                     if (SongPlayerController.playing.value == true) {
-          //                       songPlayerController.pauseLocalSong();
-          //                       // SongPlayerController.playing = false;
-          //                       // SongPlayerController.paused = true;
-          //                     } else {
-          //                       if (SongPlayerController.playing.value == false) {
-          //                         songPlayerController.playLocalSong(
-          //                             songList[SongDataController.currSong.value]
-          //                                 .data);
-          //                         // SongPlayerController.playing = true;
-          //                         // SongPlayerController.paused = false;
-          //                       }
-          //                     }
-          //                   });
-          //                 },
-          //                 icon: Icon(
-          //                   SongPlayerController.playing.value == true
-          //                       ? Icons.pause
-          //                       : Icons.play_arrow,
-          //                   color: Colors.white,
-          //                 )),
-          //           )
-          //         : Container(),
-          //     IconButton(
-          //         onPressed: SongDataController.loaded
-          //             ? () async {
-          //                 if (SongPlayerController.player.position.inSeconds +
-          //                         10 <=
-          //                     SongPlayerController.player.duration!.inSeconds) {
-          //                   await SongPlayerController.player.seek(Duration(
-          //                       seconds: SongPlayerController
-          //                               .player.position.inSeconds +
-          //                           10));
-          //                 } else {
-          //                   await SongPlayerController.player
-          //                       .seek(const Duration(seconds: 0));
-          //                 }
-          //               }
-          //             : null,
-          //         icon: const Icon(Icons.fast_forward_rounded)),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //   ],
-          // ),
+      //                 });
+      //           }),
+      //     ),
+      //     const SizedBox(
+      //       height: 8,
+      //     ),
 
 
 
@@ -597,9 +625,10 @@ class _HomepageState extends State<Homepage> {
 
 
 
-          const Spacer(
-            flex: 2,
-          )
+
+      //     const Spacer(
+      //       flex: 2,
+      //     )
         ],
       ),
     );
