@@ -2,8 +2,9 @@
 
 import 'dart:convert';
 
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:http/http.dart';
+import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -15,6 +16,13 @@ class SpotifyHandler{
   // var token = "BQD1Ae47LNqRqKe3zT9ypoZVl9yvLfb1lRZu94QCL1ypJt1GPs4JByIaCzcT4W57_g66UbVnmh4s-7k0jTdyVXIktgyiTlihoGlLKFIyZhCflY-SZDU";
   var token = "BQBPfmiLWxXwJduBVAlnUB19Si8OMWIAwvkbv7DfTuDydcRMJqIdnAerVoeewQ4lf-v_bLb_uEakhM9rjkkftwJ6nyRwG36zGhkrxCciw9usS_Q5B_0";
   static var player =  AudioPlayer();
+  // static var _player = AudioPlayer();
+  // final player = AudioPlayer();                   // Create a player
+  // static Future<void> plays() async {
+  //   var url = "";
+  //   await _player.setUrl('url');
+  //   _player.play();  
+  // }
   static var playing = false;
   static var paused = false;
 
@@ -315,7 +323,12 @@ class SpotifyHandler{
           // SongDataController.songList.add(audio as SongModel);
           var audioUrl = await audio.url;
           print(audioUrl);
-          await player.play(UrlSource(audioUrl.toString()));
+          // await player.play(UrlSource(audioUrl.toString()));
+          await player.setUrl(audioUrl.toString());
+          player.play();
+
+
+
 
 
           // await player.play(UrlSource('https://open.spotify.com/track/2FCXQHugkoHE1K3tiDu8pu'));

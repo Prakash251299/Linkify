@@ -154,8 +154,8 @@ class _HomepageState extends State<CloudPlay> {
             IconButton(
                   onPressed: SongDataController.loaded
                       ? () async {
-                          // if (SpotifyHandler.player.position.inSeconds >
-                          if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds > 10) {
+                          if (SpotifyHandler.player.position.inSeconds > 10){
+                          // if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds > 10) {
                             await SpotifyHandler.player.seek(Duration(
                                 seconds: SongPlayerController
                                         .player.position.inSeconds -
@@ -185,7 +185,8 @@ class _HomepageState extends State<CloudPlay> {
                               } else {
                                 if (SpotifyHandler.playing == false) {
                                   if(SpotifyHandler.paused==true){
-                                    SpotifyHandler.player.resume();
+                                    // SpotifyHandler.player.resume();
+                                    SpotifyHandler.player.play();
                                     SpotifyHandler.paused = false;
                                   }else{
                                     spotifyPlayer.spotify_conn();
@@ -210,12 +211,18 @@ class _HomepageState extends State<CloudPlay> {
               IconButton(
                   onPressed: SongDataController.loaded
                       ? () async {
-                          if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
+                          // if ((await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
+                          //         10 <=
+                          //     (await SpotifyHandler.player.getDuration())!.inSeconds) {
+                          //   await SpotifyHandler.player.seek(Duration(
+                          //       seconds: (await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
+                          //           10));
+                          if (SpotifyHandler.player.position.inSeconds +
                                   10 <=
-                              (await SpotifyHandler.player.getDuration())!.inSeconds) {
+                              SpotifyHandler.player.position.inSeconds) {
                             await SpotifyHandler.player.seek(Duration(
-                                seconds: (await SpotifyHandler.player.getCurrentPosition())!.inSeconds +
-                                    10));
+                                seconds: (await SpotifyHandler.player.position.inSeconds +
+                                    10)));
                           } else {
                             await SpotifyHandler.player
                                 .seek(const Duration(seconds: 0));
