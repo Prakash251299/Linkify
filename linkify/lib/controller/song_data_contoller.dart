@@ -1,26 +1,11 @@
-// import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-// import 'dart:io';
 
-// import 'package:device_info_plus/device_info_plus.dart';
-import 'dart:io';
-// import 'dart:js';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/state_manager.dart';
 import 'package:linkify/controller/songPlayerController.dart';
-import 'package:linkify/widgets/homepage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
-
-// import 'dart:io' as io;
-
-// import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_file_manager/flutter_file_manager.dart';
-// import 'package:path_provider_ex/path_provider_ex.dart';
 
 class SongDataController extends GetxController{
   final audioQuery = OnAudioQuery();

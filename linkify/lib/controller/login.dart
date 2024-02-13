@@ -1,4 +1,4 @@
-import 'package:linkify/controller/song_data_contoller.dart';
+// import 'package:linkify/controller/song_data_contoller.dart';
 
 class LoginPage{
   static var loginStatus = 0;

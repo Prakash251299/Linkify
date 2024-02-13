@@ -1,18 +1,12 @@
+
+
 import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart';
-import 'package:linkify/controller/songPlayerController.dart';
-import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:on_audio_query_platform_interface/src/models/song_model.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-// import 'package:spotify_sdk/platform_channels.dart';
-// import 'package:spotify_sdk/spotify_sdk.dart';
-// import 'package:spotify_sdk/spotify_sdk_web.dart';
 
 class SpotifyHandler{
   var clientId = "80c5fa373a4f4ef793721969b1e25fac";
@@ -22,6 +16,8 @@ class SpotifyHandler{
   var token = "BQBPfmiLWxXwJduBVAlnUB19Si8OMWIAwvkbv7DfTuDydcRMJqIdnAerVoeewQ4lf-v_bLb_uEakhM9rjkkftwJ6nyRwG36zGhkrxCciw9usS_Q5B_0";
   static var player =  AudioPlayer();
   static var playing = false;
+  static var paused = false;
+
   static var songName = "Mahiye jinna sohna";
 
 
@@ -175,7 +171,7 @@ class SpotifyHandler{
 
     var cr = await spotify.getCredentials();
     var accessToken = cr.accessToken;
-    print(accessToken);
+    // print(accessToken);
     // var url = get(Uri.parse ('com.spotify.sdk.android.auth')).then((r){
     //   print(r.body);
     // });
@@ -260,7 +256,7 @@ class SpotifyHandler{
       final user = jsonDecode(data) as Map<String, dynamic>;
       // print(user['tracks']['items'][0]['id']);
       trackId = user['tracks']['items'][0]['href'];
-      print(trackId);
+      // print(trackId);
       // await play(spotifyUri: '$trackId',asRadio: true);
 
       // print(tracks.href);

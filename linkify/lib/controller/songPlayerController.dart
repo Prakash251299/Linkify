@@ -1,6 +1,10 @@
-import 'package:get/get.dart';
+
+
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:just_audio/just_audio.dart';
+// import 'package:audioplayers/audioplayers.dart';
+
 import 'package:linkify/controller/song_data_contoller.dart';
 
 class SongPlayerController extends GetxController{

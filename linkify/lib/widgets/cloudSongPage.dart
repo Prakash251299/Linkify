@@ -1,21 +1,4 @@
-// import 'package:audioplayers/audioplayers.dart';
-import 'dart:ffi';
 
-import 'package:flutter/material.dart';
-// import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get.dart';
-// import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-// import 'package:get/instance_manager.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:linkify/controller/songPlayerController.dart';
-import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:linkify/main.dart';
-import 'package:linkify/model/spotify_caller.dart';
-import 'package:linkify/widgets/homeNav.dart';
-import 'package:linkify/widgets/local_songs.dart';
-// import 'package:marquee/marquee.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 // var index=0;
 
 // class SongPlayer extends GetxController{
@@ -25,6 +8,16 @@ import 'package:on_audio_query/on_audio_query.dart';
 //   player.play();
 // }
 // }
+
+import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/instance_manager.dart';
+import 'package:linkify/controller/songPlayerController.dart';
+import 'package:linkify/controller/song_data_contoller.dart';
+import 'package:linkify/model/spotify_caller.dart';
+import 'package:linkify/widgets/local_songs.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class CloudPlay extends StatefulWidget {
   // const Homepage({super.key});
@@ -186,12 +179,17 @@ class _HomepageState extends State<CloudPlay> {
                             setState(() {
                               if (SpotifyHandler.playing == true) {
                                 // songPlayerController.pauseLocalSong();
-                                SpotifyHandler.player.stop();
+                                SpotifyHandler.player.pause();
                                 SpotifyHandler.playing = false;
-                                // SongPlayerController.paused = true;
+                                SpotifyHandler.paused = true;
                               } else {
                                 if (SpotifyHandler.playing == false) {
-                                  spotifyPlayer.spotify_conn();
+                                  if(SpotifyHandler.paused==true){
+                                    SpotifyHandler.player.resume();
+                                    SpotifyHandler.paused = false;
+                                  }else{
+                                    spotifyPlayer.spotify_conn();
+                                  }
                                   // songPlayerController.playLocalSong(
                                   //     songList[SpotifyHandler.currSong.value]
                                   //         .data);

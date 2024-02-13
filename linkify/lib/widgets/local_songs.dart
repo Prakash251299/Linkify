@@ -1,6 +1,5 @@
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-// import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
