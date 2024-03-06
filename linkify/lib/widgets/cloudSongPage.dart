@@ -1,13 +1,5 @@
 
-// var index=0;
-
-// class SongPlayer extends GetxController{
-//   final player = AudioPlayer();
-//   void playMusic(String url) async {
-//   await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-//   player.play();
-// }
-// }
+// line where navigator can be called are 104 193 
 
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -15,8 +7,9 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:linkify/model/spotify_caller.dart';
+import 'package:linkify/controller/spotify_caller.dart';
 import 'package:linkify/widgets/local_songs.dart';
+import 'package:linkify/widgets/web_view.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class CloudPlay extends StatefulWidget {
@@ -100,8 +93,8 @@ class _HomepageState extends State<CloudPlay> {
             onPressed: (){
               if(_textController.text!=""){
                 SpotifyHandler.songName = _textController.text;
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebView()));
                 spotifyPlayer.spotify_conn();
-                // print(_textController.text);
               }
               setState(() {
                 showSearch=1;
@@ -190,6 +183,8 @@ class _HomepageState extends State<CloudPlay> {
                                     SpotifyHandler.paused = false;
                                   }else{
                                     spotifyPlayer.spotify_conn();
+                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  // builder: (context) =>WebView()));
                                   }
                                   // songPlayerController.playLocalSong(
                                   //     songList[SpotifyHandler.currSong.value]

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "560723909414",
+    "project_id": "linkify-42653",
+    "storage_bucket": "linkify-42653.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560723909414:android:b9d465815d611aa8fd3fe7",
+        "android_client_info": {
+          "package_name": "com.example.linkify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBERpvDh6R8JMFdBowOTgdqLRKIgXutzBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

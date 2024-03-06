@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:linkify/controller/login.dart';
@@ -33,8 +34,8 @@ import 'package:linkify/widgets/homeNav.dart';
 // import 'package:linkify/app.dart';
 // import 'package:music_player1/app.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
 
 
 
@@ -45,6 +46,19 @@ void main() {
   //     statusBarColor: Colors.blueAccent,
   //   ),
   // );
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyBtkJGUpLZz1zSCLFG5xouqzsJfdCohU6U",
+  //   authDomain: "linkify-42653.firebaseapp.com",
+  //   projectId: "linkify-42653",
+  //   storageBucket: "linkify-42653.appspot.com",
+  //   messagingSenderId: "560723909414",
+  //   appId: "1:560723909414:web:083f845c8a02bbe2fd3fe7"
+  // };
+// WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+// Initialize Firebase
+  // Firebase.initializeApp();
+// const app = initializeApp(firebaseConfig);
   runApp(MyApp());
 }
 
