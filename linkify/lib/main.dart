@@ -159,8 +159,8 @@ class MyApp extends StatelessWidget {
 
 
 
-
-
+              // YoutubeSongPlayer yt = YoutubeSongPlayer();
+              // yt.youtubePlay("Mahiye jinna sohna");
               if(LoginPage.loginStatus==1){
                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => CloudPlay()));
                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp()));

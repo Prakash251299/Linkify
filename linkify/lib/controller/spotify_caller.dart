@@ -5,8 +5,7 @@ import 'dart:convert';
 // import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_js/flutter_js.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 // import 'package:flutter/services.dart' as Services;
 // import 'package:flutter/foundation.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_js/flutter_js.dart';
 // import 'package:oauth2_client/oauth2_client.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_web_auth/flutter_web_auth.dart';
@@ -29,6 +29,7 @@ import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:spotify/spotify.dart';
 import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/src/url_launcher_uri.dart';
 // import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 // import 'package:crypto/crypto.dart';
@@ -45,9 +46,10 @@ class SpotifyHandler{
   // var redirect_uri1 = "https://www.google.com";
   // var redirect_uri1 = "https://jp251299.000webhostapp.com/linkify.js";
   // var redirect_uri1 = "https://oauth.pstmn.io/v1/callback/";
-  var redirect_uri1 = "com.example.linkify://login-callback";
+  // var redirect_uri1 = "com.example.linkify://login-callback";
+  var redirect_uri1 = "https://ishuapp/start";
   // var redirect_uri1 = "https://linkify-42653.firebaseapp.com/callback";
-
+  var authUrl = "https://accounts.spotify.com/authorize?client_id=80c5fa373a4f4ef793721969b1e25fac&response_type=code&redirect_uri=https://ishuapp/start&show_dialog=true&scope=user-read-private+user-read-email+user-modify-playback-state+user-read-playback-position+user-library-read+streaming+user-read-playback-state+user-read-recently-played+playlist-read-private";
 
   var scope = 'user-read-private user-read-email';
   var myAccessToken = 'BQBlrrFFK_hyxmOpmoc11gjxxtLJxXR35nfUv1-sb6DbiOhnFg1S9ASZ8JGk1YVNPFv9kIFDq5IiyBddXYSR1O2PO9yRPT79eCW-fWi43SkNBd3VGreMASTocAeAJenSA7IgC8a4JJYhSAZt-cMsnW6UsX7LfwNgARqSsM77xOPWOOGbxgWlYhUbzWlXe1ZuBlGWuMsJab2UjkKveP3cZA';
@@ -75,14 +77,29 @@ class SpotifyHandler{
 
 
   Future<void> spotify_conn()async{
-    var url = Uri.parse('https://webauthspotify.web.app');
+    
+    // var url = Uri.parse(redirectToAuthorization1(clientId, scope, redirect_uri1));
+    // Uri url = await redirectToAuthorization1(clientId, scope, redirect_uri1);
+    // var res = await get(url);
+    // print(res.body);
+
+    var url = Uri.parse("https://webauthspotify.web.app/");
+    // var url = Uri.parse(authUrl);
+
     if (await canLaunchUrl(url)) {
       await launchUrl(url).then((value){
+        // print(value.runtimeType);
         print("hello");
-        // handleCallback('');
       });
     }
 
+    // var url = Uri.parse('https://webauthspotify.web.app');
+    // if (await canLaunchUrl(url)) {
+    //   await launchUrl(url).then((value){
+    //     print("hello");
+    //     // handleCallback('');
+    //   });
+    // }
 
   }
 
@@ -108,23 +125,46 @@ class SpotifyHandler{
 
 
   // Build the authorization URL
-  Uri buildAuthorizationUrl1(String clientId, String scope, String redirect_uri1) {
+  Uri buildTokenUrl(String clientId, String scope, String redirect_uri1) {
+    String credentials = '$clientId:$clientSecret';
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode(credentials));
     final params = {
-      'response_type': 'code',
-      'client_id': clientId,
-      'scope': scope,
+      // 'code':code,
+      'headers' :{
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': basicAuth,
+      },
       // 'code_challenge_method': 'S256',
       // 'code_challenge': codeChallenge,
+      
       'redirect_uri': redirect_uri1,
     };
 
     return Uri.https('accounts.spotify.com', '/authorize', params);
   }
 
+
+
+
+  // Uri buildAuthorizationUrl1(String clientId, String scope, String redirect_uri1) {
+  //   final params = {
+  //     'response_type': 'code',
+  //     'client_id': clientId,
+  //     'scope': scope,
+  //     // 'code_challenge_method': 'S256',
+  //     // 'code_challenge': codeChallenge,
+      
+  //     'redirect_uri': redirect_uri1,
+  //   };
+
+  //   return Uri.https('accounts.spotify.com', '/authorize', params);
+  // }
+
   // Redirect the user
   Future<Uri> redirectToAuthorization1(String clientId, String scope, String redirect_uri1) async {
-    final url = buildAuthorizationUrl1(clientId, scope, redirect_uri1);
+    // final url = buildAuthorizationUrl1(clientId, scope, redirect_uri1);
     // print(url);
+    var url = Uri.parse("");
     return url;
     
     // if (await canLaunchUrl(url)) {
@@ -271,8 +311,31 @@ class SpotifyHandler{
 
   Future<void> spotify_conn4()async{
     Uri url = await redirectToAuthorization1(clientId, scope, redirect_uri1);
-    final response = await http.get(Uri.parse(url.toString()));
-    print(response.body);
+    // final response = await http.post(Uri.parse(url.toString()));
+    // var url = "http";
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url).then((value){
+        print("hello");
+
+        // handleCallback('');
+      });
+      // await closeWebView();
+    }
+    // print(response.body);
+
+    // Uri url = Uri.parse('$url&action=login');
+
+      // final responce = await http.post(url,
+      //     body: ({
+      //       'client_id': clientId,
+      //       'client_secret': clientSecret,
+      //     }));
+
+      // final responceData = json.decode(response.body);
+      // print(responceData);
+
+
+
     // var responseData = await json.decode(response.body);
     // print(responseData);
     // print("h");

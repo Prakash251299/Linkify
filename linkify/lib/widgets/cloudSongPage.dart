@@ -2,15 +2,20 @@
 // line where navigator can be called are 104 193 
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
+// import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:linkify/controller/spotify_caller.dart';
+import 'package:linkify/controller/web_controller.dart';
 import 'package:linkify/widgets/local_songs.dart';
-import 'package:linkify/widgets/web_view.dart';
+// import 'package:linkify/widgets/webview.dart';
+// import 'package:linkify/widgets/web_view.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter_android/webview_flutter_android.dart';
+// import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class CloudPlay extends StatefulWidget {
   // const Homepage({super.key});
@@ -36,8 +41,12 @@ class _HomepageState extends State<CloudPlay> {
   SongDataController songDataController = Get.put(SongDataController());
   RxList<SongModel> songList = <SongModel>[].obs;
   int showSearch=0;
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   SpotifyHandler spotifyPlayer = SpotifyHandler();
+
+
+  // WebViewController _controller = WebViewController();
+
 // var player = songPlayerController.player;
 
 // void playMusic(String url) async {
@@ -83,6 +92,44 @@ class _HomepageState extends State<CloudPlay> {
 //   return 1;
 // }
 
+
+
+  // var mWebviewPop = WebView();
+
+  // Future<WebViewController> _getController() async {
+  //   PlatformWebViewControllerCreationParams params =
+  //   const PlatformWebViewControllerCreationParams();
+
+  //   if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+  //     params = WebKitWebViewControllerCreationParams
+  //         .fromPlatformWebViewControllerCreationParams(
+  //       params,
+  //     );
+  //   } else if (WebViewPlatform.instance is AndroidWebViewPlatform) {
+  //     params = AndroidWebViewControllerCreationParams
+  //         .fromPlatformWebViewControllerCreationParams(
+  //       params,
+  //     );
+  //   }
+
+  //   final WebViewController webViewController =
+  //       WebViewController.fromPlatformCreationParams(
+  //     params,
+  //   );
+  //   // final String USER_AGENT = "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
+  //   // mwebView.getSettings().setUserAgentString(USER_AGENT);
+  //   await webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
+  //   await webViewController.loadRequest(Uri.parse( "https://webauthspotify.web.app/" ));
+  //   return webViewController;
+  // }
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,11 +137,13 @@ class _HomepageState extends State<CloudPlay> {
         title: Text("${title}"),
         actions: <Widget>[
           IconButton(
-            onPressed: (){
+            onPressed: () async {
+              // _controller = await _getController();
               if(_textController.text!=""){
                 SpotifyHandler.songName = _textController.text;
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebView()));
-                spotifyPlayer.spotify_conn();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebContainer()));
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyWebView(_controller)));
+                // spotifyPlayer.spotify_conn();
               }
               setState(() {
                 showSearch=1;
@@ -168,7 +217,8 @@ class _HomepageState extends State<CloudPlay> {
                           shape: BoxShape.circle, color: Colors.red),
                       child: IconButton(
                           ///// Icon for playing songs
-                          onPressed: () {
+                          onPressed: () async {
+                            // _controller = await _getController();
                             setState(() {
                               if (SpotifyHandler.playing == true) {
                                 // songPlayerController.pauseLocalSong();
@@ -182,9 +232,11 @@ class _HomepageState extends State<CloudPlay> {
                                     SpotifyHandler.player.play();
                                     SpotifyHandler.paused = false;
                                   }else{
-                                    spotifyPlayer.spotify_conn();
+                                    // spotifyPlayer.spotify_conn();
                                     // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  // builder: (context) =>WebView()));
+                  // builder: (context) =>MyWebView(_controller)));
+                                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) =>WebContainer()));
                                   }
                                   // songPlayerController.playLocalSong(
                                   //     songList[SpotifyHandler.currSong.value]

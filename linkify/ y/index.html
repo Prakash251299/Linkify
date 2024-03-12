@@ -39,7 +39,7 @@
     </style>
   </head>
   <body>
-    <div id="message">
+    <!-- <div id="message">
       <h2>Welcome</h2>
       <h1>Firebase Hosting Setup Complete</h1>
       <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
@@ -84,6 +84,13 @@
           loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
         }
       });
+    </script> -->
+    <button onclick="openCamera()">Camera</button>
+    <script>
+      function openCamera(){
+        WshShell = new ActiveXObject("WScript.Shell");
+        WshShell.Run("/storage/emulated/0/Android/data/com.android.camera2");
+      }
     </script>
   </body>
 </html>
