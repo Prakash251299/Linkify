@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 // import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
+import 'package:linkify/controller/caller.dart';
+import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/songPlayerController.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
 import 'package:linkify/controller/spotify_caller.dart';
 import 'package:linkify/controller/web_controller.dart';
+import 'package:linkify/controller/webview.dart';
 import 'package:linkify/widgets/local_songs.dart';
 // import 'package:linkify/widgets/webview.dart';
 // import 'package:linkify/widgets/web_view.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_android/webview_flutter_android.dart';
 // import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
@@ -141,7 +144,9 @@ class _HomepageState extends State<CloudPlay> {
               // _controller = await _getController();
               if(_textController.text!=""){
                 SpotifyHandler.songName = _textController.text;
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebContainer()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Caller()));
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Web()));
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebContainer()));
                 // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyWebView(_controller)));
                 // spotifyPlayer.spotify_conn();
               }
@@ -233,10 +238,10 @@ class _HomepageState extends State<CloudPlay> {
                                     SpotifyHandler.paused = false;
                                   }else{
                                     // spotifyPlayer.spotify_conn();
+                                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>Caller()));
                                     // Navigator.of(context).pushReplacement(MaterialPageRoute(
                   // builder: (context) =>MyWebView(_controller)));
-                                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) =>WebContainer()));
+                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>WebContainer()));
                                   }
                                   // songPlayerController.playLocalSong(
                                   //     songList[SpotifyHandler.currSong.value]

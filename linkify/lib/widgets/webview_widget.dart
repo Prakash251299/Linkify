@@ -33,6 +33,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 // import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class MyWebView extends StatefulWidget {
@@ -45,40 +47,8 @@ class MyWebView extends StatefulWidget {
 }
 
 class _MyWebViewState extends State<MyWebView> {
-  // WebViewController _controller = WebViewController();
+  
 
-  // // void fun()async{
-  // //   _controller = await _getController();
-
-  // // }
-  // // @override
-  // // initState() {
-  //   // fun();
-  //   // print("initState Called");
-  // // }
-
-  // Future<WebViewController> _getController() async {
-  //   late final PlatformWebViewControllerCreationParams params;
-  //   params = WebViewPlatform.instance is WebKitWebViewPlatform
-  //       ? WebKitWebViewControllerCreationParams(
-  //           allowsInlineMediaPlayback: true, mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-  //       : const PlatformWebViewControllerCreationParams();
-
-  //   final controller = WebViewController.fromPlatformCreationParams(
-  //     params,
-  //     onPermissionRequest: (request) {
-  //       request.grant();
-  //     },
-  //   );
-  //   await controller.setJavaScriptMode(JavaScriptMode.unrestricted);
-  //   await controller.loadRequest(Uri.parse( "https://www.google.com" ));
-
-  //   return controller;
-  // }
-
-
-  // PlatformWebViewControllerCreationParams params =
-  //   const PlatformWebViewControllerCreationParams();
     
 
   @override
@@ -88,11 +58,12 @@ class _MyWebViewState extends State<MyWebView> {
         title: Text('WebView'),
       ),
       body:
-      SizedBox(),
+      // SizedBox(),
       // body: Column(children: [
       //   InkWell(child:Container(color: Colors.blue,height: 200,width:200),
       //   onTap: ()async{_controller = await _getController();},),
       // WebViewWidget(controller: widget.c),
+      WebViewWidget(controller: widget.c),
       // ],  )
     );
   }

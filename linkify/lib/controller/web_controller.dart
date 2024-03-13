@@ -8,16 +8,16 @@ import 'package:http/http.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:http/http.dart' as http;
 
-class WebContainer extends StatefulWidget {
+class WebContainer1 extends StatefulWidget {
   @override
   WebContainerState createState() => WebContainerState();
 }
 
-class WebContainerState extends State<WebContainer> {
+class WebContainerState extends State<WebContainer1> {
   late WebViewController controller;
   int _dstReached=0;
   var urlForAuth = "https://accounts.spotify.com/authorize?client_id=80c5fa373a4f4ef793721969b1e25fac&response_type=code&redirect_uri=https://prakash2001.000webhostapp.com/start&show_dialog=true&scope=user-read-private+user-read-email+user-modify-playback-state+user-read-playback-position+user-library-read+streaming+user-read-playback-state+user-read-recently-played+playlist-read-private";
-  var urlForToken = "https://accounts.spotify.com/api/token?grant_type=authorization_code&code=AQBU_qYcx9RV3cEuyF2R076xjHP6rhXE6oTeLGqGx_8iAbgntju9cRT1r38WSIn9QsZFioQS5Li-D2XBzxn8Ub8AoOmM1i_MGolV0qMCFF-48Qxb0q_AzvqlYGNwqRl4GUUGjaWqrHS17iK1ptI5LJpAS0Z4Xi046vNvb1wlpEDBrgEL_31kwT3y4QboX8bzfBwNfNU9dEHmCzqkcEXScsFmnmU2FHHR1t1DkIpr51Mt1BBo_rdBE9qvbUTXT-5kTEBXKMO33wKMvTS0VMrJPsWga5VZJy9gfbsoanES2FH32jlfCa1v0hYsU56wrLeJxAk14mjxH38KqQjFm6YWOanY_ZKRhSuCqAx9yTkMYasSQSlOmXypXwjipoQ5PxM8SqBvMPHsFUxGg9OyAcZyN9OM859WDjRAdXMXw9lEd8A2R5SMYDzkRK8_&redirect_uri=https://webauthspotify.web.app/&client_id=80c5fa373a4f4ef793721969b1e25fac&client_secret=a58469d7127d4690ab1dcb4f706c0dbe";
+ 
   // var urlForToken = "https://accounts.spotify.com/api/token";
   var clientId = "80c5fa373a4f4ef793721969b1e25fac";
   var clientSecret = "a58469d7127d4690ab1dcb4f706c0dbe";
@@ -110,69 +110,43 @@ class WebContainerState extends State<WebContainer> {
       appBar: AppBar(
         title: Text('WebView'),
       ),
-      body: 
-      _dstReached==0?
-      WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        // javascriptMode: JavascriptMode.unrestricted,
-        // initialUrl:"https://www.google.com",
-        // initialUrl:"https://webauthspotify.web.app/",
-        // initialUrl:"https://accounts.spotify.com/en/login",
-        initialUrl: urlForAuth,
-        // initialUrl: "https://webauthspotify.web.app",
-        //  launchUrlString(_url,mode: launchMode.externalApplication),
-        onWebViewCreated:(controller) async {
-          this.controller = controller;
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyWebView(controller)));
-        },
-        onPageStarted: (url){
-          print("web: $url");
-        },
-        onWebResourceError: (error){
-          print("Webview error: $error");
-        },
-        navigationDelegate: (NavigationRequest request) async {
-          // print(request.runtimeType);
-          print("Herereere: ");
-          var url1 = await controller.currentUrl();
-          // print(url1);
-          // var a = await get(Uri.parse("${controller.currentUrl()}"));
-          // print(a.body);
-          if (request.url.startsWith("https://prakash2001.000webhostapp.com")) {
-            var res=Uri.parse(request.url);
-            // http.get(Uri.parse(request.url)).then((value) => {
-            //   //  res = value.body,
+      body: SizedBox(),
+      // _dstReached==0?
+      // WebView(
+      //   javascriptMode: JavascriptMode.unrestricted,
+      //   initialUrl: urlForAuth,
+        // onWebViewCreated:(controller) async {
+        //   this.controller = controller;
+        // },
+      //   onPageStarted: (url){
+      //     print("web: $url");
+      //   },
+      //   onWebResourceError: (error){
+      //     print("Webview error: $error");
+      //   },
+      //   navigationDelegate: (NavigationRequest request) async {
+      //     // print(request.runtimeType);
+      //     print("Herereere: ");
+      //     var url1 = await controller.currentUrl();
+      //     // print(url1);
+      //     // var a = await get(Uri.parse("${controller.currentUrl()}"));
+      //     // print(a.body);
+          // if (request.url.startsWith("https://prakash2001.000webhostapp.com")) {
+          //   var res=Uri.parse(request.url);
+          //   Map<String, String> params = res.queryParameters;
+          //   code = await res.queryParameters['code'];
+          //   await call();
+          //   print("reached");
+          //   setState(() {
+          //       _dstReached = 1;
+          //   });
+          //   return NavigationDecision.prevent;
+          // }
 
-            //   print(jsonDecode(jsonDecode(value.body)['code'])),
-            // });
-            Map<String, String> params = res.queryParameters;
-            // var k = jsonEncode(params);
-            code = await res.queryParameters['code'];
-            // print(code);
-            await call();
-            // await tokenUrl();
-            // print(k);
-            print("reached");
-            setState(() {
-                _dstReached = 1;
-            });
-            // do not navigate
-            // controller.goBack();
-            return NavigationDecision.prevent;
-          }
-
-            // return NavigationDecision.prevent;
-          return NavigationDecision.navigate;
-        }
-      ):
-      SizedBox(),
-
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: (){
-      //     controller.loadUrl("https://www.youtube.com");
+      //     return NavigationDecision.navigate;
       //   }
-      // ),
+      // ):
+      // SizedBox(),
     );
   }
 }
