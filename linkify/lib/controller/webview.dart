@@ -11,7 +11,7 @@ class WebContainer extends StatefulWidget {
   @override
   WebContainerState createState() => WebContainerState();
 }
-var urlForAuth = "https://accounts.spotify.com/authorize?client_id=80c5fa373a4f4ef793721969b1e25fac&response_type=code&redirect_uri=https://prakash2001.000webhostapp.com/start&show_dialog=true&scope=user-read-private+user-read-email+user-modify-playback-state+user-read-playback-position+user-library-read+streaming+user-read-playback-state+user-read-recently-played+playlist-read-private";
+var urlForAuth = "https://accounts.spotify.com/authorize?client_id=80c5fa373a4f4ef793721969b1e25fac&response_type=code&redirect_uri=https://prakash2001.000webhostapp.com/start&show_dialog=true&scope=user-read-private+user-read-email+user-top-read+user-modify-playback-state+user-read-playback-position+user-library-read+streaming+user-read-playback-state+user-read-recently-played+playlist-read-private";
 var clientId = "80c5fa373a4f4ef793721969b1e25fac";
 var clientSecret = "a58469d7127d4690ab1dcb4f706c0dbe";
 // var redirect_uri1 = "https://localhost:8888/callback";
@@ -129,7 +129,7 @@ class WebContainerState extends State<WebContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Simple Example')),
+      // appBar: AppBar(title: const Text('Flutter Simple Example')),
       // body: WebViewWidget(controller: controller),
       body: 
       _dstReached==0?MyWebView(controller):

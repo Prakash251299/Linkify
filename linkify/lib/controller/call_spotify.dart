@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:linkify/controller/read_write.dart';
+import 'package:linkify/controller/FetchFeatures.dart';
 
 
 String clientId = "80c5fa373a4f4ef793721969b1e25fac";
@@ -17,6 +18,7 @@ class CallSpotify extends StatelessWidget {
   ReadWrite _readWrite = ReadWrite();
   String refreshToken="";
   String accessToken="";
+  FetchFeatures s = FetchFeatures();
 
 
   // import 'dart:convert';
@@ -178,17 +180,79 @@ void handleAuthorizationResponse(http.Response response) {
     //     }
     // );
       // res = await get(Uri.parse('https://api.spotify.com/v1/me?access_token=$accessToken'));
-      res = await get(Uri.parse('https://api.spotify.com/v1/recommendations?access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/recommendations/available-genre-seeds?access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/browse/categories?access_token=$accessToken'));
+      var userForSearch = "kelly";
+      // res = await get(Uri.parse('https://api.spotify.com/v1/users/$userForSearch?access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&access_token=$accessToken'));
+      var lim = 20;
+      var songName = "mahiye jina sona";
+      // res = await get(Uri.parse('https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=album&limit=$lim&access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/search?q=$songName&type=album&limit=$lim&access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/me/player/play&access_token=$accessToken'));
+
+      // For getting current user's playlists
+      // res = await get(Uri.parse('https://api.spotify.com/v1/me/playlists?offset=0&limit=$lim&access_token=$accessToken'));
+
+      /*  */
+      // res = await get(Uri.parse('https://api.spotify.com/v1/browse/featured-playlists?offset=0&limit=$lim&access_token=$accessToken'));
+
+
+      /* Not much known about this api response */
+      // res = await get(Uri.parse('https://api.spotify.com/v1/browse/new-releases?offset=0&limit=20&locale=india&access_token=$accessToken'));
+
+      /* Getting user's top songs */
+      // res = await get(Uri.parse('https://api.spotify.com/v1/me/top/track?offset=0&limit=$lim&access_token=$accessToken'));
+
+      /* Getting user's top artists */
+      res = await get(Uri.parse('https://api.spotify.com/v1/me/top/artists?offset=0&limit=$lim&access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/recommendations?market=IN&seed_artists=0oOet2f43PA68X5RxKobEy,0oOet2f43PA68X5RxKobEy&access_token=$accessToken'));
+
+      /* This can be used for making my own song recommendations for a song */
+      // Just give 5 previously played songs on basic of that this will fetch songs which will be played next {for initial songs it would be directly}
+      // res = await get(Uri.parse('https://api.spotify.com/v1/recommendations?market=IN&seed_tracks=5PUXKVVVQ74C3gl5vKy9Li%2C2PonaFfmtrK4B252AQaa2H%2C6N4Hz7OhMhCf6oa7yVGbfQ&access_token=$accessToken'));
+      // res = await get(Uri.parse('https://api.spotify.com/v1/recommendations?market=IN&seed_tracks=33jG8BikKNeC0PPDtxluYW&access_token=$accessToken'));
+
+      /* Getting list of albums for front page */
+      // res = await get(Uri.parse('https://api.spotify.com/v1/browse/categories?offset=0&limit=20&locale=en-GB%2Cen-US%3Bq%3D0.9%2Cen%3Bq%3D0.8&access_token=$accessToken'));
+
+      // res = await get(Uri.parse('https://api.spotify.com/v1/albums/0JQ5DAudkNjCgYMM0TZXDw?access_token=$accessToken'));
+      res = await get(Uri.parse('https://api.spotify.com/v1/search?q=chart&type=album&offset=0&limit=20&access_token=$accessToken'));
+
     // data = await jsonDecode(res.body);
     if(res.statusCode==200){
       data = jsonDecode(res.body);
       
       print(data);
+
+      /* Get recommendations based on genre or artist */
+      // await s.recommendedAlbums(data,lim);
+
+      /* Get album data */
+      await s.getAlbumData(data, lim);
+
+      /* Get User's favourite artists */
+      // await s.getArtists(data,lim);
+
+      /* Get featured playlists */
+      // await s.getPlaylists(data,lim);
+
+      /* Song search */
+      // await s.searchSongs(data,lim);
+      // await s.searchSongs(data,lim);
       print("correct");
     }else{
       print(res.statusCode);
       if(res.statusCode==401) {
-        await getNewAccessToken();
+        print(jsonDecode(res.body)['error']['message']);
+        if(jsonDecode(res.body)['error']['message']=="The access token expired"){
+          await getNewAccessToken();
+          await getUserProfile();
+        }
+        if(jsonDecode(res.body)['error']['message']=="No token provided"){
+          print("add '?' sign in place of '&' sign before access_token");
+        }
+        // print(jsonDecode(res.body));
       }
       if(res.statusCode==400){
         print("api has some fault {bad api request}");
