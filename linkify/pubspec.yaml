@@ -64,6 +64,17 @@ dependencies:
   # flutter_js: ^0.8.0
   # flutter_inappwebview: ^6.0.0
 
+
+  # For uis
+  cached_network_image: ^3.2.0
+  flutter_bloc: ^8.0.1
+  line_icons: ^2.0.1
+  assets_audio_player: ^3.0.5
+  provider: ^6.0.2
+  hive_flutter: ^1.1.0
+  marquee: ^2.2.3
+  spotify_sdk: ^2.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -102,17 +113,15 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Proxima
+      fonts:
+        - asset: fonts/Proxima-Nova-SBold.ttf
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
+    - family: Proxima Bold
+      fonts:
+        - asset: fonts/Proxima-Nova-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
