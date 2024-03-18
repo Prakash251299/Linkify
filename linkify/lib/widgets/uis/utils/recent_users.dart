@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:linkify/controller/play_spotify_song.dart';
 import 'package:linkify/model/album.dart';
+import 'package:linkify/widgets/album_view.dart';
 import 'package:marquee/marquee.dart';
 import '../controllers/main_controller.dart';
 import '../methods/get_greeting.dart';
@@ -45,37 +46,37 @@ class _RecentUsersState extends State<RecentUsers> {
   PlaySpotifySong _playSpotifySong = PlaySpotifySong();
 
 
-  List<String> s = [];
-  Future<void> fun()async{
-    await getCategories();
-  }
-  void initState(){
-    // fun();
-    super.initState();
-  }
+  // List<String> s = [];
+  // Future<void> fun()async{
+  //   await getCategories();
+  // }
+  // void initState(){
+  //   // fun();
+  //   super.initState();
+  // }
 
-  Future<List<String>> getCategories()async{
-    int lim = 6;
-    List<Categories> c=[];
-    s=[];
-    /* Fectch categories from spotify using api */
-    var res = await get(Uri.parse("")); 
-    var data = jsonDecode(res.body);
-    c.add(data);
-    for(int i=0;i<lim;i++){
-      // s.insert(i%6, data['items'][i]['name']);
-      // s.add(data['items'][i]['name']);
-      s.insert(i%6, data['items'][i]['name']);
-    }
-    return s;
-  }
+  // Future<List<String>> getCategories()async{
+  //   int lim = 6;
+  //   List<Categories> c=[];
+  //   s=[];
+  //   /* Fectch categories from spotify using api */
+  //   var res = await get(Uri.parse("")); 
+  //   var data = jsonDecode(res.body);
+  //   c.add(data);
+  //   for(int i=0;i<lim;i++){
+  //     // s.insert(i%6, data['items'][i]['name']);
+  //     // s.add(data['items'][i]['name']);
+  //     s.insert(i%6, data['items'][i]['name']);
+  //   }
+  //   return s;
+  // }
   var _useRtlText = false;
 
   @override
   Widget build(BuildContext context) {
-    final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
+    var devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    final greet = greeting();
+    var greet = greeting();
     // print(widget.m?['image']);
     // s = getCategories();
     return Stack(
@@ -95,22 +96,23 @@ class _RecentUsersState extends State<RecentUsers> {
         //       .round(),
         //   alignment: Alignment.topLeft,
         // ),
+
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   greet,
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: 5),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -123,20 +125,9 @@ class _RecentUsersState extends State<RecentUsers> {
                     for(int i=0;i<6;i++)...{
                     InkWell(
                               onTap: () {
-                                _playSpotifySong.playTrack(widget.m?['name']?[i]);
-                                // print("Clicked");
-                                // Navigator.push(
-                                //     context,
-                                //     CupertinoPageRoute(
-                                //         builder: (context) => 
-                                //         Text("${widget.m?['name']}"),
-                                //         // Text(s[i]),
-                                //         // SizedBox()
-                                //         // ArtistProfile(
-                                //               // username: user.username!,
-                                //               // con: con,
-                                //             // )
-                                //             ));
+                                // _playSpotifySong.playTrack(widget.m?['name']?[i]);
+                                // AlbumView();
+                                Navigator.of(context).push(MaterialPageRoute(builder:(context)=> AlbumView(widget.m?['name']?[i],widget.m?['id']?[i],widget.m?['image']?[i])));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
