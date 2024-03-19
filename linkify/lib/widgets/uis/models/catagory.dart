@@ -15,7 +15,9 @@ class TagsModel {
         color: Color(json['color']),
       );
 }
-
+final color = [
+  
+];
 final tags = [
   {
     "tag": "jazz",

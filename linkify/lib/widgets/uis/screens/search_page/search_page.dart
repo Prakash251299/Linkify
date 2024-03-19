@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:linkify/controller/static_store.dart';
 import '../../controllers/main_controller.dart';
 import '../../methods/string_methods.dart';
 import '../../models/catagory.dart';
@@ -64,6 +65,7 @@ class SearchPage extends StatelessWidget {
                 ),
                 GridView.builder(
                   itemCount: allTags.sublist(0, 4).length,
+                  // itemCount: 5,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,8 +75,13 @@ class SearchPage extends StatelessWidget {
                     childAspectRatio: 16 / 8,
                   ),
                   itemBuilder: (context, i) {
-                    // return TagWidget(tag: allTags.sublist(0, 4)[i], con: con);
-                    return SizedBox();
+                    return TagWidget(  //////////////////////////////
+                      tag: allTags.sublist(0, 4)[i], 
+                      genreName:"hello"
+                      // genreName: "${StaticStore.userGenre}"
+                      // StaticStore.userGenre[i]
+                    );
+                    // return SizedBox();
                   },
                 ),
                 Padding(
@@ -113,11 +120,14 @@ class SearchPage extends StatelessWidget {
 
 class TagWidget extends StatelessWidget {
   final TagsModel tag;
-  final MainController con;
-  const TagWidget({
+  String genreName = "";
+  // final MainController con;
+  TagWidget({
     Key? key,
     required this.tag,
-    required this.con,
+    required this.genreName,
+
+    // required this.con,
   }) : super(key: key);
 
   @override
@@ -127,10 +137,13 @@ class TagWidget extends StatelessWidget {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => GenrePage(
-                      tag: tag,
-                      con: con,
-                    )));
+                builder: (context) => 
+                SizedBox()
+                // GenrePage(
+                      // tag: tag,
+                      // con: con,
+                    // )
+                    ));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
@@ -188,11 +201,15 @@ class TagWidget extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                child: Text(tag.tag.toTitleCase(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: 
+                Text("$genreName"),
+                
+                // Text(tag.tag.toTitleCase(),style: TextStyle(color:Colors.white,fontWeight: FontWeight.w900),),
+                    // Theme.of(context)
+                    //     .textTheme
+                    //     .bodyText1!
+                    //     .copyWith(fontSize: 20, fontWeight: FontWeight.bold)
+                // ),
               ),
             ],
           ),

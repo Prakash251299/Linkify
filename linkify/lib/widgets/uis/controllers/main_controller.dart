@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:linkify/controller/user_genre.dart';
 import '../models/song_model.dart';
 
 class MainController extends ChangeNotifier {

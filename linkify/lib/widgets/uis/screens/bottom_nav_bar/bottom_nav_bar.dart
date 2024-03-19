@@ -5,6 +5,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/user_genre.dart';
 import 'package:linkify/model/carousel.dart';
 import 'package:linkify/model/liked_songs.dart';
 import 'package:linkify/widgets/uis/api/url.dart';
@@ -37,18 +39,27 @@ class _AppState extends State<App> {
   PersistentTabController controller = PersistentTabController(initialIndex: 0);
   @override
   void initState() {
+    print(StaticStore.userGenre);
     super.initState();
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
+          // onPressed: (_){},
           icon: const Icon(Icons.home),
           inactiveIcon: const Icon(LineIcons.home),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.search),
+          // onPressed: (_) {
+            // fetchUserGenre();
+            // return;
+          // },
+          icon: IconButton(icon: Icon(CupertinoIcons.search),onPressed: ()async{
+            await fetchUserGenre();
+          },),
+          // icon: const Icon(CupertinoIcons.search),
           inactiveIcon: const Icon(CupertinoIcons.search),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),
@@ -61,7 +72,7 @@ class _AppState extends State<App> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeScreen(), SearchPage(), Library()];
+    return [HomeScreen(), const SearchPage(), Library()];
   }
 
   CallApi _callApi = CallApi();
@@ -91,32 +102,37 @@ class _AppState extends State<App> {
         create: (context) => MainController()..init(),
         // create: (context) => MainController()..myfun(),
         child: Consumer<MainController>(builder: (context,con, child) {
+          
           return PersistentTabView(
             context,
             controller: controller,
+            
             playWidget: 
             Material(
-              child: PlayWidget(
-                  con: con,
-                  onTap: () {
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   isScrollControlled: true,
-                    //   isDismissible: false,
-                    //   builder: (context) => 
-                    //   SizedBox(),
-                    //   // CurrentPlayingSong(
-                    //     // con: con,
-                    //   // ),
-                    // );
-                    // Navigator.push(
-                    //     context,
-                    //     CupertinoPageRoute(
-                    //       builder: (context) => CurrentPlayer(
-                    //         con: con,
-                    //       ),
-                    // ));
-                  }),
+              child: 
+              SizedBox(),
+              // PlayWidget(
+              //     con: con,
+              //     onTap: () {
+              //       print("li");
+              //       // showModalBottomSheet(
+              //       //   context: context,
+              //       //   isScrollControlled: true,
+              //       //   isDismissible: false,
+              //       //   builder: (context) => 
+              //       //   SizedBox(),
+              //       //   // CurrentPlayingSong(
+              //       //     // con: con,
+              //       //   // ),
+              //       // );
+              //       // Navigator.push(
+              //       //     context,
+              //       //     CupertinoPageRoute(
+              //       //       builder: (context) => CurrentPlayer(
+              //       //         con: con,
+              //       //       ),
+              //       // ));
+              //     }),
             ),
             screens: _buildScreens(),
             items: _navBarsItems(),

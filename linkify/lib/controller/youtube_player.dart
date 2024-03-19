@@ -6,9 +6,10 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 
 class YoutubeSongPlayer{
-  AudioPlayer player = AudioPlayer();
+  static AudioPlayer player = AudioPlayer();
   Future<void> youtubePlay(String songName) async {
     if(songName!=""){
+      songName+=" lyrics";
         try{
           final yt = YoutubeExplode();
           // final querySuggestions = (await yt.search.getQuerySuggestions(songName)).first;
@@ -35,6 +36,16 @@ class YoutubeSongPlayer{
         }
       }
   }
+  Future<void> youtubePause() async {
+    player.pause();
+  }
+  Future<void> youtubeStop() async {
+    player.stop();
+  }
+  Future<void> youtubeResume() async {
+    player.play();
+  }
+
 }
 
 

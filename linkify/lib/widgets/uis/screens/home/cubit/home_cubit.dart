@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
   final repo = GetHomePage();
   HomeCubit() : super(HomeState.initial());
 
-  void getAlbums() async {
+  Future<void> getAlbums() async {
     // print("ishu");
     // return;
     try {

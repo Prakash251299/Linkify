@@ -18,6 +18,8 @@ class GetHomePage {
     List<String>id =[];
     List<String>name=[];
     List<String>imgUrl=[];
+    List<String>bigImgUrl=[];
+
     ReadWrite _readWrite = ReadWrite();
     while(true){
       var accessToken = await _readWrite.getAccessToken();
@@ -29,7 +31,8 @@ class GetHomePage {
         for(int i=0;i<data['items'].length;i++){
           name.add(data['items'][i]['track']['album']['name']);
           id.add(data['items'][i]['track']['album']['id']);
-          imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
+          // imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
+          imgUrl.add(data['items'][i]['track']['album']['images'][0]['url']);
         }
         // print(imgUrl);
 

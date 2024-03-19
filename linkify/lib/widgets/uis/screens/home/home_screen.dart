@@ -24,21 +24,21 @@ class HomeScreen extends StatelessWidget {
       // child: BlocBuilder(
         builder: (context, state) {
           // print(state.likedTrack?['name']);
-          return
+          // return
           //  SizedBox();
           // state.songs.sublist(0, 10);
           // return SizedBox();
         // }));
-          // if (state.status == LoadPage.loading) {
-            // return 
-            // Scaffold(
-            //   body: Center(
-            //     child: CircularProgressIndicator(),
-            //   ),
-            // );
-          // }
-          // if (state.status == LoadPage.loaded) {
-            // return 
+          if (state.status == LoadPage.loading) {
+            return 
+            Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (state.status == LoadPage.loaded) {
+            return 
             Scaffold(
               body: ListView(
                 children: [
@@ -101,7 +101,10 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             );
-            }));
+          }
+          return SizedBox();
+          }));
+            // }));
           // }
           // if (state.status == LoadPage.error) {
           //   return const Scaffold(
