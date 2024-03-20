@@ -69,7 +69,7 @@ class BottomSheetWidget extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Listen on Musive",
+                      Text("Listen on Linkify",
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),

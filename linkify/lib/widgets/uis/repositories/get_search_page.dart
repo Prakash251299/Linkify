@@ -1,15 +1,23 @@
+import 'dart:collection';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+// import 'dart:math';
+
 import 'package:http/http.dart';
 import 'package:linkify/controller/accesstoken_error.dart';
+// import 'package:linkify/controller/accesstoken_error.dart';
 import 'package:linkify/controller/read_write.dart';
-import 'dart:collection';
-
 import 'package:linkify/controller/static_store.dart';
+// import 'package:linkify/widgets/uis/models/album_model.dart';
+// import '../api/url.dart';
+// import '../methods/get_response.dart';
+// import '../models/song_model.dart';
+// import '../models/user.dart';
 
-
-Future<void> fetchUserGenre() async {
+class GetSearchPage {
+  
+  Future<List<String>> fetchUserGenre() async {
   print("fetching user's genre");
+  List<String>s=[];
     // print("$songId");
     // List<String>? name = [];
     // List<String>? id = [];
@@ -54,10 +62,12 @@ Future<void> fetchUserGenre() async {
         
         // StaticStore.userGenre.add(m);
         // print(StaticStore.userGenre[0].entries.elementAt(5).key);
+        
         for(var k in m.keys){
+          s.add(k);
           StaticStore.userGenre.add(k);
         }
-        print(StaticStore.userGenre);
+        // print(StaticStore.userGenre);
 
         // print(StaticStore.userGenre[5].entries.elementAt(4).key);
         // for (var k in m.keys) {
@@ -95,12 +105,12 @@ Future<void> fetchUserGenre() async {
         // print();
         // m.addEntries({'image':imgUrl}.entries);
         // print(m1['name']);
-        return;
+        return s;
       } else {
         AccessError e = AccessError();
         if(await e.handleError(res)!=1){
           print("Error is not resolved");
-          return;
+          return s;
         }
       }
     }
@@ -115,4 +125,79 @@ Future<void> sort(var m) async {
       .fromIterable(sortedKeys, key: (k) => k, value: (k) => m[k]);
   // print(sortedMap);
   return;
+}
+
+
+
+  // Future<Map<String,List<dynamic>>?> getName() async {
+  // Future<Map<String,List<dynamic>>?> getLikedSongData() async {
+  //   Map<String,List<dynamic>>? m={};
+  //   List<String>id =[];
+  //   List<String>name=[];
+  //   List<String>imgUrl=[];
+  //   List<String>bigImgUrl=[];
+
+  //   ReadWrite _readWrite = ReadWrite();
+  //   while(true){
+  //     var accessToken = await _readWrite.getAccessToken();
+  //     // print("Hhhhh");
+  //     var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
+  //     print(res.statusCode);
+  //     if (res.statusCode == 200) {
+  //       var data = jsonDecode(res.body);
+  //       for(int i=0;i<data['items'].length;i++){
+  //         name.add(data['items'][i]['track']['album']['name']);
+  //         id.add(data['items'][i]['track']['album']['id']);
+  //         // imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
+  //         imgUrl.add(data['items'][i]['track']['album']['images'][0]['url']);
+  //       }
+  //       // print(imgUrl);
+
+  //       m.addEntries({'id':id}.entries);
+  //       m.addEntries({'name':name}.entries);
+  //       m.addEntries({'image':imgUrl}.entries);
+  //       // print(m['id']);
+  //       return m;
+  //     }else{
+  //       AccessError e = AccessError();
+  //       await e.handleError(res);
+  //     }
+  //   }
+
+  // }
+
+
+  // Future<Map<String,List<dynamic>>?> getLikedSongData() async {
+  //   Map<String,List<dynamic>>? m={};
+  //   List<String>id =[];
+  //   List<String>name=[];
+  //   List<String>imgUrl=[];
+  //   ReadWrite _readWrite = ReadWrite();
+  //   while(true){
+  //     var accessToken = await _readWrite.getAccessToken();
+  //     // print("Hhhhh");
+  //     var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
+  //     print(res.statusCode);
+  //     if (res.statusCode == 200) {
+  //       var data = jsonDecode(res.body);
+  //       for(int i=0;i<data['items'].length;i++){
+  //         name.add(data['items'][i]['track']['name']);
+  //         id.add(data['items'][i]['track']['id']);
+  //         imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
+  //       }
+  //       // print(imgUrl);
+
+  //       m.addEntries({'id':id}.entries);
+  //       m.addEntries({'name':name}.entries);
+  //       m.addEntries({'image':imgUrl}.entries);
+  //       // print(m['id']);
+  //       return m;
+  //     }else{
+  //       AccessError e = AccessError();
+  //       await e.handleError(res);
+  //     }
+  //   }
+
+  // }
+
 }

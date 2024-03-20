@@ -4,21 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:line_icons/line_icons.dart';
-import '../../controllers/main_controller.dart';
+// import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
-import '../artist_profile/artist_profile.dart';
+// import '../artist_profile/artist_profile.dart';
 import '../../utils/botttom_sheet_widget.dart';
 import '../../utils/loading.dart';
-import '../../utils/recent_search.dart';
+// import '../../utils/recent_search.dart';
 
 import 'cubit/search_results_cubit.dart';
 
 class SearchResultsPage extends StatelessWidget {
-  final MainController con;
-  const SearchResultsPage({
+  // final MainController con;
+  SearchResultsPage({
     Key? key,
-    required this.con,
+    // required this.con,
   }) : super(key: key);
+
+  SearchResultsCubit _searchResultsCubit = SearchResultsCubit();
+  String artists = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,53 +31,79 @@ class SearchResultsPage extends StatelessWidget {
         create: (context) => SearchResultsCubit(),
         child: BlocBuilder<SearchResultsCubit, SearchResultsState>(
             builder: (context, state) {
-          return Scaffold(
+              print("called again");
+              if(state.songs.length!=0){
+                // print(state.songs[0].artists.toString());
+                // artists = state.songs[i].artists.toString().replaceAll('[', "");
+                // artists = artists.replaceAll(']', "");
+                print(artists);
+                // state.replaceAll(RegExp('['), ''),
+                // if(state.songs[0].artists.length>=2){
+                //   artists = state.songs[0].artists[0]+state.songs[0].artists[1];
+                // }else{
+                //   artists = state.songs[0].artists[0];
+                // }
+                // print(artists);
+              }
+          return 
+          // SizedBox();
+          Scaffold(
               appBar: CustomAppBar(
                 onPressed: () {
-                  BlocProvider.of<SearchResultsCubit>(context).isSongToggle();
+                  // BlocProvider.of<SearchResultsCubit>(context).isSongToggle();
                 },
-                onChanged: (String? s) {
+                onChanged: (String? s) async {
+                  // print(s);
                   if (s == '' || s == null) {
-                    BlocProvider.of<SearchResultsCubit>(context).isNullToggle();
+                    // BlocProvider.of<SearchResultsCubit>(context).isNullToggle();
                   } else {
-                    if (state.isNull) {
-                      BlocProvider.of<SearchResultsCubit>(context)
-                          .isNullToggle();
-                    }
+                    // if (state.isNull) {
+                    //   BlocProvider.of<SearchResultsCubit>(context)
+                    //       .isNullToggle();
+                    // }
+
                     BlocProvider.of<SearchResultsCubit>(context).searchSongs(s);
+                    // sea
+                    // await _searchResultsCubit.searchSongs(s);
                   }
                 },
-                isSong: state.isSong,
+                // isSong: state.isSong,
               ),
               body: Builder(
                 builder: (context) {
                   if (state.status == LoadPage.loading) {
+                    print("Loading");
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                   if (state.status == LoadPage.loaded) {
-                    if (state.isNull) {
-                      return RecentSearch(con: con);
-                    } else if (state.isSong) {
-                      return ListView.builder(
+                    // if (state.isNull) {
+                    //   return RecentSearch();
+                    // } else if (state.isSong) {
+                      print("Loaded");
+                      return 
+                      // SizedBox();
+                      ListView.builder(
                           itemCount: state.songs.length,
                           itemBuilder: (context, i) {
-                            bool isPlaying = con.player.getCurrentAudioTitle ==
-                                state.songs[i].songname;
+                            artists = state.songs[i].artists.toString().replaceAll('[', "");
+                            artists = artists.replaceAll(']', "");
+                            // bool isPlaying = con.player.getCurrentAudioTitle ==
+                            //     state.songs[i].songname;
                             return InkWell(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
-                                BlocProvider.of<SearchResultsCubit>(context)
-                                    .playSongs(con, i);
+                                // BlocProvider.of<SearchResultsCubit>(context)
+                                    // .playSongs(con, i);
                                 var box = Hive.box('Recentsearch');
-                                box.put(state.songs[i].songname, {
-                                  "songname": state.songs[i].songname,
-                                  "fullname": state.songs[i].name,
-                                  "username": state.songs[i].userid,
-                                  "cover": state.songs[i].coverImageUrl,
-                                  "track": state.songs[i].trackid,
-                                  "id": state.songs[i].songid,
+                                box.put(state.songs[i].name, {
+                                  "name": state.songs[i].name,
+                                  // "fullname": state.songs[i].name,
+                                  // "username": state.songs[i].userid,
+                                  "image": state.songs[i].imgUrl,
+                                  // "track": state.songs[i].trackid,
+                                  "id": state.songs[i].id,
                                   "type": "SONG"
                                 });
                               },
@@ -93,7 +122,7 @@ class SearchResultsPage extends StatelessWidget {
                                                 BorderRadius.circular(3),
                                             child: CachedNetworkImage(
                                               imageUrl:
-                                                  state.songs[i].coverImageUrl!,
+                                                  state.songs[i].imgUrl!,
                                               width: 50,
                                               height: 50,
                                               memCacheHeight: (50 *
@@ -119,23 +148,28 @@ class SearchResultsPage extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    state.songs[i].songname!,
+                                                    state.songs[i].name!,
                                                     maxLines: 1,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyText1!
                                                         .copyWith(
-                                                            color: isPlaying
-                                                                ? Colors.lightGreenAccent[
-                                                                    700]
-                                                                : Colors.white,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis),
+                                                            color: 
+                                                            // isPlaying ?
+                                                             Colors.lightGreenAccent[700]
+                                                                // : Colors.white,
+                                                            // overflow:
+                                                            //     TextOverflow
+                                                            //         .ellipsis
+                                                                    ),
                                                   ),
                                                   const SizedBox(height: 5),
                                                   Text(
-                                                    state.songs[i].duration!,
+                                                    // state.songs[i].duration!,
+                                                    // s.replaceAll(new RegExp(r'[^\w\s]+'),'')
+                                                    // state.songs[i].artists.toString(),
+                                                    artists,
+                                                    // "3:26",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyText1!
@@ -161,9 +195,12 @@ class SearchResultsPage extends StatelessWidget {
                                             backgroundColor: Colors.black38,
                                             context: context,
                                             builder: (context) {
-                                              return BottomSheetWidget(
-                                                  // con: con,
-                                                  // song: state.songs[i]
+                                              return 
+                                              // SizedBox();
+                                              /* For shoowing search result song name with options */
+                                              BottomSheetWidget( 
+                                              //     // con: con,
+                                              //     // song: state.songs[i]
                                                   );
                                             });
                                       },
@@ -177,93 +214,96 @@ class SearchResultsPage extends StatelessWidget {
                               ),
                             );
                           });
-                    } else {
-                      return ListView.builder(
-                          itemCount: state.users.length,
-                          itemBuilder: (context, i) {
-                            return InkWell(
-                              onTap: () {
-                                FocusScope.of(context).unfocus();
-                                var box = Hive.box('Recentsearch');
-                                box.put(state.users[i].name, {
-                                  "songname": state.users[i].name,
-                                  "fullname": state.users[i].username,
-                                  "username": '',
-                                  "cover": state.users[i].avatar,
-                                  "track": '',
-                                  "id": '',
-                                  "type": "ARTIST"
-                                });
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => ArtistProfile(
-                                            username: state.users[i].username!,
-                                            con: con)));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 12.0, bottom: 12.0, top: 12.0),
-                                child: Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(3),
-                                      child: CachedNetworkImage(
-                                        imageUrl: state.users[i].avatar!,
-                                        width: 50,
-                                        height: 50,
-                                        memCacheHeight:
-                                            (70 * devicePexelRatio).round(),
-                                        memCacheWidth:
-                                            (70 * devicePexelRatio).round(),
-                                        maxHeightDiskCache:
-                                            (70 * devicePexelRatio).round(),
-                                        maxWidthDiskCache:
-                                            (70 * devicePexelRatio).round(),
-                                        progressIndicatorBuilder:
-                                            (context, url, l) =>
-                                                const LoadingImage(),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              state.users[i].name!,
-                                              maxLines: 1,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(
-                                                      color: Colors.white,
-                                                      overflow: TextOverflow
-                                                          .ellipsis),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              state.users[i].username!,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(
-                                                    color: Colors.grey,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    }
+                    // } else {
+                    //   return ListView.builder(
+                    //       itemCount: state.users.length,
+                    //       itemBuilder: (context, i) {
+                    //         return InkWell(
+                    //           onTap: () {
+                    //             FocusScope.of(context).unfocus();
+                    //             var box = Hive.box('Recentsearch');
+                    //             box.put(state.users[i].name, {
+                    //               "songname": state.users[i].name,
+                    //               "fullname": state.users[i].username,
+                    //               "username": '',
+                    //               "cover": state.users[i].avatar,
+                    //               "track": '',
+                    //               "id": '',
+                    //               "type": "ARTIST"
+                    //             });
+                    //             Navigator.push(
+                    //                 context,
+                    //                 CupertinoPageRoute(
+                    //                     builder: (context) => 
+                    //                     SizedBox(),
+                    //                     // ArtistProfile(
+                    //                     //     username: state.users[i].username!,
+                    //                     //     con: con)
+                    //                     ));
+                    //           },
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.only(
+                    //                 left: 12.0, bottom: 12.0, top: 12.0),
+                    //             child: Row(
+                    //               children: [
+                    //                 ClipRRect(
+                    //                   borderRadius: BorderRadius.circular(3),
+                    //                   child: CachedNetworkImage(
+                    //                     imageUrl: state.users[i].avatar!,
+                    //                     width: 50,
+                    //                     height: 50,
+                    //                     memCacheHeight:
+                    //                         (70 * devicePexelRatio).round(),
+                    //                     memCacheWidth:
+                    //                         (70 * devicePexelRatio).round(),
+                    //                     maxHeightDiskCache:
+                    //                         (70 * devicePexelRatio).round(),
+                    //                     maxWidthDiskCache:
+                    //                         (70 * devicePexelRatio).round(),
+                    //                     progressIndicatorBuilder:
+                    //                         (context, url, l) =>
+                    //                             const LoadingImage(),
+                    //                     fit: BoxFit.cover,
+                    //                   ),
+                    //                 ),
+                    //                 Flexible(
+                    //                   child: Padding(
+                    //                     padding: const EdgeInsets.all(8.0),
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment.start,
+                    //                       children: [
+                    //                         Text(
+                    //                           state.users[i].name!,
+                    //                           maxLines: 1,
+                    //                           style: Theme.of(context)
+                    //                               .textTheme
+                    //                               .bodyText1!
+                    //                               .copyWith(
+                    //                                   color: Colors.white,
+                    //                                   overflow: TextOverflow
+                    //                                       .ellipsis),
+                    //                         ),
+                    //                         const SizedBox(height: 5),
+                    //                         Text(
+                    //                           state.users[i].username!,
+                    //                           style: Theme.of(context)
+                    //                               .textTheme
+                    //                               .bodyText1!
+                    //                               .copyWith(
+                    //                                 color: Colors.grey,
+                    //                               ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         );
+                    //       });
+                    // }
                   }
                   if (state.status == LoadPage.error) {
                     return const Center(
@@ -283,12 +323,12 @@ class SearchResultsPage extends StatelessWidget {
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(String? s) onChanged;
-  final bool isSong;
+  // final bool isSong;
   final void Function() onPressed;
   const CustomAppBar({
     Key? key,
     required this.onChanged,
-    required this.isSong,
+    // required this.isSong,
     required this.onPressed,
   }) : super(key: key);
 
@@ -332,15 +372,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: Colors.grey.shade800,
                 child: IconButton(
                   splashRadius: 20,
-                  icon: isSong
-                      ? const Icon(
+                  icon: 
+                  // isSong ? 
+                      const Icon(
                           LineIcons.music,
                           color: Colors.white,
-                        )
-                      : const Icon(
-                          LineIcons.user,
-                          color: Colors.white,
                         ),
+                      // : const Icon(
+                      //     LineIcons.user,
+                      //     color: Colors.white,
+                      //   ),
                   onPressed: onPressed,
                 ),
               ),

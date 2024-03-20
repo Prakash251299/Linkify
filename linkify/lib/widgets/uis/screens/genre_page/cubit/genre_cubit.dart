@@ -14,11 +14,11 @@ class GenreCubit extends Cubit<GenreState> {
   void init(String tag) async {
     try {
       emit(state.copyWith(status: LoadPage.loading));
-      var users = await repo.getUsers(tag);
+      // var users = await repo.getUsers(tag);
       var songs = await repo.getSongs(tag);
       emit(state.copyWith(
         status: LoadPage.loaded,
-        users: users,
+        // users: users,
         songs: songs,
       ));
     } catch (e) {

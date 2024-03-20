@@ -122,7 +122,7 @@ class GenrePage extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (_, i) {
                       bool isPlaying = con.player.getCurrentAudioTitle ==
-                          state.songs[i].songname;
+                          state.songs[i].name;
                       return InkWell(
                         onTap: () {
                           BlocProvider.of<GenreCubit>(context)
@@ -149,7 +149,7 @@ class GenrePage extends StatelessWidget {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(3),
                                       child: CachedNetworkImage(
-                                        imageUrl: state.songs[i].coverImageUrl!,
+                                        imageUrl: state.songs[i].imgUrl!,
                                         width: 50,
                                         height: 50,
                                         memCacheHeight:
@@ -174,7 +174,7 @@ class GenrePage extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              state.songs[i].songname!,
+                                              state.songs[i].name!,
                                               maxLines: 1,
                                               style: Theme.of(context)
                                                   .textTheme
@@ -189,7 +189,8 @@ class GenrePage extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              state.songs[i].duration!,
+                                              // state.songs[i].duration!,
+                                              "3:26",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1!

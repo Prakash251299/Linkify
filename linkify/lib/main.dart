@@ -9,6 +9,8 @@ import 'package:linkify/controller/webview.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/cloudSongPage.dart';
 import 'package:linkify/widgets/homeNav.dart';
+import 'package:linkify/widgets/uis/models/song_model.dart';
+import 'package:linkify/widgets/uis/repositories/get_search_results.dart';
 import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
 // import 'package:prac/controller/login.dart';
 // import 'package:prac/controller/song_data_contoller.dart';
@@ -72,7 +74,8 @@ class MyApp extends StatelessWidget {
 
   SongDataController c = SongDataController();
   LoginPage loginController = LoginPage();
-  YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
+  // YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
+  SearchRepository _searchRepository = SearchRepository();
 
 
 
@@ -199,6 +202,15 @@ class MyApp extends StatelessWidget {
               // yt.youtubePlay("Mahiye jinna sohna");
               if(await loginController.getLoginStatus()==1){
                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+                // List<SongModel>s = await _searchRepository.getSearchedSongOptions("heeriye");
+                // for(int i=0;i<s.length;i++){
+                //   print(s[i].name);
+                // }
+
+
+
+
+
 
                  print("Already logged in");
                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp()));
@@ -210,6 +222,14 @@ class MyApp extends StatelessWidget {
                     print("logged in");
 
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+                    // print("start");
+                    // List<SongModel> s = await _searchRepository.getSearchedSongOptions("heeriye");
+                    // print(s[0].name);
+                    // print("end");
+
+
+
+
 
                       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp())),
                   }

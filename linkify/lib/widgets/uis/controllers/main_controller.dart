@@ -157,13 +157,14 @@ class MainController extends ChangeNotifier {
   List<Audio> convertToAudio(List<SongModel> songs) {
     return [
       ...songs.map((audio) {
-        return Audio.network(audio.trackid!,
+        return Audio.network(
+          audio.id!,
             metas: Metas(
-              id: audio.songid,
-              title: audio.songname,
-              artist: audio.name,
-              album: audio.userid,
-              image: MetasImage.network(audio.coverImageUrl!),
+              id: audio.id,
+              title: audio.name,
+              // artist: audio.name,
+              // album: audio.userid,
+              image: MetasImage.network(audio.imgUrl!),
             ));
       }).toList()
     ];

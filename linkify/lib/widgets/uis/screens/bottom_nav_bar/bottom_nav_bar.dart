@@ -10,6 +10,7 @@ import 'package:linkify/controller/user_genre.dart';
 import 'package:linkify/model/carousel.dart';
 import 'package:linkify/model/liked_songs.dart';
 import 'package:linkify/widgets/uis/api/url.dart';
+import 'package:linkify/widgets/uis/repositories/get_search_results.dart';
 import 'package:linkify/widgets/uis/utils/bottom_nav_bar/models/nav-bar-padding.model.dart';
 import 'package:linkify/widgets/uis/utils/bottom_nav_bar/models/persisten-bottom-nav-item.widget.dart';
 import 'package:linkify/widgets/uis/utils/bottom_nav_bar/models/persistent-bottom-nav-bar-styles.widget.dart';
@@ -37,6 +38,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   PersistentTabController controller = PersistentTabController(initialIndex: 0);
+  SearchRepository _searchRepository = SearchRepository();
   @override
   void initState() {
     print(StaticStore.userGenre);
@@ -46,20 +48,12 @@ class _AppState extends State<App> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          // onPressed: (_){},
           icon: const Icon(Icons.home),
           inactiveIcon: const Icon(LineIcons.home),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
-          // onPressed: (_) {
-            // fetchUserGenre();
-            // return;
-          // },
-          icon: IconButton(icon: Icon(CupertinoIcons.search),onPressed: ()async{
-            await fetchUserGenre();
-          },),
-          // icon: const Icon(CupertinoIcons.search),
+          icon: const Icon(CupertinoIcons.search),
           inactiveIcon: const Icon(CupertinoIcons.search),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),

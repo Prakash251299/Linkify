@@ -9,7 +9,8 @@ class StaticStore{
     {},
     {}
   ];
-  static List<Map<String,int>> userGenre=[];
+  static List<String> userGenre=[];
+  // static List<Map<String,int>> userGenre=[];
   // static void setCarousel(){
   //   for(int i=0;i<carouselLength;i++){
   //     m1.add({});

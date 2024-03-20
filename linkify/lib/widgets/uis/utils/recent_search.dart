@@ -11,11 +11,11 @@ import 'loading.dart';
 import 'botttom_sheet_widget.dart';
 
 class RecentSearch extends StatelessWidget {
-  final MainController con;
+  // final MainController con;
 
   const RecentSearch({
     Key? key,
-    required this.con,
+    // required this.con,
   }) : super(key: key);
 
   @override
@@ -84,15 +84,18 @@ class RecentSearch extends StatelessWidget {
                       onTap: () {
                         FocusScope.of(context).unfocus();
                         if (info['type'] == 'SONG') {
-                          con.playSong(con.convertLocalSongToAudio(data), i);
+                          // con.playSong(con.convertLocalSongToAudio(data), i);
                         } else {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => ArtistProfile(
-                                        username: info['fullname'],
-                                        con: con,
-                                      )));
+                                  builder: (context) => 
+                                  SizedBox(),
+                                  // ArtistProfile(
+                                  //       // username: info['fullname'],
+                                  //       // con: con,
+                                  //     )
+                                  ));
                         }
                       },
                       leading: ClipRRect(

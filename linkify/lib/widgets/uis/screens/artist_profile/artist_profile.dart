@@ -57,7 +57,7 @@ class ArtistProfile extends StatelessWidget {
                     delegate: SliverChildBuilderDelegate(
                       (_, i) {
                         bool isPlaying = con.player.getCurrentAudioTitle ==
-                            state.songs[i].songname;
+                            state.songs[i].name;
                         return InkWell(
                           onTap: () {
                             BlocProvider.of<ArtistProfileCubit>(context)
@@ -85,7 +85,7 @@ class ArtistProfile extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(3),
                                         child: CachedNetworkImage(
                                           imageUrl:
-                                              state.songs[i].coverImageUrl!,
+                                              state.songs[i].imgUrl!,
                                           width: 50,
                                           height: 50,
                                           maxHeightDiskCache: 100,
@@ -112,7 +112,7 @@ class ArtistProfile extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                state.songs[i].songname!,
+                                                state.songs[i].name!,
                                                 maxLines: 1,
                                                 style: Theme.of(context)
                                                     .textTheme
@@ -127,7 +127,8 @@ class ArtistProfile extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 5),
                                               Text(
-                                                state.songs[i].duration!,
+                                                // state.songs[i].duration!,
+                                                "3:26",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!

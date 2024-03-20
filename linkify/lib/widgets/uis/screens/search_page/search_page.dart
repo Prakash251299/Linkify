@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/widgets/uis/models/loading_enum.dart';
+import 'package:linkify/widgets/uis/screens/search/cubit/search_cubit.dart';
 import '../../controllers/main_controller.dart';
 import '../../methods/string_methods.dart';
 import '../../models/catagory.dart';
@@ -19,7 +22,23 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final allTags = tags.map((e) => TagsModel.fromJson(e)).toList();
-    return Scaffold(
+    return 
+    
+    BlocProvider(
+      create: (context) => SearchCubit()..getGenre(),
+      // create:(_){},
+      child: BlocBuilder<SearchCubit, SearchState>(
+      // child: BlocBuilder(
+        builder: (context, state) {
+          if (state.status == LoadPage.loading) {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }else{
+          return
+    Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SafeArea(
@@ -46,10 +65,10 @@ class SearchPage extends StatelessWidget {
                     child: SizedBox(
                   height: 5,
                 )),
-                // SliverPersistentHeader(
-                  // pinned: true,
-                  // delegate: SliverSearchAppBar(con: con),
-                // ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: SliverSearchAppBar(),
+                ),
               ];
             },
             body: ListView(
@@ -64,8 +83,9 @@ class SearchPage extends StatelessWidget {
                   ),
                 ),
                 GridView.builder(
-                  itemCount: allTags.sublist(0, 4).length,
-                  // itemCount: 5,
+                  // itemCount: allTags.sublist(0, 4).length,
+                  // itemCount: StaticStore.userGenre[0].length,
+                  itemCount: 4,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -76,9 +96,13 @@ class SearchPage extends StatelessWidget {
                   ),
                   itemBuilder: (context, i) {
                     return TagWidget(  //////////////////////////////
-                      tag: allTags.sublist(0, 4)[i], 
-                      genreName:"hello"
-                      // genreName: "${StaticStore.userGenre}"
+                      tag: allTags.sublist(0, 4)[i],
+                      // genreName:"hello"
+                      // genreName: "${StaticStore.userGenre[0].entries.elementAt(i).key}"
+                    
+                      // genreName: StaticStore.userGenre[0].entries.elementAt(i).key==""?"hi":"${StaticStore.userGenre[0].entries.elementAt(i).key}"
+                      genreName: StaticStore.userGenre[i]
+                      // genreName: "$i"
                       // StaticStore.userGenre[i]
                     );
                     // return SizedBox();
@@ -104,8 +128,10 @@ class SearchPage extends StatelessWidget {
                     childAspectRatio: 16 / 8,
                   ),
                   itemBuilder: (context, i) {
-                    // return TagWidget(tag: allTags.sublist(4)[i], con: con);
-                    return SizedBox();
+                    // return TagWidget(tag: allTags.sublist(4)[i], genreName: tags[0].key,);
+                    // return TagWidget(tag: allTags.sublist(4)[i], genreName: tags[i].entries.first.toString());
+                    return TagWidget(tag: allTags.sublist(4)[i], genreName: tags[i].entries.elementAt(0).value.toString());
+                    // return SizedBox();
                   },
                 ),
                 const SizedBox(height: 100),
@@ -115,12 +141,14 @@ class SearchPage extends StatelessWidget {
         ),
       ),
     );
+          }
+    }));
   }
 }
 
 class TagWidget extends StatelessWidget {
   final TagsModel tag;
-  String genreName = "";
+  String genreName;
   // final MainController con;
   TagWidget({
     Key? key,
@@ -202,7 +230,8 @@ class TagWidget extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 child: 
-                Text("$genreName"),
+                // genreName==""?const Text("hello"):
+                Text(genreName),
                 
                 // Text(tag.tag.toTitleCase(),style: TextStyle(color:Colors.white,fontWeight: FontWeight.w900),),
                     // Theme.of(context)
@@ -220,10 +249,10 @@ class TagWidget extends StatelessWidget {
 }
 
 class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
-  final MainController con;
-  SliverSearchAppBar({
-    required this.con,
-  });
+  // final MainController con;
+  // SliverSearchAppBar({
+    // required this.con,
+  // });
   @override
   Widget build(context, double shrinkOffset, bool overlapsContent) {
     return InkWell(
@@ -231,8 +260,9 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => SearchResultsPage(
-                      con: con,
+                builder: (context) => 
+                SearchResultsPage(        /////////////////////////
+                      // con: con,
                     )));
       },
       child: Container(
