@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/youtube_player.dart';
 // import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 // import '../artist_profile/artist_profile.dart';
@@ -22,6 +24,7 @@ class SearchResultsPage extends StatelessWidget {
 
   SearchResultsCubit _searchResultsCubit = SearchResultsCubit();
   String artists = "";
+  YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -92,20 +95,52 @@ class SearchResultsPage extends StatelessWidget {
                             // bool isPlaying = con.player.getCurrentAudioTitle ==
                             //     state.songs[i].songname;
                             return InkWell(
-                              onTap: () {
-                                FocusScope.of(context).unfocus();
-                                // BlocProvider.of<SearchResultsCubit>(context)
-                                    // .playSongs(con, i);
-                                var box = Hive.box('Recentsearch');
-                                box.put(state.songs[i].name, {
-                                  "name": state.songs[i].name,
-                                  // "fullname": state.songs[i].name,
-                                  // "username": state.songs[i].userid,
-                                  "image": state.songs[i].imgUrl,
-                                  // "track": state.songs[i].trackid,
-                                  "id": state.songs[i].id,
-                                  "type": "SONG"
-                                });
+                              onTap: () async {
+                                print("Clicked searching.....");
+                                // _youtubeSongPlayer.youtubePlay(state.songs[i].id);
+                                // if()
+
+                                if(StaticStore.playing==false){
+                                  // if(StaticStore.pause==true){
+                                    // StaticStore.pause=false;
+                                    // if(StaticStore.currentSong==state.songs[i].name){
+                                    //   await _youtubeSongPlayer.youtubeResume();
+                                    // }
+                                  // }else{
+                                    // await _youtubeSongPlayer.youtubeStop();
+                                    _youtubeSongPlayer.youtubePlay(state.songs[i].name);
+                                    StaticStore.currentSong = state.songs[i].name;
+                                    StaticStore.playing = true;
+                                  // }
+                                  // StaticStore.pause=false;
+                                }else{
+                                  // if(StaticStore.currentSong==state.songs[i].name){
+                                    // StaticStore.pause = true;
+                                    // await _youtubeSongPlayer.youtubePause();
+                                  // }else{
+                                    await _youtubeSongPlayer.youtubeStop();
+                                    await _youtubeSongPlayer.youtubePlay(state.songs[i].name);
+                                    StaticStore.currentSong = state.songs[i].name;
+                                  // }
+                                }
+
+
+
+
+
+                                // FocusScope.of(context).unfocus();
+                                // // BlocProvider.of<SearchResultsCubit>(context)
+                                //     // .playSongs(con, i);
+                                // var box = Hive.box('Recentsearch');
+                                // box.put(state.songs[i].name, {
+                                //   "name": state.songs[i].name,
+                                //   // "fullname": state.songs[i].name,
+                                //   // "username": state.songs[i].userid,
+                                //   "image": state.songs[i].imgUrl,
+                                //   // "track": state.songs[i].trackid,
+                                //   "id": state.songs[i].id,
+                                //   // "type": "SONG"
+                                // });
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(
@@ -122,7 +157,7 @@ class SearchResultsPage extends StatelessWidget {
                                                 BorderRadius.circular(3),
                                             child: CachedNetworkImage(
                                               imageUrl:
-                                                  state.songs[i].imgUrl!,
+                                                  state.songs[i].imgUrl,
                                               width: 50,
                                               height: 50,
                                               memCacheHeight: (50 *
@@ -148,7 +183,7 @@ class SearchResultsPage extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    state.songs[i].name!,
+                                                    state.songs[i].name,
                                                     maxLines: 1,
                                                     style: Theme.of(context)
                                                         .textTheme

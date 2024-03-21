@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:linkify/controller/static_store.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 
 class YoutubeSongPlayer{
-  static AudioPlayer player = AudioPlayer();
+  // static AudioPlayer player = AudioPlayer();
   Future<void> youtubePlay(String songName) async {
     if(songName!=""){
       songName+=" lyrics";
@@ -22,8 +23,8 @@ class YoutubeSongPlayer{
           var audioUrl = await audio.url;
           print(audioUrl);
           // await player.play(UrlSource(audioUrl.toString()));
-          await player.setUrl(audioUrl.toString());
-          player.play();
+          await StaticStore.player.setUrl(audioUrl.toString());
+          StaticStore.player.play();
 
 
 
@@ -37,13 +38,13 @@ class YoutubeSongPlayer{
       }
   }
   Future<void> youtubePause() async {
-    player.pause();
+    StaticStore.player.pause();
   }
   Future<void> youtubeStop() async {
-    player.stop();
+    StaticStore.player.stop();
   }
   Future<void> youtubeResume() async {
-    player.play();
+    StaticStore.player.play();
   }
 
 }

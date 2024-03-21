@@ -1,11 +1,11 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:linkify/controller/accesstoken_error.dart';
-import 'package:linkify/controller/read_write.dart';
+// import 'package:http/http.dart';
+// import 'package:linkify/controller/accesstoken_error.dart';
+// import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
@@ -32,7 +32,7 @@ class AlbumView extends StatefulWidget {
 }
 
 class AlbumViewState extends State<AlbumView> {
-  var playing = false;
+  // var playing = false;
   var ind = -10;
   YoutubeSongPlayer _player = YoutubeSongPlayer();
 
@@ -178,16 +178,17 @@ class AlbumViewState extends State<AlbumView> {
                               InkWell(
                                 borderRadius: BorderRadius.circular(15),
                                 onTap: () {
-                                  if (playing == true) {
+                                  if (StaticStore.playing == true) {
                                     // stop song
                                     if (ind == position) {
                                       _player.youtubePause();
                                       setState(() {
-                                        playing = false;
+                                        StaticStore.playing = false;
                                       });
                                     } else {
                                       _player.youtubeStop();
                                       _player.youtubePlay(widget.name[position]);
+                                      StaticStore.currentSong = widget.name[position];
                                     }
                                   } else {
                                     // play song
@@ -196,9 +197,10 @@ class AlbumViewState extends State<AlbumView> {
                                     } else {
                                       _player
                                           .youtubePlay(widget.name[position]);
+                                          StaticStore.currentSong = widget.name[position];
                                     }
                                     setState(() {
-                                      playing = true;
+                                      StaticStore.playing = true;
                                       
                                     });
                                     // }
@@ -272,7 +274,7 @@ class AlbumViewState extends State<AlbumView> {
                                           // Icons.play_arrow:
                                           ind != position
                                             ? Icons.play_arrow
-                                            : playing == true
+                                            : StaticStore.playing == true
                                                 ? Icons.pause
                                                 : Icons.play_arrow),
                                       ]),

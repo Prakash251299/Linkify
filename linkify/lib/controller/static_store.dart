@@ -1,3 +1,5 @@
+import 'package:just_audio/just_audio.dart';
+
 class StaticStore{
   static var carouselLength = 6;
   // static List<Map<String,dynamic>>m1=[];
@@ -19,4 +21,10 @@ class StaticStore{
   static String dateStored = "1-1-2024";
   static var carouselInd = -10;
   static var playingCarouselInd = -10;
+  static var playing = false;
+  static var currentSong = "";
+  static var pause = false;
+  static AudioPlayer player = AudioPlayer();
+
+
 }
