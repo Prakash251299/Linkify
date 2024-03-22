@@ -7,8 +7,6 @@ import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:linkify/controller/static_store.dart';
 // import 'package:linkify/controller/youtube_player.dart';
 
-
-
 class PlayerButtons extends StatefulWidget {
   SongModel songs;
   PlayerButtons(this.songs);
@@ -19,10 +17,6 @@ class PlayerButtons extends StatefulWidget {
 }
 
 class _PlayerButtonsState extends State<PlayerButtons> {
-  
-
-
-
 // class PlayerButtons extends StatelessWidget {
   // SongModel songs;
   // PlayerButtons(this.songs);
@@ -44,16 +38,16 @@ class _PlayerButtonsState extends State<PlayerButtons> {
         //   // stream: audioPlayer.sequenceStateStream,
         //   stream: null,
         //   builder: (context, index) {
-        //     return 
+        //     return
         IconButton(
-              onPressed:(){},
-        //           // audioPlayer.hasPrevious ? audioPlayer.seekToPrevious : null,
-        //       // iconSize: 45,
-              icon: const Icon(
-                Icons.skip_previous,
-                color: Colors.white,
-              ),
-            ),
+          onPressed: () {},
+          //           // audioPlayer.hasPrevious ? audioPlayer.seekToPrevious : null,
+          //       // iconSize: 45,
+          icon: const Icon(
+            Icons.skip_previous,
+            color: Colors.white,
+          ),
+        ),
         //   },
         // ),
 
@@ -74,63 +68,62 @@ class _PlayerButtonsState extends State<PlayerButtons> {
         //           child: const CircularProgressIndicator(),
         //         );
         //       } else if (!playing) {
-        //         return 
-                IconButton(
-                  onPressed: () async {
+        //         return
+        IconButton(
+          onPressed: () async {
+            if (StaticStore.playing == false) {
+              // if(StaticStore.pause==true){
+              // StaticStore.pause=false;
+              if (StaticStore.currentSong == widget.songs.name) {
+                await _youtubePlayer.youtubeResume();
+              } else {
+                await _youtubePlayer.youtubeStop();
+                // _youtubePlayer.youtubePlay(state.songs[i].name);
+                await _youtubePlayer.youtubePlay(widget.songs.name);
+                StaticStore.currentSong = widget.songs.name;
 
-                    if(StaticStore.playing==false){
-                                  // if(StaticStore.pause==true){
-                                    // StaticStore.pause=false;
-                                    if(StaticStore.currentSong==widget.songs.name){
-                                      await _youtubePlayer.youtubeResume();
-                                    }
-                                  else{
-                                    await _youtubePlayer.youtubeStop();
-                                    // _youtubePlayer.youtubePlay(state.songs[i].name);
-                                    await _youtubePlayer.youtubePlay(widget.songs.name);
-                                    StaticStore.currentSong = widget.songs.name;
-                                  }
-                                  setState(() {
-                                    StaticStore.playing = true;
-                                  });
-                                  // StaticStore.pause=false;
-                                }else{
-                                  if(StaticStore.currentSong==widget.songs.name){
-                                    await _youtubePlayer.youtubePause();
-                                    StaticStore.pause=true;
-                                    print("same");
-                                  }else{
-
-                                    // StaticStore.pause = true;
-                                  // }else{
-                                    await _youtubePlayer.youtubeStop();
-                                    await _youtubePlayer.youtubePlay(widget.songs.name);
-                                    StaticStore.currentSong = widget.songs.name;
-                                  }
-                                  setState(() {
-                                    StaticStore.playing = false;
-                                  });
-                                  // }
-                                }
-
-
-
-
-
-                  }, 
-                  iconSize: 75,
-                  icon: StaticStore.playing==true
-                  ?Icon(
-                    Icons.pause,
-                    color: Colors.white,
-                  )
-                  :Icon(
-                    Icons.play_circle,
-                    color: Colors.white,
-                  ),
+              }
+              setState(() {
+                StaticStore.playing = true;
+              });
+              // StaticStore.pause=false;
+            } else {
+              if (StaticStore.currentSong == widget.songs.name) {
+                await _youtubePlayer.youtubePause();
+                // StaticStore.pause = true;
+                print("same");
+                setState(() {
+                  StaticStore.playing = false;
+                });
+              } else {
+                // StaticStore.pause = true;
+                // }else{
+                await _youtubePlayer.youtubeStop();
+                await _youtubePlayer.youtubePlay(widget.songs.name);
+                StaticStore.currentSong = widget.songs.name;
+                setState(() {
+                  StaticStore.playing = true;
+                });
+              }
+              // setState(() {
+              //   StaticStore.playing = false;
+              // });
+              // }
+            }
+          },
+          iconSize: 75,
+          icon: StaticStore.playing == true
+              ? Icon(
+                  Icons.pause,
+                  color: Colors.white,
+                )
+              : Icon(
+                  Icons.play_circle,
+                  color: Colors.white,
                 ),
+        ),
         //       } else if (processingState != ProcessingState.completed) {
-        //         return 
+        //         return
         //         IconButton(
         //           icon: const Icon(
         //             Icons.pause_circle,
@@ -140,14 +133,14 @@ class _PlayerButtonsState extends State<PlayerButtons> {
         //           onPressed: ()async{},
         //         );
         //       } else {
-        //         return 
+        //         return
         //         IconButton(
         //           icon: const Icon(
         //             Icons.replay_circle_filled_outlined,
         //             color: Colors.white,
         //           ),
         //           iconSize: 75.0,
-        //           onPressed: () => 
+        //           onPressed: () =>
         //           SizedBox()
         //           // audioPlayer.seek(
         //           //   Duration.zero,
@@ -161,21 +154,20 @@ class _PlayerButtonsState extends State<PlayerButtons> {
         //   },
         // ),
 
-
         // StreamBuilder<SequenceState?>(
         //   // stream: audioPlayer.sequenceStateStream,
         //   stream: null,
         //   builder: (context, index) {
-        //     return 
-            IconButton(
-              // onPressed: audioPlayer.hasNext ? audioPlayer.seekToNext : null,
-              onPressed: (){},
-              iconSize: 45,
-              icon: const Icon(
-                Icons.skip_next,
-                color: Colors.white,
-              ),
-            ),
+        //     return
+        IconButton(
+          // onPressed: audioPlayer.hasNext ? audioPlayer.seekToNext : null,
+          onPressed: () {},
+          iconSize: 45,
+          icon: const Icon(
+            Icons.skip_next,
+            color: Colors.white,
+          ),
+        ),
         //   },
         // ),
       ],

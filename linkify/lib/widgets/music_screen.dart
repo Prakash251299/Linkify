@@ -20,27 +20,27 @@ class SongScreen extends StatefulWidget {
 class _SongScreenState extends State<SongScreen> {
   // SongModel songs;
   // _SongScreenState(this.songs);
-  AudioPlayer audioPlayer = AudioPlayer();
+  // AudioPlayer audioPlayer = AudioPlayer();
   // Song song = Get.arguments ?? Song.songs[0];
 
   @override
   void initState() {
     super.initState();
 
-    audioPlayer.setAudioSource(
-      ConcatenatingAudioSource(
-        children: [
-          // AudioSource.uri(
-          //   Uri.parse('asset:///${song.url}'),
-          // ),
-        ],
-      ),
-    );
+    // audioPlayer.setAudioSource(
+    //   ConcatenatingAudioSource(
+    //     children: [
+    //       // AudioSource.uri(
+    //       //   Uri.parse('asset:///${song.url}'),
+    //       // ),
+    //     ],
+    //   ),
+    // );
   }
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    // audioPlayer.dispose();
     super.dispose();
   }
 
@@ -114,7 +114,8 @@ class _MusicPlayer extends StatelessWidget {
           Text(
             // song.description,
             // "Beautiful Artist name",
-            "${songs.artists[0]}, ${songs.artists[1]}",
+            songs.artists.length>1?
+            "${songs.artists[0]}, ${songs.artists[1]}":"${songs.artists[0]}",
             maxLines: 2,
             style: Theme.of(context)
                 .textTheme
