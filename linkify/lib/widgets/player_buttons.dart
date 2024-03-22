@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:linkify/controller/static_store.dart';
 // import 'package:linkify/controller/youtube_player.dart';
 
-class PlayerButtons extends StatelessWidget {
-  PlayerButtons({
-    Key? key,
-    // required this.audioPlayer,
-  }) : super(key: key);
+
+
+class PlayerButtons extends StatefulWidget {
+  SongModel songs;
+  PlayerButtons(this.songs);
+  // const PlayerButtons({super.key});
+
+  @override
+  State<PlayerButtons> createState() => _PlayerButtonsState();
+}
+
+class _PlayerButtonsState extends State<PlayerButtons> {
+  
+
+
+
+// class PlayerButtons extends StatelessWidget {
+  // SongModel songs;
+  // PlayerButtons(this.songs);
+  // PlayerButtons(songs, {
+  //   Key? key,
+  //   required this.songs,
+  // }) : super(key: key);
 
   // final AudioPlayer audioPlayer;
-  // YoutubeSongPlayer _youtubePlay = YoutubeSongPlayer();
+  YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
   var playing = false;
 
   @override
@@ -55,9 +76,55 @@ class PlayerButtons extends StatelessWidget {
         //       } else if (!playing) {
         //         return 
                 IconButton(
-                  onPressed: () async {}, 
+                  onPressed: () async {
+
+                    if(StaticStore.playing==false){
+                                  // if(StaticStore.pause==true){
+                                    // StaticStore.pause=false;
+                                    if(StaticStore.currentSong==widget.songs.name){
+                                      await _youtubePlayer.youtubeResume();
+                                    }
+                                  else{
+                                    await _youtubePlayer.youtubeStop();
+                                    // _youtubePlayer.youtubePlay(state.songs[i].name);
+                                    await _youtubePlayer.youtubePlay(widget.songs.name);
+                                    StaticStore.currentSong = widget.songs.name;
+                                  }
+                                  setState(() {
+                                    StaticStore.playing = true;
+                                  });
+                                  // StaticStore.pause=false;
+                                }else{
+                                  if(StaticStore.currentSong==widget.songs.name){
+                                    await _youtubePlayer.youtubePause();
+                                    StaticStore.pause=true;
+                                    print("same");
+                                  }else{
+
+                                    // StaticStore.pause = true;
+                                  // }else{
+                                    await _youtubePlayer.youtubeStop();
+                                    await _youtubePlayer.youtubePlay(widget.songs.name);
+                                    StaticStore.currentSong = widget.songs.name;
+                                  }
+                                  setState(() {
+                                    StaticStore.playing = false;
+                                  });
+                                  // }
+                                }
+
+
+
+
+
+                  }, 
                   iconSize: 75,
-                  icon: const Icon(
+                  icon: StaticStore.playing==true
+                  ?Icon(
+                    Icons.pause,
+                    color: Colors.white,
+                  )
+                  :Icon(
                     Icons.play_circle,
                     color: Colors.white,
                   ),

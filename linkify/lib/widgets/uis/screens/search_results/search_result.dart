@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/widgets/music_screen.dart';
 // import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 // import '../artist_profile/artist_profile.dart';
@@ -97,32 +98,32 @@ class SearchResultsPage extends StatelessWidget {
                             return InkWell(
                               onTap: () async {
                                 print("Clicked searching.....");
-                                // _youtubeSongPlayer.youtubePlay(state.songs[i].id);
-                                // if()
+                                
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SongScreen(state.songs[i])));
 
-                                if(StaticStore.playing==false){
-                                  // if(StaticStore.pause==true){
-                                    // StaticStore.pause=false;
-                                    // if(StaticStore.currentSong==state.songs[i].name){
-                                    //   await _youtubeSongPlayer.youtubeResume();
-                                    // }
-                                  // }else{
-                                    // await _youtubeSongPlayer.youtubeStop();
-                                    _youtubeSongPlayer.youtubePlay(state.songs[i].name);
-                                    StaticStore.currentSong = state.songs[i].name;
-                                    StaticStore.playing = true;
-                                  // }
-                                  // StaticStore.pause=false;
-                                }else{
-                                  // if(StaticStore.currentSong==state.songs[i].name){
-                                    // StaticStore.pause = true;
-                                    // await _youtubeSongPlayer.youtubePause();
-                                  // }else{
-                                    await _youtubeSongPlayer.youtubeStop();
-                                    await _youtubeSongPlayer.youtubePlay(state.songs[i].name);
-                                    StaticStore.currentSong = state.songs[i].name;
-                                  // }
-                                }
+                                // if(StaticStore.playing==false){
+                                //   // if(StaticStore.pause==true){
+                                //     // StaticStore.pause=false;
+                                //     // if(StaticStore.currentSong==state.songs[i].name){
+                                //     //   await _youtubeSongPlayer.youtubeResume();
+                                //     // }
+                                //   // }else{
+                                //     // await _youtubeSongPlayer.youtubeStop();
+                                //     _youtubeSongPlayer.youtubePlay(state.songs[i].name);
+                                //     StaticStore.currentSong = state.songs[i].name;
+                                //     StaticStore.playing = true;
+                                //   // }
+                                //   // StaticStore.pause=false;
+                                // }else{
+                                //   // if(StaticStore.currentSong==state.songs[i].name){
+                                //     // StaticStore.pause = true;
+                                //     // await _youtubeSongPlayer.youtubePause();
+                                //   // }else{
+                                //     await _youtubeSongPlayer.youtubeStop();
+                                //     await _youtubeSongPlayer.youtubePlay(state.songs[i].name);
+                                //     StaticStore.currentSong = state.songs[i].name;
+                                //   // }
+                                // }
 
 
 

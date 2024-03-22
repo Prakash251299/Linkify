@@ -4,16 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:linkify/widgets/player_buttons.dart';
 import 'package:linkify/widgets/seekbar.dart';
+import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:rxdart/rxdart.dart' as rxdart;
 
 class SongScreen extends StatefulWidget {
-  const SongScreen({Key? key}) : super(key: key);
+  SongModel songs;
+  SongScreen(this.songs, {super.key});
+  // SongScreen({Key? key}) : super(key: key),this.songs;
 
   @override
+  // State<SongScreen> createState() => _SongScreenState(songs);
   State<SongScreen> createState() => _SongScreenState();
 }
 
 class _SongScreenState extends State<SongScreen> {
+  // SongModel songs;
+  // _SongScreenState(this.songs);
   AudioPlayer audioPlayer = AudioPlayer();
   // Song song = Get.arguments ?? Song.songs[0];
 
@@ -71,7 +77,7 @@ class _SongScreenState extends State<SongScreen> {
           // ),
           const _BackgroundFilter(),
           _MusicPlayer(
-            // song: song,
+            widget.songs,
             // seekBarDataStream: _seekBarDataStream,
             // audioPlayer: audioPlayer,
           ),
@@ -82,7 +88,8 @@ class _SongScreenState extends State<SongScreen> {
 }
 
 class _MusicPlayer extends StatelessWidget {
-
+  SongModel songs;
+  _MusicPlayer(this.songs);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -96,7 +103,8 @@ class _MusicPlayer extends StatelessWidget {
         children: [
           Text(
             // song.title,
-            "Song name",
+            // "Song name",
+            songs.name,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -105,7 +113,8 @@ class _MusicPlayer extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             // song.description,
-            "Beautiful Artist name",
+            // "Beautiful Artist name",
+            "${songs.artists[0]}, ${songs.artists[1]}",
             maxLines: 2,
             style: Theme.of(context)
                 .textTheme
@@ -127,7 +136,7 @@ class _MusicPlayer extends StatelessWidget {
               ),
           //   },
           // ),
-          PlayerButtons(),
+          PlayerButtons(songs),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
