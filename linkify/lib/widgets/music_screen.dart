@@ -1,312 +1,80 @@
-
-// var index=0;
-
-// class SongPlayer extends GetxController{
-//   final player = AudioPlayer();
-//   void playMusic(String url) async {
-//   await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-//   player.play();
-// }
-// }
-
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-// import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/instance_manager.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:linkify/controller/songPlayerController.dart';
-import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:linkify/widgets/local_songs.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class MusicScreen extends StatelessWidget {
+  // const MyApp({super.key});
 
-  // const Homepage({super.key});
-
+  // This widget is the root of your application.
   @override
-  State<Homepage> createState() => _HomepageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Music screen',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a purple toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Music player screen'),
+    );
+  }
 }
 
-enum PlayerState { playing, paused }
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
 
-class _HomepageState extends State<Homepage> {
-  // String musicUrl = "Users/amankumarsaw/Downloads"; // Insert your music URL
-// String musicUrl = "/Users/amankumarsaw/Downloads/Main-Dhoondne-Ko-Zamaane-Mein_320(PaglaSongs).mp3"; // Insert your music URL
-// var musicUrl1 = "https://www.jiosaavn.com/song/one-way-ticket/Cl9daz4EQ2I"; // Insert your music URL
-  String thumbnailImgUrl = ""; // Insert your thumbnail URL
-  var title = "Music Player";
-// var player = AudioPlayer();
-  PlayerState playerState = PlayerState.paused;
-  // bool SongDataController.loaded = false;
-  bool playing = false;
-// var currSong.value = 0;
-  SongPlayerController songPlayerController = Get.put(SongPlayerController());
-  SongDataController songDataController = Get.put(SongDataController());
-  RxList<SongModel> songList = <SongModel>[].obs;
-// var player = songPlayerController.player;
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
 
-// void playMusic(String url) async {
-//   playing = true;
-//   await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-//   player.play();
-// }
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
 
-  void loadMusic() async {
-    try {
-      // songList = await songDataController.getLocalSongs();
-      songList = SongDataController.songList;
-      setState(() {
-        // SongDataController.loaded = true;
-      });
-    } catch (e) {
-      print("Nothing found");
-    }
-  }
+  final String title;
 
   @override
-  void initState() {
-    // await read();
-    loadMusic();
-// print(player.playerState);
-// if(player.playerState==ProcessingState.completed){
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-// }
-    super.initState();
-  }
-
-// @override
-// void dispose() {
-// songPlayerController.player.dispose();
-// super.dispose();
-// }
-
-// Future<int> stopper()async{
-//   setState(() {
-//     SongPlayerController.playing.value = false;
-//     // songPlayerController.completed = true;
-//   });
-//   return 1;
-// }
+class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        title: Text("${title}"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              // do something
-              // print(songList[0].title);
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => LocalSongList(songList: songList)));
-            },
-          )
-        ],
+        // TRY THIS: Try changing the color here to a specific color (to
+        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+        // change color while the other colors stay the same.
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          const Spacer(
-            flex: 2,
-          ),
-
-          ////////  UNCOMMENT IT  //////////
-          // ClipRRect(
-          // 	borderRadius: BorderRadius.circular(8),
-          // 	child: Image.network(
-          // 	thumbnailImgUrl,
-          //   // songList[SongDataController.currSong.value].uri!,
-          // 	height: 350,
-          // 	width: 350,
-          // 	fit: BoxFit.cover,
-          // 	),
-          // ),
-          const Spacer(),
-
-
-          
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     // SongDataController.loaded?
-          //     // Flexible(
-          //     //   child: Text(songList.length>0?
-          //     //     "${songList[SongDataController.currSong.value].title}":"",
-          //     //     maxLines: 1,
-          //     //     style: Theme.of(context).textTheme.bodyLarge,
-          //     //   ),
-          //     // )
-          //     songList.length > 0
-          //         ? 
-          //         Padding(
-          //             padding: EdgeInsets.all(16),
-          //             child: Container(
-          //               width: MediaQuery.of(context).size.width - 100,
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child:
-          //                         // Text("sad"),
-          //                         // Obx(() =>
-          //                         Text(
-          //                             "${songList[SongDataController.currSong.value].title}", ////// Title
-          //                             // "${SongPlayerController.songName.value}",
-          //                             style: TextStyle(
-          //                                 fontSize: 18,
-          //                                 fontWeight: FontWeight.bold)),
-
-          //                         // ),
-          //                     // ],
-          //                   ),
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child: Text(
-          //                         "${songList[SongDataController.currSong.value].artist}",
-          //                         style: TextStyle(fontSize: 14)),
-          //                     // ],
-          //                   )
-          //                 ],
-          //               ),
-          //             ))
-          //         : Container()
-          //     // :Container()
-          //     ,
-          //   ],
-          // ),
-
-          // const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: StreamBuilder(
-                stream: SongPlayerController.player.positionStream,
-                builder: (context, snapshot1) {
-                  // setState(() {
-
-                  // });
-                  /* Returning to start after completion */
-                  // setState(() {
-
-                  // if(SongPlayerController.player.position==(SongPlayerController.player.duration)){
-                  //   print("completed");
-                  //   SongPlayerController.playing = false;
-                  // }
-
-                  if (SongPlayerController.player.processingState ==
-                      ProcessingState.completed) {
-
-
-                        // Future.delayed(Duration(milliseconds: 10)).then((value) => SongPlayerController.playing.value=false,);
-
-
-                    ////// Add code for loop and shuffle
-                    /* After completion song name not updating */
-
-                    // SongPlayerController.playing.value = false;
-                    // SongPlayerController.player.seek(Duration(milliseconds: 0));
-
-
-
-
-                    SongPlayerController.player.stop();
-                    SongPlayerController.paused = false;
-                    SongPlayerController.playing.value = false;
-                    // SongDataController.currSong.value =
-                    //     (SongDataController.currSong.value + 1) % songList.length;
-
-                    // try {
-                    //   // playNext();
-                    //   songPlayerController.playLocalSong(
-                    //       songList[SongDataController.currSong.value].data);
-                    //   // if (SongPlayerController.playing.value == false) {
-                    //   //   ++SongDataController.currSong.value;
-                    //   //   title = "Not playing";
-                    //   // }
-
-                    //   // Navigator.pop(context);
-                    //   // Navigator.of(context).push(MaterialPageRoute(
-                    //   //   builder: (context) => HomeNav(),
-                    //   // ));
-
-                    // } catch (e) {
-                    //   SongDataController.currSong.value =
-                    //       (SongDataController.currSong.value + 1) % songList.length;
-                    // }
-
-                  }
-
-
-
-
-
-                  // ;
-                  // });
-
-                  // print(songPlayerController.player.playerState);
-                  // if(songPlayerController.player.playerState.playing){
-                  //   songPlayerController.playing = true;
-                  //   // print("object");
-                  // }
-
-
-
-                  Duration duration = SongPlayerController.totalTime.value;
-                  // print(duration);
-                  // const Duration duration = Duration(seconds: 0);
-                  // final Duration duration = SongDataController.loaded
-                  //     ? snapshot1.data as Duration
-                  //     : const Duration(seconds: 0);
-
-
-
-                      // : Duration(seconds: SongPlayerController.player.duration!.inSeconds);
-                  return StreamBuilder(
-                      stream:
-                          SongPlayerController.player.bufferedPositionStream,
-                      builder: (context, snapshot2) {
-                        // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
-                        //   print("end it");
-                        //   SongPlayerController.playing.value = false;
-                        // }
-
-
-
-                        //  },
-
-                        // if (SongPlayerController.player.processingState == ProcessingState.completed){
-                        // this.setState(() {
-                        //   var a = stopper();
-                        // });
-                        // SongPlayerController.playing = false;
-                        // }
-
-
-
-                        Duration bufferedDuration = SongPlayerController.currentTime.value;
-                        // Duration(seconds: 0);
-                        // final Duration bufferedDuration = SongDataController.loaded
-                        //     ? snapshot2.data as Duration
-                        //     : const Duration(seconds: 0);
-                            // print(SongPlayerController.currentTime);
-                        return 
-                        
-                        
-                        
-                        
-                        
-                        Column(children: [
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: 
+        Column(children: [
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -319,8 +87,8 @@ class _HomepageState extends State<Homepage> {
                               //     style: Theme.of(context).textTheme.bodyLarge,
                               //   ),
                               // )
-                              songList.length > 0
-                                  ? 
+                              // songList.length > 0
+                                  // ? 
                                   Padding(
                                       padding: EdgeInsets.all(16),
                                       child: Container(
@@ -335,27 +103,30 @@ class _HomepageState extends State<Homepage> {
                                                   // Text("sad"),
                                                   // Obx(() =>
                                                   Text(
-                                                      songList[SongDataController.currSong.value].title, ////// Title
-                                                      // "${SongPlayerController.songName.value}",
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold)),
+                                                    "Heelo",
+                                                      // songList[SongDataController.currSong.value].title, ////// Title
+                                                      // // "${SongPlayerController.songName.value}",
+                                                      // style: const TextStyle(
+                                                      //     fontSize: 18,
+                                                      //     fontWeight: FontWeight.bold)),
 
-                                                  // ),
+                                                  ),
                                               // ],
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               // padding: EdgeInsets.only(top: 50),
                                               child: Text(
-                                                  "${songList[SongDataController.currSong.value].artist}",
-                                                  style: TextStyle(fontSize: 14)),
+                                                "Hello1",
+                                                  // "${songList[SongDataController.currSong.value].artist}",
+                                                  // style: TextStyle(fontSize: 14)
+                                                  ),
                                               // ],
                                             )
                                           ],
                                         ),
                                       ))
-                                  : Container()
+                                  // : Container()
                               // :Container()
                               ,
                             ],
@@ -366,33 +137,35 @@ class _HomepageState extends State<Homepage> {
                           height: 30,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ProgressBar(
-                              // progress: duration,
-                              progress: SongPlayerController.currentTime.value,
-                              total: 
-                              SongPlayerController.totalTime.value,
-                              // SongPlayerController.player.duration ??
-                              //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
-                                  // Duration(seconds: songList[0].duration!),
+                            child: 
+                            SizedBox(),
+                            // ProgressBar(
+                            //   // progress: duration,
+                            //   progress: SongPlayerController.currentTime.value,
+                            //   total: 
+                            //   SongPlayerController.totalTime.value,
+                            //   // SongPlayerController.player.duration ??
+                            //   //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
+                            //       // Duration(seconds: songList[0].duration!),
 
-                              // total: SongPlayerController.player.duration ??
-                              //     const Duration(seconds: 100),
-                              buffered: bufferedDuration,
-                              timeLabelPadding: -1,
-                              timeLabelTextStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                              progressBarColor: Colors.red,
-                              baseBarColor: Colors.grey[200],
-                              bufferedBarColor: Colors.grey[350],
-                              thumbColor: Colors.red,
-                              onSeek: 
-                              SongDataController.loaded
-                                  ? (duration) async {
-                                      await SongPlayerController.player
-                                          .seek(duration);
-                                    }
-                                  : null,
-                            ),
+                            //   // total: SongPlayerController.player.duration ??
+                            //   //     const Duration(seconds: 100),
+                            //   buffered: bufferedDuration,
+                            //   timeLabelPadding: -1,
+                            //   timeLabelTextStyle: const TextStyle(
+                            //       fontSize: 14, color: Colors.black),
+                            //   progressBarColor: Colors.red,
+                            //   baseBarColor: Colors.grey[200],
+                            //   bufferedBarColor: Colors.grey[350],
+                            //   thumbColor: Colors.red,
+                            //   onSeek: 
+                            //   SongDataController.loaded
+                            //       ? (duration) async {
+                            //           await SongPlayerController.player
+                            //               .seek(duration);
+                            //         }
+                            //       : null,
+                            // ),
                           ),
                         ),
 
@@ -406,23 +179,25 @@ class _HomepageState extends State<Homepage> {
                 width: 10,
               ),
               IconButton(
-                  onPressed: SongDataController.loaded
-                      ? () async {
-                          if (SongPlayerController.player.position.inSeconds >
-                              10) {
-                            await SongPlayerController.player.seek(Duration(
-                                seconds: SongPlayerController
-                                        .player.position.inSeconds -
-                                    10));
-                          } else {
-                            await SongPlayerController.player
-                                .seek(const Duration(seconds: 0));
-                          }
-                        }
-                      : null,
+                  onPressed: (){},
+                  // SongDataController.loaded
+                  //     ? () async {
+                  //         if (SongPlayerController.player.position.inSeconds >
+                  //             10) {
+                  //           await SongPlayerController.player.seek(Duration(
+                  //               seconds: SongPlayerController
+                  //                       .player.position.inSeconds -
+                  //                   10));
+                  //         } else {
+                  //           await SongPlayerController.player
+                  //               .seek(const Duration(seconds: 0));
+                  //         }
+                  //       }
+                  //     : null,
                   icon: const Icon(Icons.fast_rewind_rounded)),
-              songPlayerController.completed == false
-                  ? Container(
+              // songPlayerController.completed == false
+              //     ? 
+                  Container(
                       height: 50,
                       width: 50,
                       decoration: const BoxDecoration(
@@ -430,46 +205,50 @@ class _HomepageState extends State<Homepage> {
                       child: IconButton(
                           ///// Icon for playing songs
                           onPressed: () {
-                            setState(() {
-                              if (SongPlayerController.playing.value == true) {
-                                songPlayerController.pauseLocalSong();
-                                // SongPlayerController.playing = false;
-                                // SongPlayerController.paused = true;
-                              } else {
-                                if (SongPlayerController.playing.value == false) {
-                                  songPlayerController.playLocalSong(
-                                      songList[SongDataController.currSong.value]
-                                          .data);
-                                  // SongPlayerController.playing = true;
-                                  // SongPlayerController.paused = false;
-                                }
-                              }
-                            });
+                            // setState(() {
+                            //   if (SongPlayerController.playing.value == true) {
+                            //     songPlayerController.pauseLocalSong();
+                            //     // SongPlayerController.playing = false;
+                            //     // SongPlayerController.paused = true;
+                            //   } else {
+                            //     if (SongPlayerController.playing.value == false) {
+                            //       songPlayerController.playLocalSong(
+                            //           songList[SongDataController.currSong.value]
+                            //               .data);
+                            //       // SongPlayerController.playing = true;
+                            //       // SongPlayerController.paused = false;
+                            //     }
+                            //   }
+                            // });
                           },
-                          icon: Icon(
-                            SongPlayerController.playing.value == true
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            color: Colors.white,
-                          )),
-                    )
-                  : Container(),
+                          icon: 
+                          Icon(Icons.play_arrow
+
+                            // SongPlayerController.playing.value == true
+                            //     ? Icons.pause
+                            //     : Icons.play_arrow,
+                            // color: Colors.white,
+                          )
+                          )
+                    ),
+                  // : Container(),
               IconButton(
-                  onPressed: SongDataController.loaded
-                      ? () async {
-                          if (SongPlayerController.player.position.inSeconds +
-                                  10 <=
-                              SongPlayerController.player.duration!.inSeconds) {
-                            await SongPlayerController.player.seek(Duration(
-                                seconds: SongPlayerController
-                                        .player.position.inSeconds +
-                                    10));
-                          } else {
-                            await SongPlayerController.player
-                                .seek(const Duration(seconds: 0));
-                          }
-                        }
-                      : null,
+                  onPressed: (){},
+                  // SongDataController.loaded
+                  //     ? () async {
+                  //         if (SongPlayerController.player.position.inSeconds +
+                  //                 10 <=
+                  //             SongPlayerController.player.duration!.inSeconds) {
+                  //           await SongPlayerController.player.seek(Duration(
+                  //               seconds: SongPlayerController
+                  //                       .player.position.inSeconds +
+                  //                   10));
+                  //         } else {
+                  //           await SongPlayerController.player
+                  //               .seek(const Duration(seconds: 0));
+                  //         }
+                  //       }
+                  //     : null,
                   icon: const Icon(Icons.fast_forward_rounded)),
               const SizedBox(
                 width: 10,
@@ -484,164 +263,10 @@ class _HomepageState extends State<Homepage> {
 
                         
 
-        ]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      });
-                }),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-
-
-
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: [
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     IconButton(
-          //         onPressed: SongDataController.loaded
-          //             ? () async {
-          //                 if (SongPlayerController.player.position.inSeconds >
-          //                     10) {
-          //                   await SongPlayerController.player.seek(Duration(
-          //                       seconds: SongPlayerController
-          //                               .player.position.inSeconds -
-          //                           10));
-          //                 } else {
-          //                   await SongPlayerController.player
-          //                       .seek(const Duration(seconds: 0));
-          //                 }
-          //               }
-          //             : null,
-          //         icon: const Icon(Icons.fast_rewind_rounded)),
-          //     songPlayerController.completed == false
-          //         ? Container(
-          //             height: 50,
-          //             width: 50,
-          //             decoration: const BoxDecoration(
-          //                 shape: BoxShape.circle, color: Colors.red),
-          //             child: IconButton(
-          //                 ///// Icon for playing songs
-          //                 onPressed: () {
-          //                   setState(() {
-          //                     if (SongPlayerController.playing.value == true) {
-          //                       songPlayerController.pauseLocalSong();
-          //                       // SongPlayerController.playing = false;
-          //                       // SongPlayerController.paused = true;
-          //                     } else {
-          //                       if (SongPlayerController.playing.value == false) {
-          //                         songPlayerController.playLocalSong(
-          //                             songList[SongDataController.currSong.value]
-          //                                 .data);
-          //                         // SongPlayerController.playing = true;
-          //                         // SongPlayerController.paused = false;
-          //                       }
-          //                     }
-          //                   });
-          //                 },
-          //                 icon: Icon(
-          //                   SongPlayerController.playing.value == true
-          //                       ? Icons.pause
-          //                       : Icons.play_arrow,
-          //                   color: Colors.white,
-          //                 )),
-          //           )
-          //         : Container(),
-          //     IconButton(
-          //         onPressed: SongDataController.loaded
-          //             ? () async {
-          //                 if (SongPlayerController.player.position.inSeconds +
-          //                         10 <=
-          //                     SongPlayerController.player.duration!.inSeconds) {
-          //                   await SongPlayerController.player.seek(Duration(
-          //                       seconds: SongPlayerController
-          //                               .player.position.inSeconds +
-          //                           10));
-          //                 } else {
-          //                   await SongPlayerController.player
-          //                       .seek(const Duration(seconds: 0));
-          //                 }
-          //               }
-          //             : null,
-          //         icon: const Icon(Icons.fast_forward_rounded)),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //   ],
-          // ),
-
-
-
-
-
-
-
-
-          const Spacer(
-            flex: 2,
-          )
-        ],
-      ),
-    );
+        ]),
+    ));
   }
-
-  //   );
-  // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
