@@ -189,11 +189,11 @@ Widget buildPageOne() {
         child: buildPageOne(),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Contacts',
-        child: const Icon(Icons.add_comment_rounded),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   tooltip: 'Contacts',
+      //   child: const Icon(Icons.add_comment_rounded),
+      // ),
     );
 
   }

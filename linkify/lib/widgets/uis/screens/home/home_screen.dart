@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:linkify/controller/static_store.dart';
 import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 import '../../utils/horizontal_songs_list.dart';
@@ -40,8 +42,16 @@ class HomeScreen extends StatelessWidget {
           if (state.status == LoadPage.loaded) {
             return 
             Scaffold(
-              body: ListView(
+              body: 
+              Column(
+                // alignment: Alignment.bottomCenter,
                 children: [
+                //  Text("hi"),
+                 
+                 Expanded(child: 
+              SingleChildScrollView(child:Column(
+                children: [
+
                   RecentUsers(
                     state.likedTrack
                     // con: con,
@@ -98,11 +108,28 @@ class HomeScreen extends StatelessWidget {
                       // con: con, users: state.users.sublist(16)
                       ),
                   const SizedBox(height: 12),
+
+                  
+
+
+
                 ],
               ),
+              ),
+              ),
+              StaticStore.musicScreenEnabled==true?
+              miniplayer():SizedBox(),
+              // Container(color:Colors.red,width: 100,height: 100,),
+             
+              ]),
+              
             );
           }
-          return SizedBox();
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            Text("No data found"),
+          ],);
           }));
             // }));
           // }
@@ -122,4 +149,85 @@ class HomeScreen extends StatelessWidget {
       // ),
     // );
   }
+  
+  Widget miniplayer() {
+    return Container(
+      color: Colors.black87,
+      height: 60,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        // itemCount: list.length,
+        itemBuilder: ((context, index) {
+          // bool last = list.length == (index + 1);
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16,
+              // right: last ? 16 : 0,
+              // right: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // img
+                Container(
+                  // width: 150,
+                  // height: 80,
+                  
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    
+                    // image: DecorationImage(
+                        // image: NetworkImage(list[index].img),
+                        // fit: BoxFit.cover),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                // name
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: 
+                  Text(
+                    "hello",
+                    // list[index].title,
+                      style: const TextStyle(
+                          color: Color(0xffffffff),
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Raleway",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 13.0,
+                          overflow: TextOverflow.ellipsis),
+                      maxLines: 2,
+                      textAlign: TextAlign.left),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                // show-creator
+                SizedBox(
+                  width: 135,
+                  child: Text(
+                    // list[index].creator ?? '',
+                    "ka ho",
+                      style: const TextStyle(
+                          color: Color(0xffb3b3b3),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Raleway",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 13.0,
+                          overflow: TextOverflow.ellipsis),
+                      maxLines: 1,
+                      textAlign: TextAlign.left),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
 }
+
+

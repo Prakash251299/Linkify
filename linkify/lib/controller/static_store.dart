@@ -25,6 +25,6 @@ class StaticStore{
   static var currentSong = "";
   static var pause = false;
   static AudioPlayer player = AudioPlayer();
-
+  static var musicScreenEnabled = false;
 
 }

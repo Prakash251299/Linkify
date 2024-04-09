@@ -1,27 +1,41 @@
 // import 'package:cached_network_image/cached_network_image.dart';
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
-import 'package:linkify/widgets/player_buttons.dart';
+import 'package:linkify/widgets/album_player_button.dart';
+// import 'package:linkify/widgets/player_buttons.dart';
 import 'package:linkify/widgets/seekbar.dart';
-import 'package:linkify/widgets/uis/models/song_model.dart';
+// import 'package:linkify/widgets/uis/methods/log.dart';
+// import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:rxdart/rxdart.dart' as rxdart;
 
-class SongScreen extends StatefulWidget {
-  SongModel songs;
-  // static String name="";
-  // static String image="";
-  SongScreen(this.songs, {super.key});
-  // SongScreen(this.name, this.image, {super.key});
+class AlbumSongScreen extends StatefulWidget {
+  // SongModel songs;
+  // widget.name[position],
+  // widget.albumImg[position],
+  // widget.id[position],
+  // widget.trackArtists[position],
+  var name;
+  var albumImg;
+  var id;
+  var trackArtists;
+  var trackImg;
+
+  AlbumSongScreen(
+    this.name,this.albumImg,this.id,this.trackArtists,this.trackImg
+  );
   // SongScreen({Key? key}) : super(key: key),this.songs;
 
   @override
   // State<SongScreen> createState() => _SongScreenState(songs);
-  State<SongScreen> createState() => _SongScreenState();
+  State<AlbumSongScreen> createState() => _SongScreenState();
 }
 
-class _SongScreenState extends State<SongScreen> {
+class _SongScreenState extends State<AlbumSongScreen> {
   // SongModel songs;
   // _SongScreenState(this.songs);
   // AudioPlayer audioPlayer = AudioPlayer();
@@ -30,6 +44,7 @@ class _SongScreenState extends State<SongScreen> {
   @override
   void initState() {
     StaticStore.musicScreenEnabled = true;
+    log('CheckState: initState');
     super.initState();
 
     // audioPlayer.setAudioSource(
@@ -63,6 +78,7 @@ class _SongScreenState extends State<SongScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('CheckState: build');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -79,22 +95,18 @@ class _SongScreenState extends State<SongScreen> {
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
-        alignment: Alignment.topCenter,
         fit: StackFit.expand,
         children: [
-          
-          // Image.asset(
-          //   widget.songs.imgUrl,
-            // fit: BoxFit.cover,
-          // ),
+
+
           const _BackgroundFilter(),
-          // _MusicPlayer(
-          //   widget.songs,
-          //   // seekBarDataStream: _seekBarDataStream,
-          //   // audioPlayer: audioPlayer,
-          // ),
-
-
+          _MusicPlayer(
+            widget.name,
+            widget.albumImg,
+            widget.id,
+            widget.trackArtists,
+            widget.trackImg
+          ),
 
           Padding(
             padding: const EdgeInsets.only(
@@ -110,7 +122,7 @@ class _SongScreenState extends State<SongScreen> {
           // ClipRect(
             
             child: Image.network(
-                              widget.songs.imgUrl,
+                              widget.trackImg,
                               // fit: BoxFit.fill,
                               // width: 300 - _counter < 70 ? 70 : 300 - _counter,
                               // height: 300 - _counter < 70 ? 70 : 300 - _counter,
@@ -129,16 +141,14 @@ class _SongScreenState extends State<SongScreen> {
                             ),
           ),
           ),
-
-
-
-          _MusicPlayer(
-            widget.songs,
-            // seekBarDataStream: _seekBarDataStream,
-            // audioPlayer: audioPlayer,
-          ),
-          // const _BackgroundFilter(),
+          // ClipRect(
+          //   child: CachedNetworkImage(imageUrl: song.coverUrl),
           // ),
+          // Image.asset(
+          //   song.coverUrl,
+          //   fit: BoxFit.cover,
+          // ),
+          
         ],
       ),
     );
@@ -146,8 +156,19 @@ class _SongScreenState extends State<SongScreen> {
 }
 
 class _MusicPlayer extends StatelessWidget {
-  SongModel songs;
-  _MusicPlayer(this.songs);
+  // SongModel songs;
+  var name;
+  var albumImg;
+  var id;
+  var trackArtists;
+  var trackImg;
+  _MusicPlayer(
+    this.name,
+            this.albumImg,
+            this.id,
+            this.trackArtists,
+            this.trackImg
+            );
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -162,7 +183,8 @@ class _MusicPlayer extends StatelessWidget {
           Text(
             // song.title,
             // "Song name",
-            songs.name,
+            // songs.name,
+            this.name,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
@@ -173,8 +195,8 @@ class _MusicPlayer extends StatelessWidget {
           Text(
             // song.description,
             // "Beautiful Artist name",
-            songs.artists.length>1?
-            "${songs.artists[0]}, ${songs.artists[1]}":"${songs.artists[0]}",
+            trackArtists.length>1?
+            "${trackArtists[0]}, ${trackArtists[1]}":"${trackArtists[0]}",
             maxLines: 2,
             style: Theme.of(context)
                 .textTheme
@@ -197,7 +219,13 @@ class _MusicPlayer extends StatelessWidget {
               ),
           //   },
           // ),
-          PlayerButtons(songs),
+          AlbumPlayerButtons(
+            this.name,
+            this.albumImg,
+            this.id,
+            this.trackArtists,
+            this.trackImg,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -435,41 +463,41 @@ class _BackgroundFilter extends StatelessWidget {
 //                           ),
 
 
-//                         SizedBox(
-//                           height: 30,
-//                           child: Padding(
-//                             padding: const EdgeInsets.symmetric(horizontal: 16),
-//                             child: 
-//                             SizedBox(),
-//                             // ProgressBar(
-//                             //   // progress: duration,
-//                             //   progress: SongPlayerController.currentTime.value,
-//                             //   total: 
-//                             //   SongPlayerController.totalTime.value,
-//                             //   // SongPlayerController.player.duration ??
-//                             //   //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
-//                             //       // Duration(seconds: songList[0].duration!),
+                        // SizedBox(
+                        //   height: 30,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.symmetric(horizontal: 16),
+                        //     child: 
+                        //     SizedBox(),
+                        //     // ProgressBar(
+                        //     //   // progress: duration,
+                        //     //   progress: SongPlayerController.currentTime.value,
+                        //     //   total: 
+                        //     //   SongPlayerController.totalTime.value,
+                        //     //   // SongPlayerController.player.duration ??
+                        //     //   //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
+                        //     //       // Duration(seconds: songList[0].duration!),
 
-//                             //   // total: SongPlayerController.player.duration ??
-//                             //   //     const Duration(seconds: 100),
-//                             //   buffered: bufferedDuration,
-//                             //   timeLabelPadding: -1,
-//                             //   timeLabelTextStyle: const TextStyle(
-//                             //       fontSize: 14, color: Colors.black),
-//                             //   progressBarColor: Colors.red,
-//                             //   baseBarColor: Colors.grey[200],
-//                             //   bufferedBarColor: Colors.grey[350],
-//                             //   thumbColor: Colors.red,
-//                             //   onSeek: 
-//                             //   SongDataController.loaded
-//                             //       ? (duration) async {
-//                             //           await SongPlayerController.player
-//                             //               .seek(duration);
-//                             //         }
-//                             //       : null,
-//                             // ),
-//                           ),
-//                         ),
+                        //     //   // total: SongPlayerController.player.duration ??
+                        //     //   //     const Duration(seconds: 100),
+                        //     //   buffered: bufferedDuration,
+                        //     //   timeLabelPadding: -1,
+                        //     //   timeLabelTextStyle: const TextStyle(
+                        //     //       fontSize: 14, color: Colors.black),
+                        //     //   progressBarColor: Colors.red,
+                        //     //   baseBarColor: Colors.grey[200],
+                        //     //   bufferedBarColor: Colors.grey[350],
+                        //     //   thumbColor: Colors.red,
+                        //     //   onSeek: 
+                        //     //   SongDataController.loaded
+                        //     //       ? (duration) async {
+                        //     //           await SongPlayerController.player
+                        //     //               .seek(duration);
+                        //     //         }
+                        //     //       : null,
+                        //     // ),
+                        //   ),
+                        // ),
 
 
 

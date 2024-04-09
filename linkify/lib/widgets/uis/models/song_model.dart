@@ -9,6 +9,11 @@ class SongModel {
   List<dynamic> artists;
 
   SongModel({
+    // this.albumImg,
+    // this.trackArtists,
+
+
+
     required this.id,
     // this.songname,
     // this.userid,
@@ -40,7 +45,7 @@ class SongModel {
         // artists: json['artists'].entries.map((e)=>e['name'].toList())
 
         // artists: ["ishu","jatin","aman"]
-        artists: (json['artists'] as List)
+        artists: (json['artists'])
           .map((e) => e['name'])
           .toList()
         // json['tracks']['items'][0]['artists'][0]['name'],

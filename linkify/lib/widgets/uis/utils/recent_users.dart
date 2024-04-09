@@ -24,6 +24,7 @@ import 'loading.dart';
 class RecentUsers extends StatefulWidget {
   // var m = {};
   Map<String, List<dynamic>>? m = {};
+
   RecentUsers(this.m, {super.key});
 
   @override
@@ -122,7 +123,8 @@ class _RecentUsersState extends State<RecentUsers> {
     dateToday += "-";
     dateToday += now.year.toString();
     // StaticStore.carouselInd = ind;
-    if (StaticStore.dateStored == dateToday && StaticStore.m1[ind]['name'] != null) {
+    if (StaticStore.dateStored == dateToday &&
+        StaticStore.m1[ind]['name'] != null) {
       return;
     }
     StaticStore.dateStored = dateToday;
@@ -149,7 +151,8 @@ class _RecentUsersState extends State<RecentUsers> {
       // print("Hhhhh");
 
       /* Fetching album tracks */
-      var res = await get(Uri.parse('https://api.spotify.com/v1/albums/$albumId/tracks?offset=0&locale=en-GB%2Cen-US%3Bq%3D0.9%2Cen%3Bq%3D0.8&access_token=$accessToken'));
+      var res = await get(Uri.parse(
+          'https://api.spotify.com/v1/albums/$albumId/tracks?offset=0&locale=en-GB%2Cen-US%3Bq%3D0.9%2Cen%3Bq%3D0.8&time_range=short_term&access_token=$accessToken'));
       // var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
       print(res.statusCode);
       if (res.statusCode == 200) {
@@ -183,9 +186,12 @@ class _RecentUsersState extends State<RecentUsers> {
   // static Map<String,dynamic>m1={};
   // static var dateStored = "1-1-2024";
   Future<void> fetchSimilarTracks(var songId, var ind) async {
-    print("$songId");
+    // print("$songId");
     List<String>? name = [];
     List<String>? id = [];
+    List<String>? trackArtists = [];
+    List<String>?trackImg = [];
+    List<List<String>>? artistNames = [];
     // List<String>?imgUrl=[];
     ReadWrite _readWrite = ReadWrite();
     while (true) {
@@ -203,8 +209,16 @@ class _RecentUsersState extends State<RecentUsers> {
           // fetching 50 similar songs
           name.add(data['tracks'][i]['name']);
           id.add(data['tracks'][i]['id']);
+          trackImg.add(data['tracks'][i]['album']['images'][0]['url']);
+
+          for(int j=0;j<data['tracks'][i]['artists'].length;j++){
+            trackArtists?.add(data['tracks'][i]['artists'][j]['name']);
+          }
+          artistNames.add(trackArtists!);
+          trackArtists=[];
           // imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
         }
+        // print(artistNames);
         // print(imgUrl);
         // DateTime now = DateTime.now(); // 30/09/2021 15:54:30
         // var dateToday = now.day.toString();
@@ -214,11 +228,13 @@ class _RecentUsersState extends State<RecentUsers> {
         // dateToday += now.year.toString();
         // if (StaticStore.dateStored != dateToday || StaticStore.m1[ind] == {}) {
         //   print(dateToday);
-          StaticStore.m1[ind].addEntries({'id': id}.entries);
-          StaticStore.m1[ind].addEntries({'name': name}.entries);
-          // StaticStore.dateStored = dateToday;
-          // StaticStore.carouselInd = ind;
-          // m1.addEntries({'date':dateOnly}.entries);
+        StaticStore.m1[ind].addEntries({'id': id}.entries);
+        StaticStore.m1[ind].addEntries({'name': name}.entries);
+        StaticStore.m1[ind].addEntries({'artists': artistNames}.entries);
+        StaticStore.m1[ind].addEntries({'trackImg': trackImg}.entries);
+        // StaticStore.dateStored = dateToday;
+        // StaticStore.carouselInd = ind;
+        // m1.addEntries({'date':dateOnly}.entries);
         // }
         // return;
         // print();
@@ -232,13 +248,14 @@ class _RecentUsersState extends State<RecentUsers> {
     }
   }
 
-  var _useRtlText = false;
+  // var _useRtlText = false;
 
   @override
   Widget build(BuildContext context) {
     var devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
 
     var greet = greeting();
+    // print(widget.m);
     // print(widget.m?['image']);
     // s = getCategories();
     return Stack(
@@ -268,29 +285,30 @@ class _RecentUsersState extends State<RecentUsers> {
                     // ...users
                     //     .map((user) =>
                     // s = getCategories();
-                    for (int i = 0; i < 6; i++) ...{
+                    for (int i = 0;i < widget.m!['name']!.length && i < 6;i++) ...{
+                      // for (int i = 0; i<6; i++) ...{
+                      //   print('ljkjk'),
                       InkWell(
                         onTap: () async {
-
-
-
                           print("Here");
                           // await fetchUserGenre();
-                          
-
-
-
 
                           setState(() {
                             StaticStore.carouselInd = i;
                           });
 
                           await fetchAlbumSongs(widget.m?['id']?[i], i);
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumView(widget.m?['image']?[i],StaticStore.m1[i]['name'],StaticStore.m1[i]['id'])));
-
-
-
-
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AlbumView(
+                                  widget.m?['image']?[i],
+                                  StaticStore.m1[i]['name'],
+                                  widget.m?['trackName']?[i],
+                                  StaticStore.m1[i]['id'],
+                                  StaticStore.m1[i]['artists'],
+                                  StaticStore.m1[i]['trackImg']
+                                  // widget.m?['artists']?[i],
+                                  
+                              )));
 
                           // });
                         },
@@ -333,43 +351,45 @@ class _RecentUsersState extends State<RecentUsers> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                      height: 30,
-                                      // width:auto,
-                                      child:
-                                          // Text("hello",style:TextStyle(color:Colors.white)),
-                                          // Marquee(
-                                          //   text: '${widget.m?['name']?[i]}',style:TextStyle(color:Colors.white),
-                                          //   velocity: 4,
-                                          // ),
+                                    height: 30,
+                                    // width:auto,
+                                    child:
+                                        // Text("jejk"),
+                                        // Text("${widget.m?['name']?[i]}"),
 
-                                          Text("${widget.m?['name']?[i]}"),
+                                        // Text("hello",style:TextStyle(color:Colors.white)),
+                                        Marquee(
+                                      text: '${widget.m?['trackName']?[i]}   ',
+                                      // text: 'hi   ',
 
-                                      //     Marquee(
-                                      //   key: Key("$_useRtlText"),
-                                      //   text: "${widget.m?['name']?[i]}",
-                                      //   style: TextStyle(
-                                      //       fontWeight: FontWeight.bold),
-                                      //   scrollAxis: Axis.horizontal,
-                                      //   crossAxisAlignment:
-                                      //       CrossAxisAlignment.start,
-                                      //   blankSpace: 20,
-                                      //   velocity: 10,
-                                      //   // pauseAfterRound: Duration(seconds: 1),
-                                      //   showFadingOnlyWhenScrolling: true,
-                                      //   fadingEdgeStartFraction: 0.1,
-                                      //   fadingEdgeEndFraction: 0.1,
-                                      //   // numberOfRounds: 3,
-                                      //   startPadding: 10,
-                                      //   // accelerationDuration: Duration(seconds: 1),
-                                      //   // accelerationCurve: Curves.linear,
-                                      //   // decelerationDuration: Duration(milliseconds: 500),
-                                      //   // decelerationCurve: Curves.easeOut,
-                                      //   // textDirection: _useRtlText ? TextDirection.rtl : TextDirection.ltr,
-                                      //   textDirection: TextDirection.ltr,
-                                      // )
-                                      
-                                      
-                                      ),
+                                      style: TextStyle(color: Colors.white),
+                                      velocity: 4,
+                                    ),
+
+                                    //     Marquee(
+                                    //   key: Key("$_useRtlText"),
+                                    //   text: "${widget.m?['name']?[i]}",
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold),
+                                    //   scrollAxis: Axis.horizontal,
+                                    //   crossAxisAlignment:
+                                    //       CrossAxisAlignment.start,
+                                    //   blankSpace: 20,
+                                    //   velocity: 10,
+                                    //   // pauseAfterRound: Duration(seconds: 1),
+                                    //   showFadingOnlyWhenScrolling: true,
+                                    //   fadingEdgeStartFraction: 0.1,
+                                    //   fadingEdgeEndFraction: 0.1,
+                                    //   // numberOfRounds: 3,
+                                    //   startPadding: 10,
+                                    //   // accelerationDuration: Duration(seconds: 1),
+                                    //   // accelerationCurve: Curves.linear,
+                                    //   // decelerationDuration: Duration(milliseconds: 500),
+                                    //   // decelerationCurve: Curves.easeOut,
+                                    //   // textDirection: _useRtlText ? TextDirection.rtl : TextDirection.ltr,
+                                    //   textDirection: TextDirection.ltr,
+                                    // )
+                                  ),
                                   // Text(
                                   //   // user.name!,
                                   //   widget.m['name'][i],
