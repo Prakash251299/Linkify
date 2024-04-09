@@ -49,12 +49,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         create: (context) => SearchResultsCubit(),
         child: BlocBuilder<SearchResultsCubit, SearchResultsState>(
             builder: (context, state) {
-          print("called again");
-          if (state.songs.length != 0) {
+          // print("called again");
+          // if (state.songs.length != 0) {
             // print(state.songs[0].artists.toString());
             // artists = state.songs[i].artists.toString().replaceAll('[', "");
             // artists = artists.replaceAll(']', "");
-            print(artists);
+            // print(artists);
             // state.replaceAll(RegExp('['), ''),
             // if(state.songs[0].artists.length>=2){
             //   artists = state.songs[0].artists[0]+state.songs[0].artists[1];
@@ -62,7 +62,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
             //   artists = state.songs[0].artists[0];
             // }
             // print(artists);
-          }
+          // }
           return
               // SizedBox();
               Scaffold(
@@ -91,7 +91,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   body: Builder(
                     builder: (context) {
                       if (state.status == LoadPage.loading) {
-                        print("Loading");
+                        // print("Loading");
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
@@ -100,7 +100,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         // if (state.isNull) {
                         //   return RecentSearch();
                         // } else if (state.isSong) {
-                        print("Loaded");
+                        // print("Loaded");
                         return
                             // SizedBox();
                             ListView.builder(
@@ -114,7 +114,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                   //     state.songs[i].songname;
                                   return InkWell(
                                     onTap: () async {
-                                      print("Clicked searching.....");
+                                      // print("Clicked searching.....");
                                       if (state.songs.length > 0) {
                                         if (StaticStore.playing == false) {
                                           // if(StaticStore.pause==true){
@@ -140,7 +140,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                               state.songs[i].name) {
                                             await _youtubePlayer.youtubePause();
                                             // StaticStore.pause = true;
-                                            print("same");
+                                            // print("same");
                                             setState(() {
                                               StaticStore.playing = false;
                                             });

@@ -8,13 +8,19 @@ import 'package:flutter/material.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/widgets/album_song_screen.dart';
+import 'package:linkify/widgets/music_screen.dart';
+import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
 class AlbumView extends StatefulWidget {
   var albumImg;
+  var albumName;
   List<String> name;
   List<String> id;
-  AlbumView(this.albumImg, this.name, this.id);
+  List<List<String>> trackArtists;
+  List<String> trackImg;
+  AlbumView(this.albumImg, this.name, this.albumName, this.id, this.trackArtists,this.trackImg);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -59,10 +65,22 @@ class AlbumViewState extends State<AlbumView> {
     // super.initState();
   }
 
+  // SongModel getSongModel(var name, var albumImg, var id, var trackArtists){
+  //   return SongModel.fromJson({
+  //                                       // 'id':widget.id[position],
+  //                                       'name':name,
+  //                                       'imgUrl':albumImg,
+  //                                       'id':id,
+  //                                       'artists':trackArtists,
+  //                                       });
+  //                                       // return;
+
+  // }
+
   double _counter = 0;
   @override
   Widget build(BuildContext context) {
-    var _extraScrollSpeed = 0;
+    // var _extraScrollSpeed = 0;
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
     ScrollController _scrollController = ScrollController();
     var mq = MediaQuery.of(context).size;
@@ -74,6 +92,8 @@ class AlbumViewState extends State<AlbumView> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    // print(widget.trackArtists[0]);
+    // return SizedBox();
     return Scaffold(
       body: Center(
         child: Container(
@@ -92,24 +112,27 @@ class AlbumViewState extends State<AlbumView> {
                           child: Opacity(
                             opacity: 1 - _counter / 200,
                             // opacity:0.7,
-                            child: CachedNetworkImage(
-                              // imageUrl: user.avatar!,
-                              // imageUrl: 'asset/dsa.png',
-                              imageUrl: widget.albumImg,
-                              // imageUrl: "",
-
+                            child:
+                            Image.network(
+                              widget.albumImg,
+                              fit: BoxFit.fill,
                               width: 300 - _counter < 70 ? 70 : 300 - _counter,
                               height: 300 - _counter < 70 ? 70 : 300 - _counter,
-                              memCacheHeight: (55 * devicePexelRatio).round(),
-                              memCacheWidth: (55 * devicePexelRatio).round(),
-                              maxHeightDiskCache:
-                                  (55 * devicePexelRatio).round(),
-                              maxWidthDiskCache:
-                                  (55 * devicePexelRatio).round(),
-                              progressIndicatorBuilder: (context, url, l) =>
-                                  const LoadingImage(),
-                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context, Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
                             ),
+
+                           
                           )))
                   : SizedBox(),
 
@@ -126,7 +149,7 @@ class AlbumViewState extends State<AlbumView> {
                         // leading: Icon(Icons.arrow_back,color: Colors.white,),
                         leading: SizedBox(),
                         title: Text(
-                          "${widget.name}",
+                          "${widget.albumName}",overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.black,
@@ -155,8 +178,9 @@ class AlbumViewState extends State<AlbumView> {
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       // shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      // physics: NeverScrollableScrollPhysics(),
+                      // physics: ClampingScrollPhysics(),
+                      // physics: BouncingScrollPhysics(),
+                      physics: AlwaysScrollableScrollPhysics(),
                       // itemCount: 100,
                       itemCount: widget.name.length,
                       // itemCount: m['name'].length!=0?m['name'].length:10,
@@ -177,27 +201,56 @@ class AlbumViewState extends State<AlbumView> {
 
                               InkWell(
                                 borderRadius: BorderRadius.circular(15),
-                                onTap: () {
+                                onTap: () async {
                                   if (StaticStore.playing == true) {
                                     // stop song
                                     if (ind == position) {
-                                      _player.youtubePause();
+                                      await _player.youtubePause();
                                       setState(() {
                                         StaticStore.playing = false;
                                       });
                                     } else {
-                                      _player.youtubeStop();
-                                      _player.youtubePlay(widget.name[position]);
+                                      await _player.youtubeStop();
+                                      await _player.youtubePlay(widget.name[position]);
                                       StaticStore.currentSong = widget.name[position];
+                                      // SongModel s = getSongModel(
+                                      //   widget.name[position],
+                                      //   widget.albumImg[position],
+                                      //   widget.id[position],
+                                      //   widget.trackArtists[position],
+                                      // );
+
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                        widget.name[position],
+                                        widget.albumImg[position],
+                                        widget.id[position],
+                                        widget.trackArtists[position],
+                                        // widget.trackImg[position]
+                                        widget.trackImg[position]
+                                      )));
                                     }
                                   } else {
                                     // play song
                                     if (ind == position) {
-                                      _player.youtubeResume();
+                                      await _player.youtubeResume();
                                     } else {
-                                      _player
-                                          .youtubePlay(widget.name[position]);
+                                      await _player.youtubePlay(widget.name[position]);
                                           StaticStore.currentSong = widget.name[position];
+
+                                          // SongModel s = getSongModel(
+                                            // widget.name[position],
+                                            // widget.albumImg[position],
+                                            // widget.id[position],
+                                            // widget.trackArtists[position],
+                                          // );
+
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                            widget.name[position],
+                                            widget.albumImg[position],
+                                            widget.id[position],
+                                            widget.trackArtists[position],
+                                            widget.trackImg[position]
+                                          )));
                                     }
                                     setState(() {
                                       StaticStore.playing = true;
@@ -227,8 +280,8 @@ class AlbumViewState extends State<AlbumView> {
                                               CachedNetworkImage(
                                             // imageUrl: user.avatar!,
 
-                                            // imageUrl: "${widget.imgUrl}",
-                                            imageUrl: "",
+                                            imageUrl: "${widget.trackImg[position]}",
+                                            // imageUrl: "",
 
                                             width: 55,
                                             height: 55,
@@ -255,15 +308,25 @@ class AlbumViewState extends State<AlbumView> {
                                   // title: Text(widget.user.name),
                                   title: Text(
                                     "${widget.name[position]}",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  subtitle: Row(children: [
-                                    Column(children: [
-                                      Text("Kya haal hai",
-                                          style:
-                                              TextStyle(color: Colors.white70)),
-                                    ]),
-                                  ]),
+                                  subtitle: 
+                                  // Expanded(child:
+                                  // Column(children: [
+                                    // Expanded(child:
+                                    // Column(children: [
+                                      widget.trackArtists[position].length>1?
+                                      Text('${widget.trackArtists[position][0]}, ${widget.trackArtists[position][1]}',overflow: TextOverflow.ellipsis,
+                                      style:TextStyle(color: Colors.white70)
+                                              ):
+                                      Text('${widget.trackArtists[position][0]}',overflow: TextOverflow.ellipsis,
+                                          style:TextStyle(color: Colors.white70)
+                                      ),
+                                    // ]),
+                                    // ),
+                                  // ]),
+                                  // ),
                                   isThreeLine: true,
                                   trailing: Column(
                                       mainAxisAlignment:
