@@ -1,7 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/widgets/album_song_screen.dart';
+import 'package:linkify/widgets/sticky_widgets.dart';
+import 'package:linkify/widgets/uis/screens/library/library.dart';
+import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 import '../../utils/horizontal_songs_list.dart';
@@ -15,6 +22,37 @@ class HomeScreen extends StatelessWidget {
     Key? key,
     // required this.con,
   }) : super(key: key);
+
+  // Widget footer(var context){
+  //   return Container(
+  //     padding: EdgeInsets.only(left:20,right:20),
+  //               color:Colors.black,
+  //               child:
+  //             Row(children: [
+  //                 IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => HomeScreen(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //                 Spacer(),
+  //                 IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => SearchPage(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //                 Spacer(),
+  //                 IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => Library(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //             ])
+  //             );
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +155,24 @@ class HomeScreen extends StatelessWidget {
               ),
               ),
               ),
-              StaticStore.musicScreenEnabled==true?
-              miniplayer():SizedBox(),
+              
+              // StaticStore.player.processingState==ProcessingState.completed?
+              StreamBuilder(
+                stream: StaticStore.player.playerStateStream,
+                builder: (context, snapshot1) {
+                  return 
+                  StaticStore.playing == true || StaticStore.pause==true?
+                  MyStickyWidgets.miniplayer(context)
+                  : const SizedBox();
+                }
+              ),
+              MyStickyWidgets.footer(context),
+              // StaticStore.player.playerStateStream.listen((event) {},)
+              // StaticStore.playing == true || StaticStore.pause==true?
+              // miniplayer()
+              // : const SizedBox(),
               // Container(color:Colors.red,width: 100,height: 100,),
+              
              
               ]),
               
@@ -149,85 +202,102 @@ class HomeScreen extends StatelessWidget {
       // ),
     // );
   }
+
+
   
-  Widget miniplayer() {
-    return Container(
-      color: Colors.black87,
-      height: 60,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        // itemCount: list.length,
-        itemBuilder: ((context, index) {
-          // bool last = list.length == (index + 1);
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              // right: last ? 16 : 0,
-              // right: 16,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // img
-                Container(
-                  // width: 150,
-                  // height: 80,
+  
+  // Widget miniplayer(var context) {
+  //   return 
+  //   GestureDetector(child:
+  //   Container(
+  //     color: const Color.fromARGB(221, 66, 37, 37),
+  //     height: 60,
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       // itemCount: list.length,
+  //       itemBuilder: ((context, index) {
+  //         // bool last = list.length == (index + 1);
+  //         return Padding(
+  //           padding: EdgeInsets.only(
+  //             left: 16,
+  //             // right: last ? 16 : 0,
+  //             // right: 16,
+  //           ),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               // img
+  //               Container(
+  //                 // width: 150,
+  //                 // height: 80,
                   
-                  decoration: BoxDecoration(
-                    color: Colors.red,
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.red,
                     
-                    // image: DecorationImage(
-                        // image: NetworkImage(list[index].img),
-                        // fit: BoxFit.cover),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                // name
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: 
-                  Text(
-                    "hello",
-                    // list[index].title,
-                      style: const TextStyle(
-                          color: Color(0xffffffff),
-                          fontWeight: FontWeight.w700,
-                          fontFamily: "Raleway",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 13.0,
-                          overflow: TextOverflow.ellipsis),
-                      maxLines: 2,
-                      textAlign: TextAlign.left),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                // show-creator
-                SizedBox(
-                  width: 135,
-                  child: Text(
-                    // list[index].creator ?? '',
-                    "ka ho",
-                      style: const TextStyle(
-                          color: Color(0xffb3b3b3),
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Raleway",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 13.0,
-                          overflow: TextOverflow.ellipsis),
-                      maxLines: 1,
-                      textAlign: TextAlign.left),
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
+  //                   // image: DecorationImage(
+  //                       // image: NetworkImage(list[index].img),
+  //                       // fit: BoxFit.cover),
+  //                 ),
+  //               ),
+  //               const SizedBox(
+  //                 height: 12,
+  //               ),
+  //               // name
+  //               SizedBox(
+  //                 width: MediaQuery.of(context).size.width,
+  //                 child: 
+  //                 Text(
+  //                   // "hello",
+  //                   "${StaticStore.currentSong}",
+  //                   // list[index].title,
+  //                     style: const TextStyle(
+  //                         color: Color(0xffffffff),
+  //                         fontWeight: FontWeight.w700,
+  //                         fontFamily: "Raleway",
+  //                         fontStyle: FontStyle.normal,
+  //                         fontSize: 13.0,
+  //                         overflow: TextOverflow.ellipsis),
+  //                     maxLines: 2,
+  //                     textAlign: TextAlign.left),
+  //               ),
+  //               const SizedBox(
+  //                 height: 4,
+  //               ),
+  //               // show-creator
+  //               SizedBox(
+  //                 width: 135,
+  //                 child: Text(
+  //                   // list[index].creator ?? '',
+
+  //                   // "jasjkd",
+
+
+
+  //                   StaticStore.currentArtists.length>1?
+  //                   "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}":"${StaticStore.currentArtists[0]}",
+  //                     style: const TextStyle(
+  //                         color: Color(0xffb3b3b3),
+  //                         fontWeight: FontWeight.w500,
+  //                         fontFamily: "Raleway",
+  //                         fontStyle: FontStyle.normal,
+  //                         fontSize: 13.0,
+  //                         // overflow: TextOverflow.ellipsis
+  //                         ),
+  //                     maxLines: 1,
+  //                     textAlign: TextAlign.left),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       }),
+  //     ),
+  //   ),
+  //   onTap: (){
+  //     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
+
+  //     Navigator.of(context).push(MaterialPageRoute(builder: ((context) => AlbumSongScreen(StaticStore.currentSong, StaticStore.currentSong, StaticStore.currentArtists, StaticStore.currentSongImg))));
+  //   },
+  //   );
+  // }
 
 }
-
-

@@ -2,13 +2,19 @@
 
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 // import 'package:get/get.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/widgets/album_player_button.dart';
 // import 'package:linkify/widgets/player_buttons.dart';
 import 'package:linkify/widgets/seekbar.dart';
+import 'package:linkify/widgets/sticky_widgets.dart';
+import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
+import 'package:linkify/widgets/uis/screens/library/library.dart';
+import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 // import 'package:linkify/widgets/uis/methods/log.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:rxdart/rxdart.dart' as rxdart;
@@ -20,13 +26,15 @@ class AlbumSongScreen extends StatefulWidget {
   // widget.id[position],
   // widget.trackArtists[position],
   var name;
-  var albumImg;
+  // var albumImg;
   var id;
   var trackArtists;
   var trackImg;
 
   AlbumSongScreen(
-    this.name,this.albumImg,this.id,this.trackArtists,this.trackImg
+    this.name,
+    // this.albumImg,
+    this.id,this.trackArtists,this.trackImg
   );
   // SongScreen({Key? key}) : super(key: key),this.songs;
 
@@ -102,7 +110,7 @@ class _SongScreenState extends State<AlbumSongScreen> {
           const _BackgroundFilter(),
           _MusicPlayer(
             widget.name,
-            widget.albumImg,
+            // widget.albumImg,
             widget.id,
             widget.trackArtists,
             widget.trackImg
@@ -110,7 +118,7 @@ class _SongScreenState extends State<AlbumSongScreen> {
 
           Padding(
             padding: const EdgeInsets.only(
-              bottom: 200.0,
+              bottom: 270.0,
               left:20,
               right:20,
               // vertical: 200.0,
@@ -158,23 +166,57 @@ class _SongScreenState extends State<AlbumSongScreen> {
 class _MusicPlayer extends StatelessWidget {
   // SongModel songs;
   var name;
-  var albumImg;
+  // var albumImg;
   var id;
   var trackArtists;
   var trackImg;
   _MusicPlayer(
     this.name,
-            this.albumImg,
+            // this.albumImg,
             this.id,
             this.trackArtists,
             this.trackImg
             );
+
+
+  //   Widget footer(var context){
+  //   return Container(
+  //     padding: EdgeInsets.only(left:20,right:20),
+  //               color:Colors.black,
+  //               child:
+  //             Row(children: [
+  //                 IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => HomeScreen(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //                 Spacer(),
+  //                 IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => SearchPage(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //                 Spacer(),
+  //                 IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
+  //                   Navigator.of(context).push(
+  //                   MaterialPageRoute(
+  //                       builder: (_) => Library(),
+  //                       )).then((value) => Navigator.pop(context));
+  //                 },),
+  //             ])
+  //             );
+  // }
+
+
   @override
   Widget build(BuildContext context) {
+    // StaticStore.currentArtists.add(trackArtists);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20.0,
-        // vertical: 50.0,
+        // vertical: 10.0,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -212,16 +254,12 @@ class _MusicPlayer extends StatelessWidget {
           //     return 
               // create the seekbar here
               // SizedBox(),
-              SeekBar(
-                // position: positionData?.position ?? Duration.zero,
-                // duration: positionData?.duration ?? Duration.zero,
-                // onChangeEnd: audioPlayer.seek,
-              ),
+              SeekBar(),
           //   },
           // ),
           AlbumPlayerButtons(
             this.name,
-            this.albumImg,
+            // this.albumImg,
             this.id,
             this.trackArtists,
             this.trackImg,
@@ -246,8 +284,32 @@ class _MusicPlayer extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+
             ],
           ),
+          MyStickyWidgets.footer(context),
+          // Row(children: [
+          //     IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
+          //       Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //           builder: (_) => HomeScreen(),
+          //           )).then((value) => Navigator.pop(context));
+          //     },),
+          //     Spacer(),
+          //     IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
+          //       Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //           builder: (_) => SearchPage(),
+          //           )).then((value) => Navigator.pop(context));
+          //     },),
+          //     Spacer(),
+          //     IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
+          //       Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //           builder: (_) => Library(),
+          //           )).then((value) => Navigator.pop(context));
+          //     },),
+          // ]),
         ],
       ),
     );

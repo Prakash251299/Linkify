@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/widgets/uis/utils/sliver_appbar.dart';
 
 class PlaySpotifySong{
   // void playTrack(var id){
@@ -11,11 +12,11 @@ class PlaySpotifySong{
   AudioPlayer a = AudioPlayer();
   YoutubeSongPlayer _player = YoutubeSongPlayer();
 
-  Future<void> playTrack(var name) async {
+  Future<void> playTrack(var name,var artistName) async {
 
     // ReadWrite _readWrite = ReadWrite();
     // var accessToken = await _readWrite.getAccessToken();
-    _player.youtubePlay(name);
+    _player.youtubePlay(name,artistName);
     // await a.setUrl('https://api.spotify.com/v1/tracks/6OmhkSOpvYBokMKQxpIGx2?access_token=$accessToken');
     // await a.play();
 

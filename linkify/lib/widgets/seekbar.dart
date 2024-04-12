@@ -31,7 +31,7 @@ class SeekBar extends StatefulWidget {
 }
 
 class _SeekBarState extends State<SeekBar> {
-  double? _dragValue;
+  // double? _dragValue;
 
   // String _formatDuration(Duration? duration) {
   //   if (duration == null) {
@@ -47,6 +47,27 @@ class _SeekBarState extends State<SeekBar> {
   @override
   Widget build(BuildContext context) {
     return 
+
+
+//     ProgressBar(
+//   progress: StaticStore.player.position,
+//   // buffered: ,
+//   total: StaticStore.player.duration as Duration,
+//   progressBarColor: Colors.red,
+//   baseBarColor: Colors.white.withOpacity(0.24),
+//   bufferedBarColor: Colors.white.withOpacity(0.24),
+//   thumbColor: Colors.white,
+//   barHeight: 3.0,
+//   thumbRadius: 5.0,
+//   onSeek: (dur) {
+//     print(dur);
+//     // _player.seek(duration);
+//   },
+// );
+
+
+
+
     // Row(
     //   children: [
 
@@ -55,9 +76,9 @@ class _SeekBarState extends State<SeekBar> {
         //   style:TextStyle(color:Colors.white),
         // ),
 
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:[ 
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children:[ 
 
 
 
@@ -137,7 +158,7 @@ class _SeekBarState extends State<SeekBar> {
 
 
 
-                  Duration duration = StaticStore.player.duration as Duration;
+                  // Duration duration = StaticStore.player.duration as Duration;
                   // print(duration);
                   // const Duration duration = Duration(seconds: 0);
                   // final Duration duration = SongDataController.loaded
@@ -241,12 +262,15 @@ class _SeekBarState extends State<SeekBar> {
                           // height: 10,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ProgressBar(
+                            child: 
+                            
+                            ProgressBar(
                               // progress: duration,
                               progress: StaticStore.player.position,
-                              // thumbGlowColor: Colors.red,
+                              thumbGlowColor: Colors.red,
                               total: 
                               StaticStore.player.duration as Duration,
+                              // duration:duration,
                               // StaticStore.player.duration ??
                               //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
                                   // Duration(seconds: songList[0].duration!),
@@ -261,12 +285,15 @@ class _SeekBarState extends State<SeekBar> {
                               baseBarColor: Colors.grey[200],
                               bufferedBarColor: Colors.grey[350],
                               thumbColor: Colors.red,
+  //                             onSeek: (duration) {
+  //   print('User selected a new time: $duration');
+  // },
                               onSeek: 
                               // SongDataController.loaded
                                   // ? 
-                                  (duration) async {
+                                  (d) async {
                                       await StaticStore.player
-                                          .seek(duration);
+                                          .seek(d);
                                     }
                                   // : null,
                             ),
@@ -300,7 +327,7 @@ class _SeekBarState extends State<SeekBar> {
 
 
                       });
-                }),
+                });
 
 
 
@@ -478,7 +505,7 @@ class _SeekBarState extends State<SeekBar> {
         // // song duration
         // Text("3:00",style:TextStyle(color:Colors.white)),
         // Text(_formatDuration(widget.duration)),
-      ],
-    );
+    //   ],
+    // );
   }
 }
