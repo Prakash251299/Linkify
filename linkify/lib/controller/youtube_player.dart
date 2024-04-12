@@ -8,9 +8,10 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YoutubeSongPlayer{
   // static AudioPlayer player = AudioPlayer();
-  Future<void> youtubePlay(String songName) async {
+  Future<void> youtubePlay(String songName,String artist) async {
     if(songName!=""){
-      songName+=" lyrics";
+      songName+=" $artist lyrics";
+      // songName+=" lyrics";
         try{
           final yt = YoutubeExplode();
           // final querySuggestions = (await yt.search.getQuerySuggestions(songName)).first;

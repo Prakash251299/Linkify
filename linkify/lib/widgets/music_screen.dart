@@ -88,11 +88,11 @@ class _SongScreenState extends State<SongScreen> {
             // fit: BoxFit.cover,
           // ),
           const _BackgroundFilter(),
-          // _MusicPlayer(
-          //   widget.songs,
-          //   // seekBarDataStream: _seekBarDataStream,
-          //   // audioPlayer: audioPlayer,
-          // ),
+          _MusicPlayer(
+            widget.songs,
+            // seekBarDataStream: _seekBarDataStream,
+            // audioPlayer: audioPlayer,
+          ),
 
 
 
@@ -150,6 +150,7 @@ class _MusicPlayer extends StatelessWidget {
   _MusicPlayer(this.songs);
   @override
   Widget build(BuildContext context) {
+    // StaticStore.currentArtists.add(songs.artists);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20.0,

@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:spotify/spotify.dart';
 
 class StaticStore{
   static var carouselLength = 6;
@@ -23,8 +24,11 @@ class StaticStore{
   static var playingCarouselInd = -10;
   static var playing = false;
   static var currentSong = "";
+  static var currentSongImg = "";
+  static var currentArtists = [];
   static var pause = false;
   static AudioPlayer player = AudioPlayer();
   static var musicScreenEnabled = false;
+  // SpotifyApi s = SpotifyApi(credentials);
 
 }

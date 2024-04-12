@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/uis/models/song_model.dart';
@@ -65,7 +65,7 @@ class _PlayerButtonsState extends State<PlayerButtons> {
         IconButton(
           onPressed: () {},
           //           // audioPlayer.hasPrevious ? audioPlayer.seekToPrevious : null,
-          //       // iconSize: 45,
+          iconSize: 45,
           icon: const Icon(
             Icons.skip_previous,
             color: Colors.white,
@@ -102,8 +102,10 @@ class _PlayerButtonsState extends State<PlayerButtons> {
               } else {
                 await _youtubePlayer.youtubeStop();
                 // _youtubePlayer.youtubePlay(state.songs[i].name);
-                await _youtubePlayer.youtubePlay(widget.songs.name);
+                await _youtubePlayer.youtubePlay(widget.songs.name,widget.songs.artists[0]);
                 StaticStore.currentSong = widget.songs.name;
+                StaticStore.currentSongImg = widget.songs.imgUrl;
+                StaticStore.currentArtists = List.from(widget.songs.artists);
 
               }
               setState(() {
@@ -122,8 +124,10 @@ class _PlayerButtonsState extends State<PlayerButtons> {
                 // StaticStore.pause = true;
                 // }else{
                 await _youtubePlayer.youtubeStop();
-                await _youtubePlayer.youtubePlay(widget.songs.name);
+                await _youtubePlayer.youtubePlay(widget.songs.name,widget.songs.artists[0]);
                 StaticStore.currentSong = widget.songs.name;
+                StaticStore.currentSongImg = widget.songs.imgUrl;
+                StaticStore.currentArtists = List.from(widget.songs.artists);
                 setState(() {
                   StaticStore.playing = true;
                 });

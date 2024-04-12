@@ -45,19 +45,75 @@ class _AppState extends State<App> {
     super.initState();
   }
 
+  // List<IconButton> _navBarsItems1(){
+  //   return [
+  //     IconButton(
+  //       onPressed: (){}, 
+  //       icon: const Icon(Icons.home)
+  //     ),
+  //     IconButton(
+  //       onPressed: (){}, 
+  //       icon: const Icon(Icons.search)
+  //     ),
+  //     IconButton(
+  //       onPressed: (){}, 
+  //       icon: const Icon(Icons.library_music)
+  //     )
+  //   ];
+  // }
+
+  // List<routeAndNavigatorSettings> _navBarsItems() {
+
+  // }
+  
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
+      
       PersistentBottomNavBarItem(
+          // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
+          //   Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //       builder: (_) => HomeScreen(),
+          //       )).then((value) => Navigator.pop(context));
+          // },),
           icon: const Icon(Icons.home),
           inactiveIcon: const Icon(LineIcons.home),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
+          // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
+          //   Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //       builder: (_) => 
+          //       SearchPage()
+          //       // AppStateManager.persistentTabController.jumpToTab(0);
+          //       ));
+          // },),
+          // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+          onPressed: (_){
+            PersistentTabController p = PersistentTabController();
+            print("hello");
+            // p.jumpToTab(1);
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(
+                builder: (BuildContext context) {
+                  return SearchPage();
+                },
+              ),
+              (_) => false,
+            );
+          },
           icon: const Icon(CupertinoIcons.search),
           inactiveIcon: const Icon(CupertinoIcons.search),
           activeColorSecondary: Colors.white,
           activeColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
+          // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
+          //   Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //       builder: (_) => Library(),
+          //       )).then((value) => Navigator.pop(context));
+          // },),
           icon: const Icon(CupertinoIcons.music_albums),
           inactiveIcon: const Icon(CupertinoIcons.music_albums),
           activeColorSecondary: Colors.white,
@@ -69,10 +125,11 @@ class _AppState extends State<App> {
     return [HomeScreen(), const SearchPage(), Library()];
   }
 
-  CallApi _callApi = CallApi();
+  // CallApi _callApi = CallApi();
   @override
   Widget build(BuildContext context) {
     return 
+    HomeScreen();
     // Column(
     //   mainAxisAlignment: MainAxisAlignment.center,
     //   children:[ 
@@ -140,6 +197,17 @@ class _AppState extends State<App> {
             navBarStyle: NavBarStyle.simple,
             navBarHeight: 55,
             padding: const NavBarPadding.all(0),
+
+            // handleAndroidBackButtonPress: true,
+            // hideNavigationBarWhenKeyboardShows: true,
+            // // resizeToAvoidBottomInset: false,
+            // popAllScreensOnTapOfSelectedTab: false,
+            // popActionScreens: PopActionScreensType.values[0],
+            // navBarStyle: NavBarStyle.simple,
+
+
+
+
           );
         }));
   }

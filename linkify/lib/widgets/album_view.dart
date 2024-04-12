@@ -3,14 +3,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 // import 'package:http/http.dart';
 // import 'package:linkify/controller/accesstoken_error.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/album_song_screen.dart';
-import 'package:linkify/widgets/music_screen.dart';
-import 'package:linkify/widgets/uis/models/song_model.dart';
+// import 'package:linkify/widgets/music_screen.dart';
+// import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
 class AlbumView extends StatefulWidget {
@@ -211,18 +212,25 @@ class AlbumViewState extends State<AlbumView> {
                                       });
                                     } else {
                                       await _player.youtubeStop();
-                                      await _player.youtubePlay(widget.name[position]);
+                                      await _player.youtubePlay(widget.name[position],widget.trackArtists[position][0]);
                                       StaticStore.currentSong = widget.name[position];
+                                      StaticStore.currentSongImg = widget.trackImg[position];
+                                      StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+
                                       // SongModel s = getSongModel(
+                                      // StaticStore.currentArtists.add(widget.trackArtists[position]);
                                       //   widget.name[position],
                                       //   widget.albumImg[position],
                                       //   widget.id[position],
                                       //   widget.trackArtists[position],
                                       // );
 
+                                      // print(StaticStore.player.playerState);
+                                      // return;
+
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
                                         widget.name[position],
-                                        widget.albumImg[position],
+                                        // widget.albumImg[position],
                                         widget.id[position],
                                         widget.trackArtists[position],
                                         // widget.trackImg[position]
@@ -230,12 +238,17 @@ class AlbumViewState extends State<AlbumView> {
                                       )));
                                     }
                                   } else {
+
+                                    // print(StaticStore.player.playerState);
+                                    // return;
                                     // play song
                                     if (ind == position) {
                                       await _player.youtubeResume();
                                     } else {
-                                      await _player.youtubePlay(widget.name[position]);
-                                          StaticStore.currentSong = widget.name[position];
+                                      // await _player.youtubePlay(widget.name[position]);
+                                      //     StaticStore.currentSong = widget.name[position];
+                                      // StaticStore.currentSongImg = widget.trackImg[position];
+                                      //     StaticStore.currentArtists = List.from(widget.trackArtists[position]);
 
                                           // SongModel s = getSongModel(
                                             // widget.name[position],
@@ -243,14 +256,88 @@ class AlbumViewState extends State<AlbumView> {
                                             // widget.id[position],
                                             // widget.trackArtists[position],
                                           // );
+                                      //     print(StaticStore.player.playerState);
+                                      // return;
 
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+
+
+                                      StaticStore.player.playerStateStream.listen((state) {
+                                        if (state.playing){} else
+                                        switch (state.processingState) {
+                                          case ProcessingState.idle: {
+                                            Scaffold(
+                                              body: Center(
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          }
+                                          case ProcessingState.loading: {
+                                            Scaffold(
+                                              body: Center(
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          }
+                                          case ProcessingState.buffering: {
+                                            Scaffold(
+                                              body: Center(
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          }
+                                          case ProcessingState.ready: {
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
                                             widget.name[position],
-                                            widget.albumImg[position],
+                                            // widget.albumImg[position],
                                             widget.id[position],
                                             widget.trackArtists[position],
                                             widget.trackImg[position]
                                           )));
+                                          }
+                                          case ProcessingState.completed: {}
+                                        }
+                                      });
+
+
+
+                                      // StaticStore.player.playerStateStream.listen((state) {
+                                      //   if(state.processingState!=ProcessingState.ready){
+                                      //     Scaffold(
+                                      //       body: Center(
+                                      //         child: CircularProgressIndicator(),
+                                      //       ),
+                                      //     );
+                                      //     // _player.youtubePlay(widget.name[position]);
+                                      //     // StaticStore.currentSong = widget.name[position];
+                                      // StaticStore.currentSongImg = widget.trackImg[position];
+                                      //     // StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+                                      //   }else{
+                                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                      //       widget.name[position],
+                                      //       widget.albumImg[position],
+                                      //       widget.id[position],
+                                      //       widget.trackArtists[position],
+                                      //       widget.trackImg[position]
+                                      //     )));
+
+                                      //   }
+                                      // });
+
+
+
+                                      // _player.youtubePlay(widget.name[position]);
+                                      _player.youtubePlay(widget.name[position],widget.trackArtists[position][0]);
+                                      StaticStore.currentSong = widget.name[position];
+                                      StaticStore.currentSongImg = widget.trackImg[position];
+                                      StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+
+                                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                          //   widget.name[position],
+                                          //   widget.albumImg[position],
+                                          //   widget.id[position],
+                                          //   widget.trackArtists[position],
+                                          //   widget.trackImg[position]
+                                          // )));
                                     }
                                     setState(() {
                                       StaticStore.playing = true;

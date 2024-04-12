@@ -14,7 +14,9 @@ class AlbumPlayerButtons extends StatefulWidget {
   var id;
   var trackArtists;
   var trackImg;
-  AlbumPlayerButtons(this.name,this.albumImg,this.id,this.trackArtists,this.trackImg);
+  AlbumPlayerButtons(this.name,
+  // this.albumImg,
+  this.id,this.trackArtists,this.trackImg);
   // const PlayerButtons({super.key});
 
   @override
@@ -70,6 +72,7 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
           },
           //           // audioPlayer.hasPrevious ? audioPlayer.seekToPrevious : null,
           //       // iconSize: 45,
+          iconSize: 45,
           icon: const Icon(
             Icons.skip_previous,
             color: Colors.white,
@@ -100,14 +103,17 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
           onPressed: () async {
             if (StaticStore.playing == false) {
               // if(StaticStore.pause==true){
-              // StaticStore.pause=false;
+              StaticStore.pause=false;
               if (StaticStore.currentSong == widget.name) {
                 await _youtubePlayer.youtubeResume();
               } else {
                 await _youtubePlayer.youtubeStop();
                 // _youtubePlayer.youtubePlay(state.songs[i].name);
-                await _youtubePlayer.youtubePlay(widget.name);
+                await _youtubePlayer.youtubePlay(widget.name,widget.trackArtists[0]);
                 StaticStore.currentSong = widget.name;
+                StaticStore.currentSongImg = widget.trackImg;
+                StaticStore.currentArtists = List.from(widget.trackArtists);
+
 
               }
               setState(() {
@@ -117,7 +123,7 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
             } else {
               if (StaticStore.currentSong == widget.name) {
                 await _youtubePlayer.youtubePause();
-                // StaticStore.pause = true;
+                StaticStore.pause = true;
                 print("same");
                 setState(() {
                   StaticStore.playing = false;
@@ -126,8 +132,10 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                 // StaticStore.pause = true;
                 // }else{
                 await _youtubePlayer.youtubeStop();
-                await _youtubePlayer.youtubePlay(widget.name);
+                await _youtubePlayer.youtubePlay(widget.name,widget.trackArtists[0]);
                 StaticStore.currentSong = widget.name;
+                StaticStore.currentSongImg = widget.trackImg;
+                StaticStore.currentArtists = List.from(widget.trackArtists);
                 setState(() {
                   StaticStore.playing = true;
                 });
