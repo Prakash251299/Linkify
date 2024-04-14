@@ -5,7 +5,9 @@ import 'package:linkify/controller/call_spotify.dart';
 import 'package:linkify/controller/caller.dart';
 import 'package:linkify/controller/login.dart';
 import 'package:linkify/controller/read_write.dart';
+import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/main.dart';
+import 'package:linkify/widgets/internetError.dart';
 import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:linkify/widgets/webview_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -34,6 +36,7 @@ class WebContainerState extends State<WebContainer> {
 
   ReadWrite _readWrite = ReadWrite();
   WebViewController controller = WebViewController();
+  StoreUserInfo _storeUserInfo = StoreUserInfo();
    @override
   void initState() {
     super.initState();
@@ -53,7 +56,8 @@ class WebContainerState extends State<WebContainer> {
           print("page finished");
         },
         onWebResourceError: (WebResourceError error) {
-          print("Some web error");
+          print("Probably you are not connected to the internet or your emailid need to be added on spotify developer console for debugging");
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const InternetErrorScrren()));
         },
         onNavigationRequest: (NavigationRequest request) async {
           if (request.url.startsWith("https://prakash2001.000webhostapp.com")) {
@@ -126,10 +130,11 @@ class WebContainerState extends State<WebContainer> {
   }
 
   Future<void> handleAuthorizationResponse(http.Response response) async {
+    String access_token="";
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body);
       if (data.containsKey('access_token')) {
-        String access_token = data['access_token'];
+        access_token = data['access_token'];
         print("Access token: $access_token");
         await _readWrite.writeAccessToken(access_token);
         // localStorage.setItem("access_token", access_token);
@@ -140,6 +145,7 @@ class WebContainerState extends State<WebContainer> {
         await _readWrite.writeRefreshToken(refresh_token);
         // localStorage.setItem("refresh_token", refresh_token);
       }
+      await _storeUserInfo.fetch_store_user_info();
       // onPageLoad();
     } else {
       print("Error: ${response.statusCode}");

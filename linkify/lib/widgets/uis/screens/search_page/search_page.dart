@@ -208,7 +208,7 @@ class SearchPage extends StatelessWidget {
                                         // genreName: "${StaticStore.userGenre[0].entries.elementAt(i).key}"
                   
                                         // genreName: StaticStore.userGenre[0].entries.elementAt(i).key==""?"hi":"${StaticStore.userGenre[0].entries.elementAt(i).key}"
-                                        genreName: StaticStore.userGenre[i]
+                                        genreName: StaticStore.userGenre![i]
                                         // genreName: "$i"
                                         // StaticStore.userGenre[i]
                                         );

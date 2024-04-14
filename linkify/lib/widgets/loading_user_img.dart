@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
-class LoadingImage extends StatelessWidget {
+class LoadingUserImage extends StatelessWidget {
   final double? size;
   final Icon? icon;
-  const LoadingImage({
+  const LoadingUserImage({
     Key? key,
     this.size,
     this.icon,
@@ -16,10 +16,10 @@ class LoadingImage extends StatelessWidget {
     // StreamBuilder(stream: , builder:(context, snapshot){return SizedBox();},)
     Container(
       color: Colors.grey.shade800,
-      child: icon ??
+      child: 
           Icon(
-            LineIcons.music,
-            color: Colors.black,
+            LineIcons.user,
+            color: Colors.white,
             size: size,
           ),
     );
