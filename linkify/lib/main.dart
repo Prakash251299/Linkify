@@ -61,7 +61,7 @@ Future<void> main() async {
   //   appId: "1:560723909414:web:083f845c8a02bbe2fd3fe7"
   // };
 // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 // Initialize Firebase
   // Firebase.initializeApp();
 // const app = initializeApp(firebaseConfig);
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
   SongDataController c = SongDataController();
   LoginPage loginController = LoginPage();
   // YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
-  SearchRepository _searchRepository = SearchRepository();
+  // SearchRepository _searchRepository = SearchRepository();
 
 
 
@@ -104,7 +104,7 @@ class MyApp extends StatelessWidget {
         //   color: Colors.red,
         // ),
         // MaterialApp(
-      title: 'Musive',
+      title: 'Linkify',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Proxima',

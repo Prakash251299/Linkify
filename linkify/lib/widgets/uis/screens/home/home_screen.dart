@@ -63,6 +63,7 @@ class HomeScreen extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
       // child: BlocBuilder(
         builder: (context, state) {
+          print("homescreen");
           // print(state.likedTrack?['name']);
           // return
           //  SizedBox();
