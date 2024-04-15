@@ -1,11 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:linkify/controller/call_spotify.dart';
+import 'package:linkify/controller/caller.dart';
 import 'package:linkify/controller/login.dart';
 import 'package:linkify/controller/song_data_contoller.dart';
+import 'package:linkify/controller/webview.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/cloudSongPage.dart';
 import 'package:linkify/widgets/homeNav.dart';
+import 'package:linkify/widgets/uis/models/song_model.dart';
+import 'package:linkify/widgets/uis/repositories/get_search_results.dart';
+import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
 // import 'package:prac/controller/login.dart';
 // import 'package:prac/controller/song_data_contoller.dart';
 // import 'package:prac/controller/youtube_player.dart';
@@ -35,7 +41,7 @@ import 'package:linkify/widgets/homeNav.dart';
 // import 'package:music_player1/app.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
 
 
@@ -55,7 +61,7 @@ Future<void> main() async {
   //   appId: "1:560723909414:web:083f845c8a02bbe2fd3fe7"
   // };
 // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 // Initialize Firebase
   // Firebase.initializeApp();
 // const app = initializeApp(firebaseConfig);
@@ -68,7 +74,8 @@ class MyApp extends StatelessWidget {
 
   SongDataController c = SongDataController();
   LoginPage loginController = LoginPage();
-  YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
+  // YoutubeSongPlayer _youtubeSongPlayer = YoutubeSongPlayer();
+  // SearchRepository _searchRepository = SearchRepository();
 
 
 
@@ -90,15 +97,46 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     MaterialApp(
-      home: 
+      // home: 
         // Container(
         //   height: 100,
         //   width: 100,
         //   color: Colors.red,
         // ),
+        // MaterialApp(
+      title: 'Linkify',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'Proxima',
+        canvasColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        scaffoldBackgroundColor: Colors.black,
+        splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          circularTrackColor: Colors.greenAccent[700],
+          color: Colors.greenAccent[400],
+          linearMinHeight: 10,
+        ),
+        textTheme: const TextTheme(
+          headline4: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontFamily: 'Proxima Bold',
+            fontWeight: FontWeight.w600,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        primarySwatch: Colors.blue,
+      ),
       
       
-      
+      home:
       Builder(
         builder: (context) => Center(
           child: 
@@ -115,8 +153,8 @@ class MyApp extends StatelessWidget {
 
 
 
-              if(LoginPage.loginStatus==1){ // Go to login ( implementation pending )
-               
+              // if(LoginPage.loginStatus==1){ // Go to login ( implementation pending )
+              if(SongDataController.loaded==true){
                 // if(await c.getPermission()==1)
                 // if(song_type=="cloud_song"){
                 //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CloudPlay())),
@@ -126,7 +164,8 @@ class MyApp extends StatelessWidget {
                 // }
                   // h.loadMusic(),
               }else{
-                await loginController.Login(),
+                // await loginController.Login(),
+
                 //  if(song_type=="cloud_song"){
                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CloudPlay())),
                 // }else{
@@ -161,15 +200,41 @@ class MyApp extends StatelessWidget {
 
               // YoutubeSongPlayer yt = YoutubeSongPlayer();
               // yt.youtubePlay("Mahiye jinna sohna");
-              if(LoginPage.loginStatus==1){
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => CloudPlay()));
+              if(await loginController.getLoginStatus()==1){
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+                // List<SongModel>s = await _searchRepository.getSearchedSongOptions("heeriye");
+                // for(int i=0;i<s.length;i++){
+                //   print(s[i].name);
+                // }
+
+
+
+
+
+
+                 print("Already logged in");
                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp()));
               }else{
-                await loginController.Login();
-                if(LoginPage.loginStatus==1){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CloudPlay()));
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp())),
-                }
+                // while(LoginPage.loginStatus==0){
+                  // Navigator.pop(context); // For removing previous screen
+                  await loginController.Login(context);
+                  if(LoginPage.loginStatus==1){
+                    print("logged in");
+
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+                    // print("start");
+                    // List<SongModel> s = await _searchRepository.getSearchedSongOptions("heeriye");
+                    // print(s[0].name);
+                    // print("end");
+
+
+
+
+
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoutubePlayerDemoApp())),
+                  }
+                  print("again");
+                // }
               }
 
 

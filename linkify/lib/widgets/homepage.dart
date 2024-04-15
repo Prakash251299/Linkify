@@ -11,7 +11,7 @@
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
+// import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
@@ -21,6 +21,8 @@ import 'package:linkify/widgets/local_songs.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
   // const Homepage({super.key});
 
   @override
@@ -333,9 +335,9 @@ class _HomepageState extends State<Homepage> {
                                                   // Text("sad"),
                                                   // Obx(() =>
                                                   Text(
-                                                      "${songList[SongDataController.currSong.value].title}", ////// Title
+                                                      songList[SongDataController.currSong.value].title, ////// Title
                                                       // "${SongPlayerController.songName.value}",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18,
                                                           fontWeight: FontWeight.bold)),
 
