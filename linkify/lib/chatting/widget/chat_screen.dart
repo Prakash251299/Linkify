@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:linkify/chatting/modal/mes_info.dart';
+import 'package:linkify/chatting/widget/message_card.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
@@ -48,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
         Column(children: [
           Expanded(
             child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('chats').snapshots(),
+          stream: FirebaseFirestore.instance.collection('chats').doc(widget.messageId).snapshots(),
           // stream: null,
           builder: (context, AsyncSnapshot snapshot){
             switch(snapshot.connectionState){
@@ -59,29 +60,38 @@ class _ChatScreenState extends State<ChatScreen> {
                 //   child:CircularProgressIndicator());
               case ConnectionState.active:
               case ConnectionState.done:
+              print(snapshot.data.exists);
+
+              var data = snapshot.data;
 
 
+              // print("StreamState: ${snapshot.data.data()['messageInfo'][0]}");
+              // List<dynamic> data = snapshot.data.data()['messageInfo'];
+              // print(data);
               // FirebaseFirestore.instance.collection('chats').doc("dummy").get().then((value) {
-              FirebaseFirestore.instance.collection('chats').doc("${widget.messageId}").get().then((value) {
-                print(value.exists);
+              // FirebaseFirestore.instance.collection('chats').doc("${widget.messageId}").get().then((value) {
+                // print(value.exists);
 
-                if(value.exists){
-                  // print(value.data());
-                  List list=[];
-                  // list = data?.map((e)=>MesInfo.fromJson(e.data())).toList()??[];
-                  list = value.data()?['messageInfo'];
-                  print(list[0]);
+                if(data.exists){
+                  // print(data.data());
+                  List<dynamic> currentMessageList=data.data()?['messageInfo'];
+                  // List currentMessageList=[];
+                  // print(currentMessageList);
+                  // currentMessageList = data?.map((e)=>MesInfo.fromJson(e.data())).toList()??[];
+                  // currentMessageList = data.data()?['messageInfo'];
+                  // print(currentMessageList[0]);
 
-                  if(list.isNotEmpty){
+                  if(currentMessageList.isNotEmpty){
                     return
                     ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: list.length,
+                      itemCount: currentMessageList.length,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context,index){
-        
-                        return SizedBox();
-                        // MessageCard(message: list[index],user:widget.user);
+                        // print(currentMessageList[index].runtimeType);
+                        return 
+                        // SizedBox();
+                        MessageCard(MesInfo.fromJson(currentMessageList[index]),widget.receiverInfo);
                       }
                     );
                   }else{
@@ -90,7 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 }else{
 
                 }
-              });
+              // });
               
               return Center(child: Text("Hello there!",style: TextStyle(fontSize: 20)),);
       
