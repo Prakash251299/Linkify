@@ -7,34 +7,12 @@ import 'package:linkify/model/user_info.dart';
 
 class FirebaseCall{
   static Future<void> readData()async{
-    // var snapshot = FirebaseFirestore.instance.collection('users').get();
-    // print(snapshot);
-
-
-
     /* Read data */
     var document = FirebaseFirestore.instance.collection('users');
 
     await document.get().then((v){
       print(v.docs[0]['name']);
     });
-
-
-
-    //  setState(() {
-    //    data = snapshot.data;
-    //  });
-    // } as FutureOr Function(QuerySnapshot<Map<String, dynamic>> value));
-    // print("hi");
-
-    // StreamBuilder(
-    //       stream: FirebaseFirestore.instance.collection('users').snapshots(),
-    //       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-    //         print(snapshot.data?.docs[0]['name']);
-    //         print("hello");
-    //         return SizedBox();
-    //       },
-    //     );
   }
 
   List<dynamic> getTopThreeGenres(var topGenre){
@@ -69,13 +47,6 @@ class FirebaseCall{
       "country":_userInfo.country,
       "images":_userInfo.image,
       "spotifyGenre":topThreeGenres,
-
-      // "name":"$name",
-      // "id":id,
-      // "email":email,
-      // "country":country,
-      // "userImg":userImg,
-      // "spotifyGenre":topThreeGenres,
     })
     .onError((e, _) => print("Error writing user info in firebase: $e"));
     return;
@@ -105,25 +76,6 @@ class FirebaseCall{
     }
     StaticStore.currentUserGenreId = genreId;
     List<dynamic> tempUserList=[];
-    // genreId = "dance";
-    // genreId = "genreList";
-    // var k = {genreId:tempUserList};
-    // print(k);
-
-
-
-    // final citiesRef = db.collection("spotifyBasedGenreUsers");
-    // final cities = citiesRef.where("genreList", arrayContainsAny: ["hdjshdjk"]);
-    // cities.get().then((v){
-    //   print(v.docs.length);
-    // });
-    // var document = FirebaseFirestore.instance.collection('spotifyBasedGenreUsers');
-
-    // await document.get().then((v){
-    //   print(v.docs[0]['genreList']['dance']);
-    // });
-
-
     
     await db
     .collection("spotifyBasedGenreUsers")
@@ -158,25 +110,17 @@ class FirebaseCall{
         .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
       //   print("No"),
       }
-
-
-
-      // print(value.docs[0]['genre']),
-
-
-
     },
     );
+  }
 
-
-
-    // db
-    // .collection("spotifyBasedGenreUsers/genre")
-    // .doc(genreId)
-    // .set("genre".add(StaticStore.currentUserId))
-    // .onError((e, _) => print("Error writing document: $e"));
-
-    // print(genreId);
+  Future<void> storeChats(var mesId, Map<String, Object?> mes)async{
+    var db = FirebaseFirestore.instance;
+    await db
+        .collection("chats")
+        .doc(mesId)
+        .set({"messageInfo":FieldValue.arrayUnion([mes])},SetOptions(merge: true))
+        .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
   }
 
 }

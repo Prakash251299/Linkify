@@ -46,6 +46,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   @override
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
+    String searchSong="";
 
     return 
     
@@ -91,8 +92,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                 .searchSongs(s);
                             // sea
                             // await _searchResultsCubit.searchSongs(s);
+                            searchSong = s;
                           }
                         },
+                        searchSong: searchSong,
                         // isSong: state.isSong,
                       ),
                       body: Builder(
@@ -171,62 +174,15 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                               // }
                                             }
         
-                                            // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>SongScreen(state.songs[i])));
                                             Navigator.of(context).push(MaterialPageRoute(builder: (context) =>AlbumSongScreen(
                                               state.songs[i].name,
                                               state.songs[i].id,
                                               state.songs[i].artists,
                                               state.songs[i].imgUrl,
-                                              // this.name,
-                                              // this.albumImg,
-                                              // this.id,
-                                              // this.trackArtists,
-                                              // this.trackImg,
                                               )
                                               ));
                                           }
         
-                                          // if(StaticStore.playing==false){
-                                          //   // if(StaticStore.pause==true){
-                                          //     // StaticStore.pause=false;
-                                          //     // if(StaticStore.currentSong==state.songs[i].name){
-                                          //     //   await _youtubeSongPlayer.youtubeResume();
-                                          //     // }
-                                          //   // }else{
-                                          //     // await _youtubeSongPlayer.youtubeStop();
-                                          //     _youtubeSongPlayer.youtubePlay(state.songs[i].name);
-                                          //     StaticStore.currentSong = state.songs[i].name;
-                                          // StaticStore.currentSongImg = state.songs[i].imgUrl;
-                                          //     StaticStore.currentArtists = List.from(state.songs[i].artists);
-                                          //     StaticStore.playing = true;
-                                          //   // }
-                                          //   // StaticStore.pause=false;
-                                          // }else{
-                                          //   // if(StaticStore.currentSong==state.songs[i].name){
-                                          //     // StaticStore.pause = true;
-                                          //     // await _youtubeSongPlayer.youtubePause();
-                                          //   // }else{
-                                          //     await _youtubeSongPlayer.youtubeStop();
-                                          //     await _youtubeSongPlayer.youtubePlay(state.songs[i].name);
-                                              // StaticStore.currentSong = state.songs[i].name;
-                                              // StaticStore.currentSongImg = state.songs[i].imgUrl;
-                                              // StaticStore.currentArtists = List.from(state.songs[i].artists);
-                                          //   // }
-                                          // }
-        
-                                          // FocusScope.of(context).unfocus();
-                                          // // BlocProvider.of<SearchResultsCubit>(context)
-                                          //     // .playSongs(con, i);
-                                          // var box = Hive.box('Recentsearch');
-                                          // box.put(state.songs[i].name, {
-                                          //   "name": state.songs[i].name,
-                                          //   // "fullname": state.songs[i].name,
-                                          //   // "username": state.songs[i].userid,
-                                          //   "image": state.songs[i].imgUrl,
-                                          //   // "track": state.songs[i].trackid,
-                                          //   "id": state.songs[i].id,
-                                          //   // "type": "SONG"
-                                          // });
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -293,11 +249,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                             const SizedBox(
                                                                 height: 5),
                                                             Text(
-                                                              // state.songs[i].duration!,
-                                                              // s.replaceAll(new RegExp(r'[^\w\s]+'),'')
-                                                              // state.songs[i].artists.toString(),
                                                               artists,
-                                                              // "3:26",
                                                               style:
                                                                   Theme.of(context)
                                                                       .textTheme
@@ -327,7 +279,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                       context: context,
                                                       builder: (context) {
                                                         return
-                                                            // SizedBox();
                                                             /* For shoowing search result song name with options */
                                                             BottomSheetWidget(
                                                                 //     // con: con,
@@ -345,96 +296,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                         ),
                                       );
                                     });
-                            // } else {
-                            //   return ListView.builder(
-                            //       itemCount: state.users.length,
-                            //       itemBuilder: (context, i) {
-                            //         return InkWell(
-                            //           onTap: () {
-                            //             FocusScope.of(context).unfocus();
-                            //             var box = Hive.box('Recentsearch');
-                            //             box.put(state.users[i].name, {
-                            //               "songname": state.users[i].name,
-                            //               "fullname": state.users[i].username,
-                            //               "username": '',
-                            //               "cover": state.users[i].avatar,
-                            //               "track": '',
-                            //               "id": '',
-                            //               "type": "ARTIST"
-                            //             });
-                            //             Navigator.push(
-                            //                 context,
-                            //                 CupertinoPageRoute(
-                            //                     builder: (context) =>
-                            //                     SizedBox(),
-                            //                     // ArtistProfile(
-                            //                     //     username: state.users[i].username!,
-                            //                     //     con: con)
-                            //                     ));
-                            //           },
-                            //           child: Padding(
-                            //             padding: const EdgeInsets.only(
-                            //                 left: 12.0, bottom: 12.0, top: 12.0),
-                            //             child: Row(
-                            //               children: [
-                            //                 ClipRRect(
-                            //                   borderRadius: BorderRadius.circular(3),
-                            //                   child: CachedNetworkImage(
-                            //                     imageUrl: state.users[i].avatar!,
-                            //                     width: 50,
-                            //                     height: 50,
-                            //                     memCacheHeight:
-                            //                         (70 * devicePexelRatio).round(),
-                            //                     memCacheWidth:
-                            //                         (70 * devicePexelRatio).round(),
-                            //                     maxHeightDiskCache:
-                            //                         (70 * devicePexelRatio).round(),
-                            //                     maxWidthDiskCache:
-                            //                         (70 * devicePexelRatio).round(),
-                            //                     progressIndicatorBuilder:
-                            //                         (context, url, l) =>
-                            //                             const LoadingImage(),
-                            //                     fit: BoxFit.cover,
-                            //                   ),
-                            //                 ),
-                            //                 Flexible(
-                            //                   child: Padding(
-                            //                     padding: const EdgeInsets.all(8.0),
-                            //                     child: Column(
-                            //                       crossAxisAlignment:
-                            //                           CrossAxisAlignment.start,
-                            //                       children: [
-                            //                         Text(
-                            //                           state.users[i].name!,
-                            //                           maxLines: 1,
-                            //                           style: Theme.of(context)
-                            //                               .textTheme
-                            //                               .bodyText1!
-                            //                               .copyWith(
-                            //                                   color: Colors.white,
-                            //                                   overflow: TextOverflow
-                            //                                       .ellipsis),
-                            //                         ),
-                            //                         const SizedBox(height: 5),
-                            //                         Text(
-                            //                           state.users[i].username!,
-                            //                           style: Theme.of(context)
-                            //                               .textTheme
-                            //                               .bodyText1!
-                            //                               .copyWith(
-                            //                                 color: Colors.grey,
-                            //                               ),
-                            //                         ),
-                            //                       ],
-                            //                     ),
-                            //                   ),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //         );
-                            //       });
-                            // }
                           }
                           if (state.status == LoadPage.error) {
                             return const Center(
@@ -463,7 +324,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
              ),
               MyStickyWidgets.footer(context),
 
-        // Text("data"),
       ],
     );
   }
@@ -472,12 +332,14 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(String? s) onChanged;
   // final bool isSong;
+  String searchSong;
   final void Function() onPressed;
-  const CustomAppBar({
+  CustomAppBar({
     Key? key,
     required this.onChanged,
     // required this.isSong,
     required this.onPressed,
+    required this.searchSong
   }) : super(key: key);
 
   @override
@@ -523,14 +385,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   icon:
                       // isSong ?
                       const Icon(
-                    LineIcons.music,
+                    LineIcons.youtube,
                     color: Colors.white,
                   ),
                   // : const Icon(
                   //     LineIcons.user,
                   //     color: Colors.white,
                   //   ),
-                  onPressed: onPressed,
+                  onPressed: (){
+                    YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
+                    _youtubePlayer.youtubePlay(searchSong, "");
+                    StaticStore.currentSong = searchSong;
+                    StaticStore.currentArtists = [];
+                    StaticStore.currentSongImg = "";
+                    StaticStore.playing = true;
+                  }
                 ),
               ),
             ],

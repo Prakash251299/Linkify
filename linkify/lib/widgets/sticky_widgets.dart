@@ -94,7 +94,8 @@ class MyStickyWidgets extends StatelessWidget {
               /* Get number of users for recommendation */
               // numberOfUsers = await _networkFunction.getNumberOfUsers();
 
-
+              StoreUserInfo _storeUserInfo = StoreUserInfo();
+              _storeUserInfo.fetchCurrentUserInfo();
               if(numberOfUsers>=10){
               /* If we have more users then like based friend recommendations will be provided */
                 List<UserInfo?> userHavingSameInterests =
@@ -106,7 +107,7 @@ class MyStickyWidgets extends StatelessWidget {
               /* All users of our application will be recommended */
               List<UserInfo?> allUsers =
                   await _networkFunction.fetchAllUsersInfo();
-                  // print(allUsers[0]?.spotifyBasedGenre);
+                  // print(allUsers[0]?.id);
 
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => NetworkUser(allUsers),
@@ -132,7 +133,8 @@ class MyStickyWidgets extends StatelessWidget {
     // var d = tags[excludedColorList.contains(StaticStore.currentSong.length*4%34-1)]['color'] as int;
     var color = tags[d]['color'] as int;
     return GestureDetector(
-      child: Container(
+      child: 
+      Container(
         // padding: EdgeInsets.only(bottom:70),
 
         // color: Color(tags[0]['color']),
@@ -192,19 +194,22 @@ class MyStickyWidgets extends StatelessWidget {
                           ),
                           // name
                           SizedBox(
-                            // width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.of(context).size.width/1.5,
+                            // width:,
                             child: Text(
                                 // "hello",
-                                "${StaticStore.currentSong}",
+                                "${StaticStore.currentSong}gfgfhfjhfjhfgjhgfgfhfjhfjhfgjh",
                                 // list[index].title,
                                 style: const TextStyle(
+                                  decoration: TextDecoration.none,
                                     color: Color(0xffffffff),
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Raleway",
                                     fontStyle: FontStyle.normal,
                                     fontSize: 13.0,
-                                    overflow: TextOverflow.ellipsis),
-                                maxLines: 2,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                                 textAlign: TextAlign.left),
                           ),
                           const SizedBox(
@@ -212,7 +217,7 @@ class MyStickyWidgets extends StatelessWidget {
                           ),
                           // show-creator
                           SizedBox(
-                            width: 135,
+                            width: MediaQuery.of(context).size.width/1.5,
                             child: Text(
                                 // list[index].creator ?? '',
 
@@ -221,7 +226,9 @@ class MyStickyWidgets extends StatelessWidget {
                                 StaticStore.currentArtists.length > 1
                                     ? "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}"
                                     : "${StaticStore.currentArtists[0]}",
+                                    
                                 style: const TextStyle(
+                                  decoration: TextDecoration.none,
                                     color: Color(0xffb3b3b3),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Raleway",
