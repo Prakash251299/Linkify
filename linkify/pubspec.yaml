@@ -74,6 +74,9 @@ dependencies:
   hive_flutter: ^1.1.0
   marquee: ^2.2.3
   cloud_firestore: ^4.16.1
+  # For image and video picking
+  image_picker: ^1.1.0
+  video_player: ^2.8.6
 
 dev_dependencies:
   flutter_test:

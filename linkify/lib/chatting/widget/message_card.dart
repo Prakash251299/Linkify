@@ -26,23 +26,11 @@ class MessageCard extends StatefulWidget {
 class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
-    print("MessageState: ${widget._mesInfo.message}");
+    // print("MessageState: ${widget._mesInfo.message}");
 
     return 
     // SizedBox();
     widget._mesInfo.sender==widget._mesInfo.receiver?greenMess():widget._mesInfo.sender==StaticStore.currentUserId?greenMess():blueMess();
-    // return APIs.user.email== widget.message.fromid && widget.user.email==widget.message.toId?greenMess():APIs.user.email== widget.message.toId && widget.user.email==widget.message.fromid?blueMess():Container();
-
-
-    // return widget.message.toId!=widget.user.email && widget.message.fromid==from?greenMess():widget.message.toId!=from && widget.message.fromid==widget.user.email?blueMess():Text("");
-    // return widget.message.toId==widget.user.email && widget.message.fromid==from?greenMess():widget.message.fromid==widget.user.email?blueMess():Text("");
-
-
-    // return widget.user.email!="prakashpratapsingh2512@gmail.com"?greenMess():blueMess();
-    // return widget.message.fromid=="prakashpratapsingh2512@gmail.com" && widget.message.toId==widget.user.email?greenMess():widget.message.toId=="prakashpratapsingh2512@gmail.com" && widget.message.fromid==widget.user.email?blueMess():Text("");
-
-    // return blueMess();
-    // return greenMess();
   }
 
   Widget greenMess(){
