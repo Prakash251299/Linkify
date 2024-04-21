@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:linkify/chatting/controller/image_video_picker.dart';
 import 'package:linkify/chatting/modal/mes_info.dart';
 import 'package:linkify/chatting/widget/message_card.dart';
 import 'package:linkify/controller/firebase_call.dart';
@@ -221,7 +222,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, 
+                IconButton(onPressed: () async {
+                  await imageVideoPicker(context);
+                }, 
                   icon: Icon(Icons.image,color:Colors.blueAccent),
                 ),
                 IconButton(onPressed: (){}, 
@@ -230,7 +233,7 @@ class _ChatScreenState extends State<ChatScreen> {
           
                 MaterialButton(
                   onPressed: () async {
-                    print("message send option clicked");
+                    // print("message send option clicked");
                     if(_textController.text.isNotEmpty){
                       // print(_textController.text);
                       // Timestamp t;
