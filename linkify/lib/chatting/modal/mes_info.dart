@@ -7,6 +7,7 @@ class MesInfo {
   String? sender;
   String? receiver;
   String? status;
+  dynamic doc;
   String? type;
   
 
@@ -20,6 +21,7 @@ class MesInfo {
     receiver = json['receiver'];
     status = json['status'];
     type = json['type'];
+    doc = json['doc'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class MesInfo {
     data['receiver'] = this.receiver;
     data['status'] = this.status;
     data['type'] = this.type;
+    data['doc'] = this.doc;
     return data;
   }
 }

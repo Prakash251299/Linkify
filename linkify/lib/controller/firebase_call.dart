@@ -120,7 +120,7 @@ class FirebaseCall{
         .collection("chats")
         .doc(mesId)
         .set({"messageInfo":FieldValue.arrayUnion([mes])},SetOptions(merge: true))
-        .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
+        .onError((e, _) => print("Error Storing message info in firebase: $e"));
   }
 
 }
