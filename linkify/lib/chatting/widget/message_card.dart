@@ -29,7 +29,6 @@ class _MessageCardState extends State<MessageCard> {
     // print("MessageState: ${widget._mesInfo.message}");
 
     return 
-    // SizedBox();
     widget._mesInfo.sender==widget._mesInfo.receiver?greenMess():widget._mesInfo.sender==StaticStore.currentUserId?greenMess():blueMess();
   }
 
@@ -41,7 +40,8 @@ class _MessageCardState extends State<MessageCard> {
         Row(children:[
           SizedBox(width:mq.width*.04),
           Icon(Icons.done_all_rounded, color: Colors.blue, size: 20),
-          Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),),
+          // Text("hello"),
+          // widget._mesInfo.message!=""?Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),):Text("${widget._mesInfo.type} data",style:TextStyle(fontSize:13,color:Colors.black54),),
         ]),
       Flexible(
         child: Container(
@@ -61,7 +61,13 @@ class _MessageCardState extends State<MessageCard> {
             //   bottomLeft: Radius.circular(30),
             // )
           ),
-          child: Text("${widget._mesInfo.message}",style:TextStyle(fontSize: 15,color:Colors.black87)),
+
+          child:widget._mesInfo.type=="video"?Text("video data",style:TextStyle(fontSize:13,color:Colors.black54),):widget._mesInfo.type=="image"?Text("image data",style:TextStyle(fontSize:13,color:Colors.black54),):Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),),
+
+          // child: widget._mesInfo.message!=""?Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),):Text("${widget._mesInfo.type} data",style:TextStyle(fontSize:13,color:Colors.black54),),
+
+          
+          // child: Text("${widget._mesInfo.message}",style:TextStyle(fontSize: 15,color:Colors.black87)),
         ),
       ),
       // Text(widget.message.sent,style: TextStyle(fontSize: 13,color:Colors.black54),),
@@ -83,12 +89,10 @@ class _MessageCardState extends State<MessageCard> {
               bottomLeft: Radius.circular(30),
             )
           ),
-          child: Text("${widget._mesInfo.message}",style:TextStyle(fontSize: 15,color:Colors.black87)),
+          // child: Text("${widget._mesInfo.message}",style:TextStyle(fontSize: 15,color:Colors.black87)),
+          // child: widget._mesInfo.message!=""?Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),):Text("${widget._mesInfo.type} data",style:TextStyle(fontSize:13,color:Colors.black54),),
+          child:widget._mesInfo.type=="video"?Text("video data",style:TextStyle(fontSize:13,color:Colors.black54),):widget._mesInfo.type=="image"?Text("image data",style:TextStyle(fontSize:13,color:Colors.black54),):Text("${widget._mesInfo.message}",style:TextStyle(fontSize:13,color:Colors.black54),),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(right:mq.width*.04),
-        child: Text("${widget._mesInfo.message}",style: TextStyle(fontSize: 13,color:Colors.black54),),
       ),
     ]);
   }

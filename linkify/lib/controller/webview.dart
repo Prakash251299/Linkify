@@ -62,7 +62,7 @@ class WebContainerState extends State<WebContainer> {
         onNavigationRequest: (NavigationRequest request) async {
           if (request.url.startsWith("https://prakash2001.000webhostapp.com")) {
             var res = Uri.parse(request.url);
-            Map<String, String> params = res.queryParameters;
+            // Map<String, String> params = res.queryParameters;
             code = res.queryParameters['code'];
             await call();
             print("reached");

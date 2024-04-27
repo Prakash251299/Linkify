@@ -61,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 //   child:CircularProgressIndicator());
               case ConnectionState.active:
               case ConnectionState.done:
-              print(snapshot.data.exists);
+              // print(snapshot.data.exists);
 
               var data = snapshot.data;
 
@@ -92,11 +92,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         // print(currentMessageList[index].runtimeType);
                         return 
                         // SizedBox();
+                        // currentMessageList[index]['type']=="image"?MessageCard(MesInfo.fromJson({"message":"image data"}),widget.receiverInfo):currentMessageList[index]['type']=="video"?MessageCard(MesInfo.fromJson({"message":"video data"}),widget.receiverInfo):
                         MessageCard(MesInfo.fromJson(currentMessageList[index]),widget.receiverInfo);
                       }
                     );
                   }else{
-                    return Center(child: Text("Hello there!",style: TextStyle(fontSize: 20)),);
+                    return Center(child: Text("Say Hello!",style: TextStyle(fontSize: 20)),);
                   }
                 }else{
 
@@ -223,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 IconButton(onPressed: () async {
-                  await imageVideoPicker(context);
+                  await imageVideoPicker(context,widget.receiverInfo,widget.messageId);
                 }, 
                   icon: Icon(Icons.image,color:Colors.blueAccent),
                 ),

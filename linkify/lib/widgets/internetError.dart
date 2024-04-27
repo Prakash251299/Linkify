@@ -9,8 +9,15 @@ class InternetErrorScrren extends StatelessWidget {
     return Scaffold(
       body: 
           
-          Center(child:
-              Text("Probably you are not conneceted to the internet",overflow: TextOverflow.ellipsis,),
+          Center(
+            child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Probably you are not conneceted to the internet",overflow: TextOverflow.ellipsis,),
+                Text("or your emailid need to be added on spotify developer console for debugging",overflow: TextOverflow.ellipsis,),
+
+            ],)
             
           
       ),

@@ -59,8 +59,12 @@ dependencies:
   webview_flutter: ^4.7.0
   # webview_flutter: ^4.0.0
   # webview_flutter: ^2.0.12
-  webview_flutter_android: ^3.15.0
-  webview_flutter_wkwebview: ^3.12.0
+
+
+  # webview_flutter_android: ^3.15.0
+  # webview_flutter_wkwebview: ^3.12.0
+
+  
   # flutter_js: ^0.8.0
   # flutter_inappwebview: ^6.0.0
 
@@ -77,6 +81,10 @@ dependencies:
   # For image and video picking
   image_picker: ^1.1.0
   video_player: ^2.8.6
+  firebase_storage: ^11.7.4
+  # media_kit: ^1.1.10+1
+  # media_kit_video: ^1.2.4
+  # flutter_video_view: ^2.1.1
 
 dev_dependencies:
   flutter_test:
