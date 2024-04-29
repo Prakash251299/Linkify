@@ -13,7 +13,7 @@ import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 import '../../utils/horizontal_songs_list.dart';
 
-import '../../utils/recent_users.dart';
+import '../../../carousel_songs.dart';
 import 'cubit/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,37 +22,6 @@ class HomeScreen extends StatelessWidget {
     Key? key,
     // required this.con,
   }) : super(key: key);
-
-  // Widget footer(var context){
-  //   return Container(
-  //     padding: EdgeInsets.only(left:20,right:20),
-  //               color:Colors.black,
-  //               child:
-  //             Row(children: [
-  //                 IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => HomeScreen(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //                 Spacer(),
-  //                 IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => SearchPage(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //                 Spacer(),
-  //                 IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => Library(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //             ])
-  //             );
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +33,6 @@ class HomeScreen extends StatelessWidget {
       // child: BlocBuilder(
         builder: (context, state) {
           print("homescreen");
-          // print(state.likedTrack?['name']);
-          // return
-          //  SizedBox();
-          // state.songs.sublist(0, 10);
-          // return SizedBox();
-        // }));
           if (state.status == LoadPage.loading) {
             return 
             Scaffold(
@@ -83,18 +46,14 @@ class HomeScreen extends StatelessWidget {
             Scaffold(
               body: 
               Column(
-                // alignment: Alignment.bottomCenter,
                 children: [
-                //  Text("hi"),
                  
                  Expanded(child: 
               SingleChildScrollView(child:Column(
                 children: [
 
-                  RecentUsers(
+                  CarouselSongs(
                     state.likedTrack
-                    // con: con,
-                    // users: state.users.sublist(0, 6),
                   ),
                   const SizedBox(height: 12),
                   Padding(

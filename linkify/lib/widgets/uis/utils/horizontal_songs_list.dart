@@ -44,9 +44,11 @@ class HorizontalSongList extends StatelessWidget {
                     backgroundColor: Colors.black38,
                     context: context,
                     builder: (context) {
-                      return BottomSheetWidget(
+                      return 
+                      SizedBox();
+                      // BottomSheetWidget(
                         // con: con, song: song
-                      );
+                      // );
                     });
               },
               child: Padding(
