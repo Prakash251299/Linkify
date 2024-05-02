@@ -279,11 +279,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                       context: context,
                                                       builder: (context) {
                                                         return
+                                                        SizedBox();
                                                             /* For shoowing search result song name with options */
-                                                            BottomSheetWidget(
+                                                            // BottomSheetWidget(
                                                                 //     // con: con,
                                                                 //     // song: state.songs[i]
-                                                                );
+                                                                // );
                                                       });
                                                 },
                                                 icon: const Icon(
