@@ -9,12 +9,14 @@ class HomeState {
   // final List<User> users;
   // final List<SongModel>? songs;
   // final List<AlbumModeling>? albums;
-  Map<String,List<dynamic>>? likedTrack;
+  Map<String,List<dynamic>>? carouselSongs;
+  List<Categories>? categories=[];
   // final List<String>? id;
   HomeState({
     required this.status,
     // required this.users,
-    this.likedTrack,
+    this.carouselSongs,
+    this.categories,
     // this.id,
   });
   factory HomeState.initial() {
@@ -29,7 +31,8 @@ class HomeState {
 
   HomeState copyWith({
     LoadPage? status,
-    Map<String,List<dynamic>>?likedTrack,
+    Map<String,List<dynamic>>?carouselSongs,
+    List<Categories>? categories,
     // List<String>?id,
     // List<AlbumModeling>? albums,
     // List<SongModel>? songs,
@@ -38,7 +41,8 @@ class HomeState {
       status: status ?? this.status,
       // users: users ?? this.users,
       // songs: songs ?? this.songs,
-      likedTrack: likedTrack ?? this.likedTrack,
+      carouselSongs: carouselSongs ?? this.carouselSongs,
+      categories: categories ?? this.categories,
       // id: id ?? this.id,
     );
   }

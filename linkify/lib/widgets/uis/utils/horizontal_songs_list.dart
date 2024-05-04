@@ -2,6 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/playlist_track.dart';
+import 'package:linkify/controller/recommendations.dart';
+import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_view.dart';
+import 'package:linkify/widgets/carousel_view.dart';
 import '../controllers/main_controller.dart';
 import '../models/song_model.dart';
 import '../models/user.dart';
@@ -13,27 +19,30 @@ import 'botttom_sheet_widget.dart';
 class HorizontalSongList extends StatelessWidget {
   // final List<SongModel> songs;
   // final MainController con;
-  const HorizontalSongList({
-    Key? key,
-    // required this.songs,
-    // required this.con,
-  }) : super(key: key);
+  Categories? _categories;
+  HorizontalSongList(this._categories);
+  // HorizontalSongList();
 
   @override
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
+    // print(_categories?.playlists?[0].imgUrl);
 
     return SizedBox(
       height: 210,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemCount: songs.length,
-          itemCount: 5,
+          itemCount: _categories?.playlists?.length,
           itemBuilder: (context, i) {
             // final song = songs[i];
             return InkWell(
-              onTap: () {
-                // print("clicked");
+              onTap: () async {
+                print("list album clicked");
+                List<AlbumTrack> _albumTracks = await fetchPlaylistTracks(_categories?.playlists?[i].id);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists?[i].imgUrl, _categories?.playlists?[i].name, _albumTracks)));
+                print(_categories?.playlists?[i]);
+                
                 // con.playSong(con.convertToAudio(songs), songs.indexOf(song));
               },
               onLongPress: () {
@@ -56,14 +65,78 @@ class HorizontalSongList extends StatelessWidget {
                 child: SizedBox(
                   width: 150,
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(5),
-                        child: CachedNetworkImage(
+                        child: 
+                        // Container(
+                        //         // width: 150,
+                        //         // height: 800,
+
+                          // child: 
+                          // Image.network(
+                          //   // "",
+                          //       "${_categories?.playlists?[i].imgUrl}",
+                          //       fit: BoxFit.fill,
+                          //       width: 150,
+                          //       height: 150,
+                                
+                          //       // loadingBuilder: (BuildContext context, Widget child,
+                          //       //     ImageChunkEvent? loadingProgress) {
+                          //       //   if (loadingProgress == null) return child;
+                          //       //   return Center(
+                          //       //     child: CircularProgressIndicator(
+                          //       //       value: loadingProgress.expectedTotalBytes != null
+                          //       //           ? loadingProgress.cumulativeBytesLoaded /
+                          //       //               loadingProgress.expectedTotalBytes!
+                          //       //           : null,
+                          //       //     ),
+                          //       //   );
+                          //       // },
+                          //       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                          //         if (frame != null) return child;
+                          //         return Center(
+                          //           child:const LoadingImage(size: 80)
+                          //           // child: CircularProgressIndicator(
+                          //           //   // value: frame.expectedTotalBytes != null
+                          //           //   //     ? loadingProgress.cumulativeBytesLoaded /
+                          //           //   //         loadingProgress.expectedTotalBytes!
+                          //           //   //     : null,
+                          //           // ),
+                          //         );
+                          //       }
+                                
+                          //       // progressIndicatorBuilder: (context, url, l) =>
+                          //     // const LoadingImage(size: 80),
+
+
+
+                          //       // loadingBuilder: (BuildContext context, Widget child,
+                          //       //     ImageChunkEvent? loadingProgress) {
+                          //       //   if (loadingProgress == null) return child;
+                          //       //   return Center(
+                          //       //     child: CircularProgressIndicator(
+                          //       //       value: loadingProgress.expectedTotalBytes != null
+                          //       //           ? loadingProgress.cumulativeBytesLoaded /
+                          //       //           loadingProgress.expectedTotalBytes!
+                          //       //           : null,
+                          //       //     ),
+                          //       //   );
+                          //       // },
+
+
+
+
+                          //     ),
+                        
+                        CachedNetworkImage(
                           // imageUrl: song.coverImageUrl!,
-                          imageUrl: "",
+                          imageUrl: "${_categories?.playlists?[i].imgUrl}",
+                          // imageUrl: "",
+                          // imageUrl: "https://daily-mix.scdn.co/covers/time-capsule/time-capsule-blue_DEFAULT-en-GB.jpg",
                           width: 150,
                           height: 150,
                           maxHeightDiskCache: (200 * devicePexelRatio).round(),
@@ -78,8 +151,10 @@ class HorizontalSongList extends StatelessWidget {
                       const SizedBox(height: 7),
                       Text(
                         // song.songname!,
-                        "",
-                        maxLines: 2,
+                        "${_categories?.playlists?[i].name}",
+                        // "${_categories?.name}",
+                        // maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!

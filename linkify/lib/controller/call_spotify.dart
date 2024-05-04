@@ -24,22 +24,26 @@ class CallSpotify extends StatelessWidget {
   // import 'dart:convert';
 // import 'package:http/http.dart' as http;
 
-Future<void> getNewAccessToken() async {
+Future<int> getNewAccessToken() async {
   // String? refreshToken = window.localStorage['refresh_token'];
   // String clientId = 'YOUR_CLIENT_ID'; // Replace 'YOUR_CLIENT_ID' with your actual client ID
   // String clientSecret = 'YOUR_CLIENT_SECRET'; // Replace 'YOUR_CLIENT_SECRET' with your actual client secret
 
   refreshToken = await _readWrite.getRefreshToken();
-
+  if(refreshToken==""){
+    print("null refresh token");
+    return 2;
+  }
   String body = 'grant_type=refresh_token';
   body += '&refresh_token=$refreshToken';
   body += '&client_id=$clientId';
 
   await callAuthorizationApi(body, clientId, clientSecret);
+  return 1;
 }
 
 Future<void> callAuthorizationApi(String body, String clientId, String clientSecret) async {
-  String tokenUrl = 'https://accounts.spotify.com/api/token'; // Replace 'TOKEN' with your authorization token URL
+  String tokenUrl = 'https://accounts.spotify.com/api/token';
 
   try {
     var response = await http.post(
@@ -71,7 +75,7 @@ void handleAuthorizationResponse(http.Response response) {
     if(responseData['refresh_token']!=null){
       _readWrite.writeRefreshToken(responseData['refresh_token']);
     }else{
-      print("null refresh token");
+      print("AuthState :null refresh token");
     }
     // Handle successful response
   } else {

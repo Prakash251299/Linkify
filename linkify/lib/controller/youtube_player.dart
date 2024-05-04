@@ -34,7 +34,7 @@ class YoutubeSongPlayer{
           // await player.play(UrlSource('https://open.spotify.com/track/2FCXQHugkoHE1K3tiDu8pu'));
         }
         catch(e){
-          print("e");
+          print("Youtube player can't play songs");
         }
       }
   }

@@ -15,7 +15,7 @@ import 'package:linkify/controller/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/album.dart';
 import 'package:linkify/model/user_info.dart';
-import 'package:linkify/widgets/album_song_screen.dart';
+import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/uis/models/catagory.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
@@ -125,13 +125,13 @@ class MyStickyWidgets extends StatelessWidget {
     // var random = Random().nextInt(34)-1;
     // if(8 in List)
     List<dynamic> excludedColorList = [2, 11, 14, 17, 22, 24, 27, 31, 32];
-    int d = StaticStore.currentSong.length * 4 % 34 - 1;
+    int d = StaticStore.currentSong.length * 4 % 34;
     YoutubeSongPlayer _player = YoutubeSongPlayer();
     while (excludedColorList.contains(d)) {
       d++;
+      d = d%34;
     }
-    // var d = tags[excludedColorList.contains(StaticStore.currentSong.length*4%34-1)]['color'] as int;
-    var color = tags[d]['color'] as int;
+    int color = int.parse(tags[d]['color'].toString());
     return GestureDetector(
       child: 
       Container(
@@ -145,6 +145,7 @@ class MyStickyWidgets extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemCount: list.length,
+          itemCount: 2,
           itemBuilder: ((context, index) {
             // bool last = list.length == (index + 1);
             return Container(
@@ -198,7 +199,7 @@ class MyStickyWidgets extends StatelessWidget {
                             // width:,
                             child: Text(
                                 // "hello",
-                                "${StaticStore.currentSong}gfgfhfjhfjhfgjhgfgfhfjhfjhfgjh",
+                                "${StaticStore.currentSong}",
                                 // list[index].title,
                                 style: const TextStyle(
                                   decoration: TextDecoration.none,
@@ -225,7 +226,7 @@ class MyStickyWidgets extends StatelessWidget {
 
                                 StaticStore.currentArtists.length > 1
                                     ? "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}"
-                                    : "${StaticStore.currentArtists[0]}",
+                                    : StaticStore.currentArtists.length > 0 && StaticStore.currentArtists.length <= 1?"${StaticStore.currentArtists[0]}":"unknown",
                                     
                                 style: const TextStyle(
                                   decoration: TextDecoration.none,
@@ -276,7 +277,7 @@ class MyStickyWidgets extends StatelessWidget {
         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => AlbumSongScreen(
+            builder: ((context) => CarouselSongScreen(
                 StaticStore.currentSong,
                 StaticStore.currentSong,
                 StaticStore.currentArtists,

@@ -82,6 +82,7 @@ dependencies:
   image_picker: ^1.1.0
   video_player: ^2.8.6
   firebase_storage: ^11.7.4
+  # webview_cookie_manager: ^2.0.6
   # media_kit: ^1.1.10+1
   # media_kit_video: ^1.2.4
   # flutter_video_view: ^2.1.1

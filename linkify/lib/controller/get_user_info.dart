@@ -45,24 +45,21 @@ class StoreUserInfo{
 
         print("user data fetched");
 
-
-        /* Write conditions for data updating */
-        // if(){
-
-        // }
-        // await _firebaseCall.writeUserData(
-        //   _userInfo,
-        //   StaticStore.userGenre
-        // );
-        // await _firebaseCall.writeSpotifyGenreData(StaticStore.userGenre);
-
         return _userInfo;
       } else {
         AccessError e = AccessError();
-        if(await e.handleError(res)!=1){
+        var responseOfAccesstoken = await e.handleError(res);
+        if(responseOfAccesstoken==2){
+          // print("No refresh token please go to login");
+          print("null refresh token plaese go to login or restart the app");
+          return null;
+        }
+
+        if(responseOfAccesstoken!=1){
           print("Error is not resolved for getting accesstoken in userinfo");
           return null;
         }
+        // if()
       }
     }
   }

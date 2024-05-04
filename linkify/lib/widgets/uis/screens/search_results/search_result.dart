@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
-import 'package:linkify/widgets/album_song_screen.dart';
+import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/music_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 // import '../../controllers/main_controller.dart';
@@ -174,7 +174,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                               // }
                                             }
         
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>AlbumSongScreen(
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>CarouselSongScreen(
                                               state.songs[i].name,
                                               state.songs[i].id,
                                               state.songs[i].artists,

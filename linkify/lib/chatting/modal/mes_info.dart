@@ -1,6 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum statusValues { sent, received, read, error}
+// enum statusValues { sent, received, read, error}
 class MesInfo {
   String? message;
   int? timestamp;
