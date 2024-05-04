@@ -66,64 +66,64 @@ class _AppState extends State<App> {
 
   // }
   
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
+  // List<PersistentBottomNavBarItem> _navBarsItems() {
+  //   return [
       
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) => HomeScreen(),
-          //       )).then((value) => Navigator.pop(context));
-          // },),
-          icon: const Icon(Icons.home),
-          inactiveIcon: const Icon(LineIcons.home),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) => 
-          //       SearchPage()
-          //       // AppStateManager.persistentTabController.jumpToTab(0);
-          //       ));
-          // },),
-          // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
-          onPressed: (_){
-            PersistentTabController p = PersistentTabController();
-            print("hello");
-            // p.jumpToTab(1);
-            Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(
-                builder: (BuildContext context) {
-                  return SearchPage();
-                },
-              ),
-              (_) => false,
-            );
-          },
-          icon: const Icon(CupertinoIcons.search),
-          inactiveIcon: const Icon(CupertinoIcons.search),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) => Library(),
-          //       )).then((value) => Navigator.pop(context));
-          // },),
-          icon: const Icon(CupertinoIcons.music_albums),
-          inactiveIcon: const Icon(CupertinoIcons.music_albums),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-    ];
-  }
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) => HomeScreen(),
+  //         //       )).then((value) => Navigator.pop(context));
+  //         // },),
+  //         icon: const Icon(Icons.home),
+  //         inactiveIcon: const Icon(LineIcons.home),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) => 
+  //         //       SearchPage()
+  //         //       // AppStateManager.persistentTabController.jumpToTab(0);
+  //         //       ));
+  //         // },),
+  //         // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+  //         onPressed: (_){
+  //           PersistentTabController p = PersistentTabController();
+  //           print("hello");
+  //           // p.jumpToTab(1);
+  //           Navigator.of(context).pushAndRemoveUntil(
+  //             CupertinoPageRoute(
+  //               builder: (BuildContext context) {
+  //                 return SearchPage();
+  //               },
+  //             ),
+  //             (_) => false,
+  //           );
+  //         },
+  //         icon: const Icon(CupertinoIcons.search),
+  //         inactiveIcon: const Icon(CupertinoIcons.search),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) => Library(),
+  //         //       )).then((value) => Navigator.pop(context));
+  //         // },),
+  //         icon: const Icon(CupertinoIcons.music_albums),
+  //         inactiveIcon: const Icon(CupertinoIcons.music_albums),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //   ];
+  // }
 
-  List<Widget> _buildScreens() {
-    return [HomeScreen(), const SearchPage(), Library()];
-  }
+  // List<Widget> _buildScreens() {
+  //   return [HomeScreen(), const SearchPage()];
+  // }
 
   // CallApi _callApi = CallApi();
   @override
@@ -149,66 +149,72 @@ class _AppState extends State<App> {
     //     hoverElevation: 5,
     //   )
     // ]);
-    ChangeNotifierProvider(
-        create: (context) => MainController()..init(),
-        // create: (context) => MainController()..myfun(),
-        child: Consumer<MainController>(builder: (context,con, child) {
+
+
+
+
+
+
+    // ChangeNotifierProvider(
+    //     create: (context) => MainController()..init(),
+    //     // create: (context) => MainController()..myfun(),
+    //     child: Consumer<MainController>(builder: (context,con, child) {
           
-          return PersistentTabView(
-            context,
-            controller: controller,
+    //       return PersistentTabView(
+    //         context,
+    //         controller: controller,
             
-            playWidget: 
-            Material(
-              child: 
-              SizedBox(),
-              // PlayWidget(
-              //     con: con,
-              //     onTap: () {
-              //       print("li");
-              //       // showModalBottomSheet(
-              //       //   context: context,
-              //       //   isScrollControlled: true,
-              //       //   isDismissible: false,
-              //       //   builder: (context) => 
-              //       //   SizedBox(),
-              //       //   // CurrentPlayingSong(
-              //       //     // con: con,
-              //       //   // ),
-              //       // );
-              //       // Navigator.push(
-              //       //     context,
-              //       //     CupertinoPageRoute(
-              //       //       builder: (context) => CurrentPlayer(
-              //       //         con: con,
-              //       //       ),
-              //       // ));
-              //     }),
-            ),
-            screens: _buildScreens(),
-            items: _navBarsItems(),
-            confineInSafeArea: true,
-            backgroundColor: Colors.black,
-            handleAndroidBackButtonPress: true,
-            hideNavigationBarWhenKeyboardShows: true,
-            resizeToAvoidBottomInset: true,
-            popAllScreensOnTapOfSelectedTab: true,
-            popActionScreens: PopActionScreensType.all,
-            navBarStyle: NavBarStyle.simple,
-            navBarHeight: 55,
-            padding: const NavBarPadding.all(0),
+    //         playWidget: 
+    //         Material(
+    //           child: 
+    //           SizedBox(),
+    //           // PlayWidget(
+    //           //     con: con,
+    //           //     onTap: () {
+    //           //       print("li");
+    //           //       // showModalBottomSheet(
+    //           //       //   context: context,
+    //           //       //   isScrollControlled: true,
+    //           //       //   isDismissible: false,
+    //           //       //   builder: (context) => 
+    //           //       //   SizedBox(),
+    //           //       //   // CurrentPlayingSong(
+    //           //       //     // con: con,
+    //           //       //   // ),
+    //           //       // );
+    //           //       // Navigator.push(
+    //           //       //     context,
+    //           //       //     CupertinoPageRoute(
+    //           //       //       builder: (context) => CurrentPlayer(
+    //           //       //         con: con,
+    //           //       //       ),
+    //           //       // ));
+    //           //     }),
+    //         ),
+    //         screens: _buildScreens(),
+    //         items: _navBarsItems(),
+    //         confineInSafeArea: true,
+    //         backgroundColor: Colors.black,
+    //         handleAndroidBackButtonPress: true,
+    //         hideNavigationBarWhenKeyboardShows: true,
+    //         resizeToAvoidBottomInset: true,
+    //         popAllScreensOnTapOfSelectedTab: true,
+    //         popActionScreens: PopActionScreensType.all,
+    //         navBarStyle: NavBarStyle.simple,
+    //         navBarHeight: 55,
+    //         padding: const NavBarPadding.all(0),
 
-            // handleAndroidBackButtonPress: true,
-            // hideNavigationBarWhenKeyboardShows: true,
-            // // resizeToAvoidBottomInset: false,
-            // popAllScreensOnTapOfSelectedTab: false,
-            // popActionScreens: PopActionScreensType.values[0],
-            // navBarStyle: NavBarStyle.simple,
-
-
+    //         // handleAndroidBackButtonPress: true,
+    //         // hideNavigationBarWhenKeyboardShows: true,
+    //         // // resizeToAvoidBottomInset: false,
+    //         // popAllScreensOnTapOfSelectedTab: false,
+    //         // popActionScreens: PopActionScreensType.values[0],
+    //         // navBarStyle: NavBarStyle.simple,
 
 
-          );
-        }));
+
+
+    //       );
+    //     }));
   }
 }

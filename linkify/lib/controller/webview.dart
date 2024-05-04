@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:linkify/controller/call_spotify.dart';
@@ -20,27 +21,20 @@ class WebContainer extends StatefulWidget {
 var urlForAuth = "https://accounts.spotify.com/authorize?client_id=80c5fa373a4f4ef793721969b1e25fac&response_type=code&redirect_uri=https://prakash2001.000webhostapp.com/start&show_dialog=true&scope=user-read-private+user-read-email+user-top-read+user-modify-playback-state+user-read-playback-position+user-library-read+streaming+user-read-playback-state+user-read-recently-played+playlist-read-private+user-read-currently-playing";
 var clientId = "80c5fa373a4f4ef793721969b1e25fac";
 var clientSecret = "a58469d7127d4690ab1dcb4f706c0dbe";
-// var redirect_uri1 = "https://localhost:8888/callback";
-// var redirect_uri1 = "http://127.0.0.1:5500/SpotifyWebAuth/SpotifyWebAPI/index.html";
-// var redirect_uri1 = "https://www.google.com";
-// var redirect_uri1 = "https://jp251299.000webhostapp.com/linkify.js";
-// var redirect_uri1 = "https://oauth.pstmn.io/v1/callback/";
-// var redirect_uri1 = "com.example.linkify://login-callback";
-// var redirect_uri1 = "https://ishuapp/start";
 var redirect_uri1 = "https://prakash2001.000webhostapp.com/start";
-int _dstReached=0;
-var code;
 
 class WebContainerState extends State<WebContainer> {
-  static var _errorInAuth=0;
+  int _dstReached=0;
+  var code;
 
-  ReadWrite _readWrite = ReadWrite();
+  final ReadWrite _readWrite = ReadWrite();
   WebViewController controller = WebViewController();
   StoreUserInfo _storeUserInfo = StoreUserInfo();
    @override
   void initState() {
     super.initState();
     try{
+      // cookieManager.clearCookies();
       print("start auth");
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -56,15 +50,20 @@ class WebContainerState extends State<WebContainer> {
           print("page finished");
         },
         onWebResourceError: (WebResourceError error) {
-          print("Probably you are not connected to the internet or your emailid need to be added on spotify developer console for debugging");
+          print("Probably you are not connected to the internet or your emailid need to be added to spotify developer console for debugging");
           Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const InternetErrorScrren()));
         },
         onNavigationRequest: (NavigationRequest request) async {
           if (request.url.startsWith("https://prakash2001.000webhostapp.com")) {
             var res = Uri.parse(request.url);
-            Map<String, String> params = res.queryParameters;
+            // Map<String, String> params = res.queryParameters;
+            // var er = res.queryParameters['error'];
+            // print("QueryParameters: ${res.queryParameters}");
+            // print(er);
             code = res.queryParameters['code'];
-            await call();
+            print("code");
+            // log(code);
+            await call(code);
             print("reached");
             setState(() {
               _dstReached = 1;
@@ -72,9 +71,9 @@ class WebContainerState extends State<WebContainer> {
             return NavigationDecision.prevent;
           }
           print("Errorroror");
-          setState(() {
-            _errorInAuth = 1;
-          });
+          // setState(() {
+          //   _errorInAuth = 1;
+          // });
           return NavigationDecision.navigate;
         },
       ))
@@ -82,13 +81,13 @@ class WebContainerState extends State<WebContainer> {
       print("end auth");
     }catch(e){
       print("Hello err");
-      setState(() {
-            _errorInAuth = 1;
-          });
+      // setState(() {
+      //       _errorInAuth = 1;
+      //     });
     }
   }
 
-  Future<void> call() async {
+  Future<void> call(String code) async {
     await fetchAccessToken(code);
   }
 

@@ -465,10 +465,6 @@ class TagWidget extends StatelessWidget {
 }
 
 class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
-  // final MainController con;
-  // SliverSearchAppBar({
-  // required this.con,
-  // });
   @override
   Widget build(context, double shrinkOffset, bool overlapsContent) {
     return InkWell(
@@ -477,7 +473,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
             context,
             CupertinoPageRoute(
                 builder: (context) =>
-                    SearchResultsPage(/////////////////////////
+                    SearchResultsPage( 
                         // con: con,
                         )));
       },
