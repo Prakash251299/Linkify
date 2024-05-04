@@ -10,13 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/accesstoken_error.dart';
+import 'package:linkify/controller/logout.dart';
 import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/controller/user_genre.dart';
 import 'package:linkify/controller/play_spotify_song.dart';
 import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album.dart';
-import 'package:linkify/widgets/album_view.dart';
+import 'package:linkify/widgets/carousel_view.dart';
 import 'package:marquee/marquee.dart';
 import 'uis/controllers/main_controller.dart';
 import 'uis/methods/get_greeting.dart';
@@ -32,10 +33,10 @@ class CarouselSongs extends StatefulWidget {
   CarouselSongs(this.m, {super.key});
 
   @override
-  State<CarouselSongs> createState() => _RecentUsersState();
+  State<CarouselSongs> createState() => _CarouselSongsState();
 }
 
-class _RecentUsersState extends State<CarouselSongs> {
+class _CarouselSongsState extends State<CarouselSongs> {
 
   PlaySpotifySong _playSpotifySong = PlaySpotifySong();
 
@@ -76,7 +77,11 @@ class _RecentUsersState extends State<CarouselSongs> {
         return;
       } else {
         AccessError e = AccessError();
-        await e.handleError(res);
+        var a = await e.handleError(res);
+        if(a==2){
+          print("null refresh token plaese go to login or restart the app");
+          return;
+        }
       }
     }
   }
@@ -135,7 +140,10 @@ class _RecentUsersState extends State<CarouselSongs> {
         return;
       } else {
         AccessError e = AccessError();
-        await e.handleError(res);
+        var a = await e.handleError(res);
+        if(a==2){
+          print("null refresh token plaese go to login or restart the app");
+        }
       }
     }
   }
@@ -169,15 +177,17 @@ class _RecentUsersState extends State<CarouselSongs> {
                     children: [
                       Text(
                         greet,
-                        style: Theme.of(context).textTheme.headline4,
+                        // style: Theme.of(context).textTheme.headline4,
                       ),
                       Spacer(),
                 IconButton(
                   onPressed: () async {
-                    print('more vert icon clicked');
-                    await carouselRecommendation('');
+                    print('Sign out called');
+                    // await fetchCategory();
+                    /* Below code is for signout */
+                    await callSignOutApi(context);
                   },
-                  icon: Icon(Icons.more_vert,color: Colors.white,),
+                  icon: Icon(Icons.more_vert,color: Colors.white,), // more_vert _icon
                 ),
                     ],
                   ),
@@ -192,7 +202,7 @@ class _RecentUsersState extends State<CarouselSongs> {
                     runSpacing: 8,
                     spacing: 8,
                     children: [
-                      for (int i = 0;i < widget.m!['name']!.length && i < 6;i++) ...{
+                      for (int i = 0; i < widget.m!['name']!.length && i < 6;i++) ...{
                         // for (int i = 0; i<6; i++) ...{
                         //   print('ljkjk'),
                         InkWell(
@@ -206,7 +216,7 @@ class _RecentUsersState extends State<CarouselSongs> {
       
                             await fetchAlbumSongs(widget.m?['id']?[i], i);
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => AlbumView(
+                                builder: (context) => CarouselView(
                                     widget.m?['image']?[i],
                                     StaticStore.m1[i]['name'],
                                     widget.m?['trackName']?[i],

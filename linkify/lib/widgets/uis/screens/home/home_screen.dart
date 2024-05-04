@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/static_store.dart';
-import 'package:linkify/widgets/album_song_screen.dart';
+import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
@@ -25,149 +25,141 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    BlocProvider(
-      create: (context) => HomeCubit()..getAlbums(),
-      // create:(_){},
-      child: BlocBuilder<HomeCubit, HomeState>(
-      // child: BlocBuilder(
-        builder: (context, state) {
+    return BlocProvider(
+        create: (context) => HomeCubit()..getAlbums(),
+        // create:(_){},
+        child: BlocBuilder<HomeCubit, HomeState>(
+            // child: BlocBuilder(
+            builder: (context, state) {
           print("homescreen");
           if (state.status == LoadPage.loading) {
-            return 
-            Scaffold(
+            return Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             );
           }
           if (state.status == LoadPage.loaded) {
-            return 
-            Scaffold(
-              body: 
-              Column(
-                children: [
-                 
-                 Expanded(child: 
-              SingleChildScrollView(child:Column(
-                children: [
+            return Scaffold(
+              body: Column(children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        CarouselSongs(state.carouselSongs),
+                        const SizedBox(height: 12),
 
-                  CarouselSongs(
-                    state.likedTrack
-                  ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Text(
-                      "Popular Hits",
-                      // style: Theme.of(context).textTheme.headline4,
+
+
+                        for(int k=0;k<10;k++)...{
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8),
+                            child: Text(
+                              "${state.categories?[k].name}",
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ),
+                          HorizontalSongList(state.categories?[k]),
+                          const SizedBox(height: 12),
+                        }
+
+
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 16.0, vertical: 8),
+                        //   child: Text(
+                        //     "Best Picks For You",
+                        //     // style: Theme.of(context).textTheme.headline4,
+                        //   ),
+                        // ),
+                        // HorizontalArtistList(
+                        //     // con: con, users: state.users.sublist(6, 16)),
+                        //     // con: con, users: state.users.sublist(0,0)
+                        //     ),
+                        // const SizedBox(height: 12),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 16.0, vertical: 8),
+                        //   child: Text(
+                        //     "New Releases",
+                        //     style: Theme.of(context).textTheme.headline4,
+                        //   ),
+                        // ),
+                        // HorizontalSongList(state.categories?[1]
+                        //     // state.categories?[1]
+                        //     // con: con, songs: state.songs.sublist(10, 20)
+                        //     ),
+                        // const SizedBox(height: 12),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 16.0, vertical: 8),
+                        //   child: Text(
+                        //     "You might also like",
+                        //     style: Theme.of(context).textTheme.headline4,
+                        //   ),
+                        // ),
+                        // HorizontalArtistList(
+                        //     // con: con, users: state.users.sublist(16)
+                        //     ),
+                        // const SizedBox(height: 12),
+                      ],
                     ),
                   ),
-                  HorizontalSongList(
-                      // con: con, songs: state.songs.sublist(0, 10)),
-                      // con: con, songs: state.songs.sublist(0, 0)
-                      ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Text(
-                      "Best Picks For You",
-                      // style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ),
-                  HorizontalArtistList(
-                      // con: con, users: state.users.sublist(6, 16)),
-                      // con: con, users: state.users.sublist(0,0)
-                      ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Text(
-                      "New Releases",
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ),
-                  HorizontalSongList(
-                      // con: con, songs: state.songs.sublist(10, 20)
-                  ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Text(
-                      "You might also like",
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ),
-                  HorizontalArtistList(
-                      // con: con, users: state.users.sublist(16)
-                      ),
-                  const SizedBox(height: 12),
+                ),
 
-                  
+                // StaticStore.player.processingState==ProcessingState.completed?
 
 
+                StreamBuilder(
+                    stream: StaticStore.player.playerStateStream,
+                    builder: (context, snapshot1) {
+                      return StaticStore.playing == true ||
+                              StaticStore.pause == true
+                          ? 
+                          // Text("hi")
+                          MyStickyWidgets.miniplayer(context)
+                          : const SizedBox();
+                    }),
 
-                ],
-              ),
-              ),
-              ),
-              
-              // StaticStore.player.processingState==ProcessingState.completed?
-              StreamBuilder(
-                stream: StaticStore.player.playerStateStream,
-                builder: (context, snapshot1) {
-                  return 
-                  StaticStore.playing == true || StaticStore.pause==true?
-                  MyStickyWidgets.miniplayer(context)
-                  : const SizedBox();
-                }
-              ),
-              MyStickyWidgets.footer(context),
-              // StaticStore.player.playerStateStream.listen((event) {},)
-              // StaticStore.playing == true || StaticStore.pause==true?
-              // miniplayer()
-              // : const SizedBox(),
-              // Container(color:Colors.red,width: 100,height: 100,),
-              
-             
+
+                MyStickyWidgets.footer(context),
+                // StaticStore.player.playerStateStream.listen((event) {},)
+                // StaticStore.playing == true || StaticStore.pause==true?
+                // miniplayer()
+                // : const SizedBox(),
+                // Container(color:Colors.red,width: 100,height: 100,),
               ]),
-              
             );
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            Text("No data found"),
-          ],);
-          }));
-            // }));
-          // }
-          // if (state.status == LoadPage.error) {
-          //   return const Scaffold(
-          //     body: Center(
-          //       child: Text(
-          //         "Error",
-          //         style: TextStyle(color: Colors.white),
-          //       ),
-          //     ),
-          //   );
-          // }
+              Text("No data found"),
+            ],
+          );
+        }));
+    // }));
+    // }
+    // if (state.status == LoadPage.error) {
+    //   return const Scaffold(
+    //     body: Center(
+    //       child: Text(
+    //         "Error",
+    //         style: TextStyle(color: Colors.white),
+    //       ),
+    //     ),
+    //   );
+    // }
 
-          // return Container();
-        // },
-      // ),
+    // return Container();
+    // },
+    // ),
     // );
   }
 
-
-  
-  
   // Widget miniplayer(var context) {
-  //   return 
+  //   return
   //   GestureDetector(child:
   //   Container(
   //     color: const Color.fromARGB(221, 66, 37, 37),
@@ -190,10 +182,10 @@ class HomeScreen extends StatelessWidget {
   //               Container(
   //                 // width: 150,
   //                 // height: 80,
-                  
+
   //                 decoration: BoxDecoration(
   //                   color: Colors.red,
-                    
+
   //                   // image: DecorationImage(
   //                       // image: NetworkImage(list[index].img),
   //                       // fit: BoxFit.cover),
@@ -205,7 +197,7 @@ class HomeScreen extends StatelessWidget {
   //               // name
   //               SizedBox(
   //                 width: MediaQuery.of(context).size.width,
-  //                 child: 
+  //                 child:
   //                 Text(
   //                   // "hello",
   //                   "${StaticStore.currentSong}",
@@ -230,8 +222,6 @@ class HomeScreen extends StatelessWidget {
   //                   // list[index].creator ?? '',
 
   //                   // "jasjkd",
-
-
 
   //                   StaticStore.currentArtists.length>1?
   //                   "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}":"${StaticStore.currentArtists[0]}",
@@ -259,5 +249,4 @@ class HomeScreen extends StatelessWidget {
   //   },
   //   );
   // }
-
 }

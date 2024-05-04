@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/widgets/uis/models/album_model.dart';
 import '../../../models/loading_enum.dart';
 import '../../../models/song_model.dart';
@@ -9,7 +11,7 @@ import '../../../models/user.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final repo = GetHomePage();
+  // final repo = GetHomePage();
   HomeCubit() : super(HomeState.initial());
 
   Future<void> getAlbums() async {
@@ -21,12 +23,14 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(
         // albums: await repo.getAlbum(),
         // songs: await repo.getSongs(),
-        likedTrack: await repo.getLikedSongData(),
+        carouselSongs: await getCarouselSongs(),
+        categories: await fetchCategory(),
         // id: await repo.getId(),
         status: LoadPage.loaded,
       ));
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
+      print("Error happened at homecubit getalbums function");
       emit(state.copyWith(status: LoadPage.error));
     }
   }
