@@ -30,7 +30,7 @@ class SongDataController extends GetxController{
     int a = await getPermission();
     if(a==1){
       await read();
-      await SongPlayerController.updatePosition();
+      // await SongPlayerController.updatePosition();
       SongDataController.loaded = true;
       return 1;
     }

@@ -6,14 +6,14 @@ import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 
 class FirebaseCall{
-  static Future<void> readData()async{
-    /* Read data */
-    var document = FirebaseFirestore.instance.collection('users');
+  // Future<void> readData()async{
+  //   /* Read data */
+  //   var document = FirebaseFirestore.instance.collection('users');
 
-    await document.get().then((v){
-      print(v.docs[0]['name']);
-    });
-  }
+  //   await document.get().then((v){
+  //     print(v.docs[0]['name']);
+  //   });
+  // }
 
   List<dynamic> getTopThreeGenres(var topGenre){
     List<dynamic> topThreeGenre = [];

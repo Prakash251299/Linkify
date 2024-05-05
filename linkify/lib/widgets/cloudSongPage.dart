@@ -784,7 +784,7 @@
 // //   var title = "Music Player";
 // // // var player = AudioPlayer();
 // //   PlayerState playerState = PlayerState.paused;
-// //   // static bool SongDataController.loaded = false;
+// //   // bool SongDataController.loaded = false;
 // //   bool playing = false;
 // // // var currSong.value = 0;
 // //   SongPlayerController songPlayerController = Get.put(SongPlayerController());

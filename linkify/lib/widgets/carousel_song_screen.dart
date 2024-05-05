@@ -279,7 +279,7 @@ class _MusicPlayer extends StatelessWidget {
               ),
             ],
           ),
-          MyStickyWidgets.footer(context),
+          footer(context),
           // Row(children: [
           //     IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
           //       Navigator.of(context).push(

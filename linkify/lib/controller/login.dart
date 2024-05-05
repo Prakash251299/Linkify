@@ -9,7 +9,7 @@ import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
 
 class LoginPage{
   ReadWrite _readWrite = ReadWrite();
-  static var loginStatus = 0;
+  var loginStatus = 0;
   Future<int> getLoginStatus() async {
     loginStatus =  await _readWrite.getAccessToken()==""?0:1;
     return loginStatus;

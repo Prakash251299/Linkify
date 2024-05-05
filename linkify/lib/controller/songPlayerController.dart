@@ -9,10 +9,10 @@ import 'package:linkify/controller/song_data_contoller.dart';
 
 class SongPlayerController extends GetxController{
   static var player = AudioPlayer();
-  // static var playing = false;
+  // var playing = false;
   static RxBool playing = false.obs;
-  // static var totalTime = 0.obs;
-  // static var currentTime = 0;
+  // var totalTime = 0.obs;
+  // var currentTime = 0;
   static var currentTime = Duration(seconds:0).obs;
   static var totalTime = Duration(seconds:0).obs;
   static var paused = false;
@@ -40,7 +40,7 @@ class SongPlayerController extends GetxController{
       });
     }
     catch(e){
-
+      print("SongDataController error while updatePositon() is called");
     }
 
   }

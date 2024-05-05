@@ -58,18 +58,18 @@ class SpotifyHandler{
   // var token = "BQBPfmiLWxXwJduBVAlnUB19Si8OMWIAwvkbv7DfTuDydcRMJqIdnAerVoeewQ4lf-v_bLb_uEakhM9rjkkftwJ6nyRwG36zGhkrxCciw9usS_Q5B_0";
 
 
-  static var player =  AudioPlayer();
-  // static var _player = AudioPlayer();
+  var player =  AudioPlayer();
+  // var _player = AudioPlayer();
   // final player = AudioPlayer();                   // Create a player
-  // static Future<void> plays() async {
+  // Future<void> plays() async {
   //   var url = "";
   //   await _player.setUrl('url');
   //   _player.play();  
   // }
-  static var playing = false;
-  static var paused = false;
+  var playing = false;
+  var paused = false;
 
-  static var songName = "Mahiye jinna sohna";
+  var songName = "Mahiye jinna sohna";
   var authorize = 'https://accounts.spotify.com/en/authorize?response_type=code&client_id=80c5fa373a4f4ef793721969b1e25fac&scope=user-read-private%20user-read-email&redirect_uri=http://127.0.0.1:62454/Ec2aYbQgp3c=/';
   var tokenEndpoint = "https://accounts.spotify.com/api/token";
 
@@ -1073,7 +1073,7 @@ Future<String> redirectToAuthorization(String clientId, String scope, String cod
 
   }
 
-  // static Future play({
+  // Future play({
   //   required String spotifyUri,
   //   bool asRadio = false,
   // }) async {

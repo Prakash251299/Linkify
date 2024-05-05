@@ -7,7 +7,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 
 class YoutubeSongPlayer{
-  // static AudioPlayer player = AudioPlayer();
+  // AudioPlayer player = AudioPlayer();
   Future<void> youtubePlay(String songName,String artist) async {
     if(songName!=""){
       songName+=" $artist lyrics";

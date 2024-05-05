@@ -343,19 +343,19 @@ class SearchPage extends StatelessWidget {
                       // ),
                     ),
                   ),
-                  Padding(
-                        padding: const EdgeInsets.only(bottom: 50.0),
-                        child: StreamBuilder(
+                  // Padding(
+                  //       padding: const EdgeInsets.only(bottom: 0.0),
+                  //       child: 
+                        StreamBuilder(
                           stream: StaticStore.player.playerStateStream,
                           builder: (context, snapshot1) {
                             return StaticStore.playing == true || StaticStore.pause==true?
-                            MyStickyWidgets.miniplayer(context)
+                            miniplayer(context)
                             : const SizedBox();
                           }
                         ),
-                      ),
-                      
-                      MyStickyWidgets.footer(context),
+                      // )
+                      footer(context),
                 ],
               ),
             );

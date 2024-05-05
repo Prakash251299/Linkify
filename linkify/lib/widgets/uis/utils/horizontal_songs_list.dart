@@ -19,7 +19,7 @@ import 'botttom_sheet_widget.dart';
 class HorizontalSongList extends StatelessWidget {
   // final List<SongModel> songs;
   // final MainController con;
-  Categories? _categories;
+  FrontPageCategories? _categories;
   HorizontalSongList(this._categories);
   // HorizontalSongList();
 
@@ -30,18 +30,19 @@ class HorizontalSongList extends StatelessWidget {
 
     return SizedBox(
       height: 210,
+      // height: 230,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemCount: songs.length,
-          itemCount: _categories?.playlists?.length,
+          itemCount: _categories?.playlists.length,
           itemBuilder: (context, i) {
             // final song = songs[i];
             return InkWell(
               onTap: () async {
                 print("list album clicked");
-                List<AlbumTrack> _albumTracks = await fetchPlaylistTracks(_categories?.playlists?[i].id);
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists?[i].imgUrl, _categories?.playlists?[i].name, _albumTracks)));
-                print(_categories?.playlists?[i]);
+                List<AlbumTrack> _albumTracks = await fetchPlaylistTracks(_categories?.playlists[i].id);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists[i].imgUrl, _categories?.playlists[i].name, _albumTracks)));
+                print(_categories?.playlists[i]);
                 
                 // con.playSong(con.convertToAudio(songs), songs.indexOf(song));
               },
@@ -134,7 +135,7 @@ class HorizontalSongList extends StatelessWidget {
                         
                         CachedNetworkImage(
                           // imageUrl: song.coverImageUrl!,
-                          imageUrl: "${_categories?.playlists?[i].imgUrl}",
+                          imageUrl: "${_categories?.playlists[i].imgUrl}",
                           // imageUrl: "",
                           // imageUrl: "https://daily-mix.scdn.co/covers/time-capsule/time-capsule-blue_DEFAULT-en-GB.jpg",
                           width: 150,
@@ -151,14 +152,14 @@ class HorizontalSongList extends StatelessWidget {
                       const SizedBox(height: 7),
                       Text(
                         // song.songname!,
-                        "${_categories?.playlists?[i].name}",
+                        "${_categories?.playlists[i].name}",
                         // "${_categories?.name}",
                         // maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1!
-                            .copyWith(color: Colors.grey),
+                            .bodyMedium
+                            !.copyWith(color: Colors.white),
                       )
                     ],
                   ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -21,110 +22,129 @@ import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 import 'package:linkify/widgets/user_network.dart';
+// import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class MyStickyWidgets extends StatelessWidget {
+// class MyStickyWidgets extends StatelessWidget {
 
   bool _isNumeric(String str) {
-    if(str == null) {
+    if(str == "") {
       return false;
     }
     return double.tryParse(str) != null;
   }
   // @override
-  static Widget footer(var context) {
-    StoreUserInfo s = StoreUserInfo();
-    return Container(
-        height: 50,
-        padding: EdgeInsets.only(left: 20, right: 20),
-        color: Colors.black,
-        child: Row(children: [
-          IconButton(
-            icon: const Icon(
-              LineIcons.home,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
-                    builder: (_) => HomeScreen(),
-                  ))
-                  .then((value) => Navigator.pop(context));
-            },
-          ),
-          Spacer(),
-          IconButton(
-            icon: const Icon(
-              CupertinoIcons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
-                    builder: (_) => SearchPage(),
-                  ))
-                  .then((value) => Navigator.pop(context));
-            },
-          ),
-          Spacer(),
-          IconButton(
-            icon: Icon(
-              LineIcons.userPlus,
-              color: Colors.white,
-            ),
-            onPressed: () async {
-              NetworkFunction _networkFunction = NetworkFunction();
-
-              /* If data updation needed in firebase then use the below code */
-              // await s.fetchInfo();
-
+  
+  Widget footer(var context) {
+    return 
+    Opacity(
+      opacity: 1.0,
+      // opacity: 0.5,
+      child: Container(
+        // margin: EdgeInsets.only(top: MediaQuery.of(context).size.height-200),
+          height: 50,
+          padding: EdgeInsets.only(left: 20, right: 20),
+          color: Colors.black.withOpacity(0.7),
+          // decoration: BoxDecoration(
+          //   color: Colors.black.withOpacity(0.5),
+          //   gradient: LinearGradient(
+          //     begin: Alignment.bottomCenter,
+          //     end: Alignment.topCenter,
+          //     colors: [
+          //     Colors.black,
+          //     Colors.black,
+          //   ]
             
-              var numberOfUsers = 0;
-              DateTime now = DateTime.now();
-              var dateToday = now.day.toString();
-              // if(_isNumeric(StaticStore.dateStored[1])){
-
-              // }
-
-              // if(StaticStore.dateStored[0]==dateToday[0]){
-
-              // }
-
-
-
-              /* Get number of users for recommendation */
-              // numberOfUsers = await _networkFunction.getNumberOfUsers();
-
-              StoreUserInfo _storeUserInfo = StoreUserInfo();
-              _storeUserInfo.fetchCurrentUserInfo();
-              if(numberOfUsers>=10){
-              /* If we have more users then like based friend recommendations will be provided */
-                List<UserInfo?> userHavingSameInterests =
-                    await _networkFunction.fetchRecommendedUsersInfo();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => NetworkUser(userHavingSameInterests),
-                ));
-              }else{
-              /* All users of our application will be recommended */
-              List<UserInfo?> allUsers =
-                  await _networkFunction.fetchAllUsersInfo();
-                  // print(allUsers[0]?.id);
-
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => NetworkUser(allUsers),
-                ));
-              }
-
-
-            },
-          ),
-        ]));
+          //   ),
+          // ),
+          child: Row(children: [
+            IconButton(
+              icon: const Icon(
+                LineIcons.home,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => HomeScreen(),
+                    ))
+                    .then((value) => Navigator.pop(context));
+              },
+            ),
+            Spacer(),
+            IconButton(
+              icon: const Icon(
+                CupertinoIcons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (_) => SearchPage(),
+                    ))
+                    .then((value) => Navigator.pop(context));
+              },
+            ),
+            Spacer(),
+            IconButton(
+              icon: Icon(
+                LineIcons.userPlus,
+                color: Colors.white,
+              ),
+              onPressed: () async {
+                NetworkFunction _networkFunction = NetworkFunction();
+      
+                /* If data updation needed in firebase then use the below code */
+                // await s.fetchInfo();
+      
+              
+                var numberOfUsers = 0;
+                DateTime now = DateTime.now();
+                var dateToday = now.day.toString();
+                // if(_isNumeric(StaticStore.dateStored[1])){
+      
+                // }
+      
+                // if(StaticStore.dateStored[0]==dateToday[0]){
+      
+                // }
+      
+      
+      
+                /* Get number of users for recommendation */
+                // numberOfUsers = await _networkFunction.getNumberOfUsers();
+      
+                StoreUserInfo _storeUserInfo = StoreUserInfo();
+                _storeUserInfo.fetchCurrentUserInfo();
+                if(numberOfUsers>=10){
+                /* If we have more users then like based friend recommendations will be provided */
+                  List<UserInfo?> userHavingSameInterests =
+                      await _networkFunction.fetchRecommendedUsersInfo();
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => NetworkUser(userHavingSameInterests),
+                  ));
+                }else{
+                /* All users of our application will be recommended */
+                List<UserInfo?> allUsers =
+                    await _networkFunction.fetchAllUsersInfo();
+                    // print(allUsers[0]?.id);
+      
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => NetworkUser(allUsers),
+                  ));
+                }
+      
+      
+              },
+            ),
+          ])),
+    );
   }
 
-  static Widget miniplayer(var context) {
+  Widget miniplayer(var context) {
     // var c = [Color.fromARGB(221, 66, 37, 37),Color.fromARGB(221, 146, 72, 72),];
     // var random = Random().nextInt(34)-1;
     // if(8 in List)
-    List<dynamic> excludedColorList = [2, 11, 14, 17, 22, 24, 27, 31, 32];
+    List<dynamic> excludedColorList = [2, 5, 8, 11, 14, 19, 22, 27, 29, 31, 32];
     int d = StaticStore.currentSong.length * 4 % 34;
     YoutubeSongPlayer _player = YoutubeSongPlayer();
     while (excludedColorList.contains(d)) {
@@ -132,16 +152,24 @@ class MyStickyWidgets extends StatelessWidget {
       d = d%34;
     }
     int color = int.parse(tags[d]['color'].toString());
+    // print(d);
     return GestureDetector(
       child: 
       Container(
-        // padding: EdgeInsets.only(bottom:70),
+        // height:100,
+        // padding: EdgeInsets.only(bottom:50),
+        margin: EdgeInsets.only(bottom:50),
 
         // color: Color(tags[0]['color']),
-        color: Color(color),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Color(color).withOpacity(1),
+        ),
+        // color:Colors.red,
         // width: 360,
         // width: MediaQuery.of(context).size.width,
         height: 60,
+        // height: 110,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemCount: list.length,
@@ -230,7 +258,7 @@ class MyStickyWidgets extends StatelessWidget {
                                     
                                 style: const TextStyle(
                                   decoration: TextDecoration.none,
-                                    color: Color(0xffb3b3b3),
+                                    color: Colors.white70,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Raleway",
                                     fontStyle: FontStyle.normal,
@@ -286,9 +314,9 @@ class MyStickyWidgets extends StatelessWidget {
     );
   }
 
-  @override
+  // @override
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
   }
-}
+// }

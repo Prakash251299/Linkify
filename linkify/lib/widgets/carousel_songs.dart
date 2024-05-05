@@ -20,7 +20,7 @@ import 'package:linkify/model/album.dart';
 import 'package:linkify/widgets/carousel_view.dart';
 import 'package:marquee/marquee.dart';
 import 'uis/controllers/main_controller.dart';
-import 'uis/methods/get_greeting.dart';
+import '../controller/get_greeting.dart';
 
 import 'uis/models/user.dart';
 import 'uis/screens/artist_profile/artist_profile.dart';
@@ -41,9 +41,6 @@ class _CarouselSongsState extends State<CarouselSongs> {
   PlaySpotifySong _playSpotifySong = PlaySpotifySong();
 
   Future<void> fetchAlbumSongs(var albumId, int ind) async {
-    String? id = "";
-    String? name = "";
-
     DateTime now = DateTime.now(); // 30/09/2021 15:54:30
     var dateToday = now.day.toString();
     dateToday += "-";
@@ -55,6 +52,20 @@ class _CarouselSongsState extends State<CarouselSongs> {
       return;
     }
     StaticStore.dateStored = dateToday;
+    String? id = "";
+    String? name = "";
+
+    // DateTime now = DateTime.now(); // 30/09/2021 15:54:30
+    // var dateToday = now.day.toString();
+    // dateToday += "-";
+    // dateToday += now.month.toString();
+    // dateToday += "-";
+    // dateToday += now.year.toString();
+    // if (StaticStore.dateStored == dateToday &&
+    //     StaticStore.m1[ind]['name'] != null) {
+    //   return;
+    // }
+    // StaticStore.dateStored = dateToday;
 
     ReadWrite _readWrite = ReadWrite();
     while (true) {
@@ -154,10 +165,6 @@ class _CarouselSongsState extends State<CarouselSongs> {
   Widget build(BuildContext context) {
     var devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    var greet = greeting();
-    // print(widget.m);
-    // print(widget.m?['image']);
-    // s = getCategories();
     return 
     
     SafeArea(
@@ -165,170 +172,124 @@ class _CarouselSongsState extends State<CarouselSongs> {
         children: [
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+            // filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: 
+                // widget.m?['trackName']!=null
+                // widget.m?.length!=0
+                widget.m!['name']!.length!=0
+                //  && widget.m?['trackName']?[0]!=""
+                ?
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: 
-                  Row(
-                    children: [
-                      Text(
-                        greet,
-                        // style: Theme.of(context).textTheme.headline4,
-                      ),
-                      Spacer(),
-                IconButton(
-                  onPressed: () async {
-                    print('Sign out called');
-                    // await fetchCategory();
-                    /* Below code is for signout */
-                    await callSignOutApi(context);
-                  },
-                  icon: Icon(Icons.more_vert,color: Colors.white,), // more_vert _icon
-                ),
-                    ],
-                  ),
-                ),
-      
-                SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    runSpacing: 8,
-                    spacing: 8,
-                    children: [
-                      for (int i = 0; i < widget.m!['name']!.length && i < 6;i++) ...{
-                        // for (int i = 0; i<6; i++) ...{
-                        //   print('ljkjk'),
-                        InkWell(
-                          onTap: () async {
-                            print("Here");
-                            // await fetchUserGenre();
-      
-                            setState(() {
-                              StaticStore.carouselInd = i;
-                            });
-      
-                            await fetchAlbumSongs(widget.m?['id']?[i], i);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CarouselView(
-                                    widget.m?['image']?[i],
-                                    StaticStore.m1[i]['name'],
-                                    widget.m?['trackName']?[i],
-                                    StaticStore.m1[i]['id'],
-                                    StaticStore.m1[i]['artists'],
-                                    StaticStore.m1[i]['trackImg']
-                                    // widget.m?['artists']?[i],
-                                    
-                                )));
-      
-                            // });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white12,
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            width:
-                                ((MediaQuery.of(context).size.width * .5) - 21.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(3),
-                                    bottomLeft: Radius.circular(3),
-                                  ),
-                                  child: CachedNetworkImage(
-                                    // imageUrl: user.avatar!,
-                                    imageUrl: widget.m?['image']?[i] ?? "",
-                                    // imageUrl: "",
-      
-                                    width: 55,
-                                    height: 55,
-                                    memCacheHeight:
-                                        (55 * devicePexelRatio).round(),
-                                    memCacheWidth:
-                                        (55 * devicePexelRatio).round(),
-                                    maxHeightDiskCache:
-                                        (55 * devicePexelRatio).round(),
-                                    maxWidthDiskCache:
-                                        (55 * devicePexelRatio).round(),
-                                    progressIndicatorBuilder: (context, url, l) =>
-                                        const LoadingImage(),
-                                    fit: BoxFit.cover,
-                                  ),
+                // Column(
+                //   children: [
+                    Padding(
+                      padding: EdgeInsets.all(17.0),
+                      child: Wrap(
+                        // alignment: WrapAlignment.center,
+                        // crossAxisAlignment: WrapCrossAlignment.center,
+                        runSpacing: 8,
+                        spacing: 8,
+                        children: [
+                          for (int i = 0; i < widget.m!['name']!.length && i < 6;i++) ...{
+                            InkWell(
+                              onTap: () async {
+                                print("Inside carousel");
+                                // await fetchUserGenre();
+                          
+                                setState(() {
+                                  StaticStore.carouselInd = i;
+                                });
+                          
+                                await fetchAlbumSongs(widget.m?['id']?[i], i);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CarouselView(
+                                        widget.m?['image']?[i],
+                                        StaticStore.m1[i]['name'],
+                                        widget.m?['trackName']?[i],
+                                        StaticStore.m1[i]['id'],
+                                        StaticStore.m1[i]['artists'],
+                                        StaticStore.m1[i]['trackImg']
+                                        // widget.m?['artists']?[i],
+                                        
+                                    )));
+                          
+                                // });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white12,
+                                  // color: Colors.black,
+                                  borderRadius: BorderRadius.circular(3),
                                 ),
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: 30,
-                                      // width:auto,
-                                      child:
-                                          // Text("jejk"),
-                                          // Text("${widget.m?['name']?[i]}"),
-      
-                                          // Text("hello",style:TextStyle(color:Colors.white)),
-                                          Marquee(
-                                        text: '${widget.m?['trackName']?[i]}   ',
-                                        // text: 'hi   ',
-      
-                                        style: TextStyle(color: Colors.white),
-                                        velocity: 4,
+                                width:
+                                    ((MediaQuery.of(context).size.width * .5) - 21.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(3),
+                                        bottomLeft: Radius.circular(3),
                                       ),
-      
-                                      //     Marquee(
-                                      //   key: Key("$_useRtlText"),
-                                      //   text: "${widget.m?['name']?[i]}",
-                                      //   style: TextStyle(
-                                      //       fontWeight: FontWeight.bold),
-                                      //   scrollAxis: Axis.horizontal,
-                                      //   crossAxisAlignment:
-                                      //       CrossAxisAlignment.start,
-                                      //   blankSpace: 20,
-                                      //   velocity: 10,
-                                      //   // pauseAfterRound: Duration(seconds: 1),
-                                      //   showFadingOnlyWhenScrolling: true,
-                                      //   fadingEdgeStartFraction: 0.1,
-                                      //   fadingEdgeEndFraction: 0.1,
-                                      //   // numberOfRounds: 3,
-                                      //   startPadding: 10,
-                                      //   // accelerationDuration: Duration(seconds: 1),
-                                      //   // accelerationCurve: Curves.linear,
-                                      //   // decelerationDuration: Duration(milliseconds: 500),
-                                      //   // decelerationCurve: Curves.easeOut,
-                                      //   // textDirection: _useRtlText ? TextDirection.rtl : TextDirection.ltr,
-                                      //   textDirection: TextDirection.ltr,
-                                      // )
+                                      child: CachedNetworkImage(
+                                        // imageUrl: user.avatar!,
+                                        imageUrl: widget.m?['image']?[i] ?? "",
+                                        // imageUrl: "",
+                          
+                                        width: 55,
+                                        height: 55,
+                                        memCacheHeight:
+                                            (55 * devicePexelRatio).round(),
+                                        memCacheWidth:
+                                            (55 * devicePexelRatio).round(),
+                                        maxHeightDiskCache:
+                                            (55 * devicePexelRatio).round(),
+                                        maxWidthDiskCache:
+                                            (55 * devicePexelRatio).round(),
+                                        progressIndicatorBuilder: (context, url, l) =>
+                                            const LoadingImage(),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    // Text(
-                                    //   // user.name!,
-                                    //   widget.m['name'][i],
-                                    //   style:TextStyle(color: Colors.white),
-                                    //   // style: Theme.of(context)
-                                    //       // .textTheme
-                                    //       // .bodyText1,
-                                    // ),
-                                  ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 30,
+                                          // width:auto,
+                                          child:
+                                              // Text("jejk"),
+                                              // Text("${widget.m?['name']?[i]}"),
+                          
+                                              // Text("hello",style:TextStyle(color:Colors.white)),
+                                              Marquee(
+                                            text: '${widget.m?['trackName']?[i]}   ',
+                                            // text: 'hi   ',
+                          
+                                            style: TextStyle(color: Colors.white),
+                                            velocity: 4,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        // )
-                        //     .toList(),
-                      }
-                    ],
-                  ),
-                ),
+                          }
+                        
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                //   ],
+                // ):SizedBox(),
               ],
-            ),
+            ):
+            // Text("sagd",style:TextStyle(color: Colors.white)),
+            SizedBox(),
           ),
         ],
       ),

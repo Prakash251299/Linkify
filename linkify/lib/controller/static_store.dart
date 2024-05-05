@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:linkify/controller/categories.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:spotify/spotify.dart';
 
@@ -21,6 +22,7 @@ class StaticStore{
   //   }
   // }
   static String dateStored = "1-1-2024";
+  static String dateStored2 = "1-1-2024";
   static var carouselInd = -10;
   static var playingCarouselInd = -10;
   static var playing = false;
@@ -38,6 +40,7 @@ class StaticStore{
   static String? currentUserCountry="";
   static List<dynamic>? currentUserImage=[];
   static int videoPlayingIndex = -1;
+  static List<FrontPageCategories>categoryInfo=[];
   // UserInfo _userInfo=[];
 
 }
