@@ -8,7 +8,7 @@ class PlaySpotifySong{
   // void playTrack(var id){
   //   print("playing");
   // }
-  static const platform = MethodChannel('com.example.Linkify/player');
+  // const platform = MethodChannel('com.example.Linkify/player');
   AudioPlayer a = AudioPlayer();
   YoutubeSongPlayer _player = YoutubeSongPlayer();
 

@@ -10,8 +10,6 @@ import 'package:linkify/widgets/uis/models/song_model.dart';
 
 class SongScreen extends StatefulWidget {
   SongModel songs;
-  // static String name="";
-  // static String image="";
   SongScreen(this.songs, {super.key});
   // SongScreen(this.name, this.image, {super.key});
   // SongScreen({Key? key}) : super(key: key),this.songs;

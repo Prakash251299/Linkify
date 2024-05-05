@@ -15,7 +15,7 @@ const String basePath = '/api/v1';
 class CallApi{
   ReadWrite _readWrite = ReadWrite();
   AccessError _accessError = AccessError();
-  static var accessToken;
+  var accessToken;
   // CallApi c = CallApi();
 
 

@@ -10,7 +10,7 @@ class HomeState {
   // final List<SongModel>? songs;
   // final List<AlbumModeling>? albums;
   Map<String,List<dynamic>>? carouselSongs;
-  List<Categories>? categories=[];
+  List<FrontPageCategories>? categories=[];
   // final List<String>? id;
   HomeState({
     required this.status,
@@ -32,7 +32,7 @@ class HomeState {
   HomeState copyWith({
     LoadPage? status,
     Map<String,List<dynamic>>?carouselSongs,
-    List<Categories>? categories,
+    List<FrontPageCategories>? categories,
     // List<String>?id,
     // List<AlbumModeling>? albums,
     // List<SongModel>? songs,

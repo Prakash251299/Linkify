@@ -465,27 +465,27 @@ class AlbumViewState extends State<CarouselView> {
                       },
                     ),
                     onNotification: (t) {
-                      if (t is ScrollEndNotification) {
+                      // if (t is ScrollEndNotification) {
                         // print(_scrollController.position.pixels);
-                      }
+                      // }
                       // setState(() {
 
                       // });
 
-                      if (_scrollController.position.pixels > mq.height) {
-                        print("hi");
-                      }
+                      // if (_scrollController.position.pixels > mq.height) {
+                      //   print("hi");
+                      // }
                       // print(_scrollController.position.pixels);
                       // _scrollController.position.activity?.isScrolling = false;
 
-                      print(_scrollController.position);
+                      // print(_scrollController.position);
 
                       // print(_scrollController.position.activity?.velocity);
                       // setState(() {});
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) => setState(() {}));
                       _counter = _scrollController.position.pixels;
-                      print(_counter);
+                      // print(_counter);
                       // });
                       //How many pixels scrolled from pervious frame
                       // print(t);

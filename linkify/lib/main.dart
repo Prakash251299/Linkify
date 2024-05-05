@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
               }else{
                 try{
                   await loginController.login(context);
-                  if(LoginPage.loginStatus==1){
+                  if(loginController.loginStatus==1){
                     print("logged in");
 
                     Navigator.pop(context);
