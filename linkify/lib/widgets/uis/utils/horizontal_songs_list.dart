@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 import 'package:linkify/controller/playlist_track.dart';
 import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/model/album_track.dart';
@@ -40,9 +40,14 @@ class HorizontalSongList extends StatelessWidget {
             return InkWell(
               onTap: () async {
                 print("list album clicked");
-                List<AlbumTrack> _albumTracks = await fetchPlaylistTracks(_categories?.playlists[i].id);
+                List<AlbumTrack>? _albumTracks = await fetchPlaylistTracks(_categories?.playlists[i].id);
+
+
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists[i].imgUrl, _categories?.playlists[i].name, _albumTracks)));
-                print(_categories?.playlists[i]);
+                
+                
+                
+                // print(_categories?.playlists[i]);
                 
                 // con.playSong(con.convertToAudio(songs), songs.indexOf(song));
               },

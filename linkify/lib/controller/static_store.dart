@@ -1,5 +1,5 @@
 import 'package:just_audio/just_audio.dart';
-import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:spotify/spotify.dart';
 

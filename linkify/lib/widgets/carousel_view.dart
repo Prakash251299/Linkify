@@ -35,10 +35,10 @@ class CarouselView extends StatefulWidget {
   // final String title;
 
   @override
-  State<CarouselView> createState() => AlbumViewState();
+  State<CarouselView> createState() => CarouselViewState();
 }
 
-class AlbumViewState extends State<CarouselView> {
+class CarouselViewState extends State<CarouselView> {
   // var playing = false;
   var ind = -10;
   YoutubeSongPlayer _player = YoutubeSongPlayer();
