@@ -214,11 +214,12 @@ class AlbumViewState extends State<AlbumView> {
                                       });
 
                                     }else{
-                                      await _player.youtubePlay(widget._albumTracks![position].name,widget._albumTracks![position].trackArtists[0]);
+                                      // print(widget._albumTracks?[position].name);
+                                      await _player.youtubePlay(widget._albumTracks![position].name,widget._albumTracks![position].trackArtists![0]);
                                       // StaticStore.pause = false;
-                                      StaticStore.currentSong = widget._albumTracks![position].name;
-                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl;
-                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists);
+                                      StaticStore.currentSong = widget._albumTracks![position].name!;
+                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
+                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists!);
                                       setState(() {
                                         StaticStore.playing = true;
                                         StaticStore.pause = false;
@@ -243,10 +244,10 @@ class AlbumViewState extends State<AlbumView> {
                                     }else{
                                       await _player.youtubeStop();
 
-                                      await _player.youtubePlay(widget._albumTracks![position].name, widget._albumTracks![position].trackArtists[0]);
-                                      StaticStore.currentSong = widget._albumTracks![position].name;
-                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl;
-                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists);
+                                      await _player.youtubePlay(widget._albumTracks![position].name, widget._albumTracks![position].trackArtists![0]);
+                                      StaticStore.currentSong = widget._albumTracks![position].name!;
+                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
+                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists!);
 
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
                                         widget._albumTracks![position].name,
@@ -433,11 +434,11 @@ class AlbumViewState extends State<AlbumView> {
                                   // Column(children: [
                                     // Expanded(child:
                                     // Column(children: [
-                                      widget._albumTracks!=null && widget._albumTracks![position].trackArtists.length > 1?
-                                      Text('${widget._albumTracks?[position].trackArtists[0]}, ${widget._albumTracks?[position].trackArtists[1]}',overflow: TextOverflow.ellipsis,
+                                      widget._albumTracks!=null && widget._albumTracks![position].trackArtists!.length > 1?
+                                      Text('${widget._albumTracks?[position].trackArtists?[0]}, ${widget._albumTracks?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):
-                                      Text('${widget._albumTracks?[position].trackArtists[0]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget._albumTracks![position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
                                           style:TextStyle(color: Colors.white70)
                                       ),
                                     // ]),

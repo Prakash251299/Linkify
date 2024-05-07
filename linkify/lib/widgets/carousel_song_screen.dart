@@ -273,35 +273,13 @@ class _MusicPlayer extends StatelessWidget {
                 iconSize: 35,
                 onPressed: () {},
                 icon: const Icon(
-                  Icons.cloud_download,
+                  Icons.menu,
                   color: Colors.white,
                 ),
               ),
             ],
           ),
           footer(context),
-          // Row(children: [
-          //     IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
-          //       Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //           builder: (_) => HomeScreen(),
-          //           )).then((value) => Navigator.pop(context));
-          //     },),
-          //     Spacer(),
-          //     IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
-          //       Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //           builder: (_) => SearchPage(),
-          //           )).then((value) => Navigator.pop(context));
-          //     },),
-          //     Spacer(),
-          //     IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
-          //       Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //           builder: (_) => Library(),
-          //           )).then((value) => Navigator.pop(context));
-          //     },),
-          // ]),
         ],
       ),
     );
@@ -317,7 +295,7 @@ class _BackgroundFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return
         Container(
-      child: ClipRect(), // put song image here
+      child: ClipRect(), // put song image here for background
 
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -329,9 +307,6 @@ class _BackgroundFilter extends StatelessWidget {
           ],
         ),
       ),
-
-      // SizedBox(),
-      // ),
     );
   }
 }

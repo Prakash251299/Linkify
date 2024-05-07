@@ -202,12 +202,7 @@ class SearchPage extends StatelessWidget {
                                   ),
                                   itemBuilder: (context, i) {
                                     return TagWidget(
-                                        //////////////////////////////
                                         tag: allTags.sublist(0, 4)[i],
-                                        // genreName:"hello"
-                                        // genreName: "${StaticStore.userGenre[0].entries.elementAt(i).key}"
-                  
-                                        // genreName: StaticStore.userGenre[0].entries.elementAt(i).key==""?"hi":"${StaticStore.userGenre[0].entries.elementAt(i).key}"
                                         genreName: StaticStore.userGenre![i]
                                         // genreName: "$i"
                                         // StaticStore.userGenre[i]
@@ -240,8 +235,6 @@ class SearchPage extends StatelessWidget {
                                     childAspectRatio: 16 / 8,
                                   ),
                                   itemBuilder: (context, i) {
-                                    // return TagWidget(tag: allTags.sublist(4)[i], genreName: tags[0].key,);
-                                    // return TagWidget(tag: allTags.sublist(4)[i], genreName: tags[i].entries.first.toString());
                                     return TagWidget(
                                         tag: allTags.sublist(4)[i],
                                         genreName: tags[i]
@@ -253,99 +246,12 @@ class SearchPage extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 100),
-                                //       Row(children: [
-                                //     IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
-                                //       Navigator.of(context).push(
-                                //       MaterialPageRoute(
-                                //           builder: (_) => HomeScreen(),
-                                //           )).then((value) => Navigator.pop(context));
-                                //     },),
-                                //     Spacer(),
-                                //     IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
-                                //       Navigator.of(context).push(
-                                //       MaterialPageRoute(
-                                //           builder: (_) => SearchPage(),
-                                //           )).then((value) => Navigator.pop(context));
-                                //     },),
-                                //     Spacer(),
-                                //     IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
-                                //       Navigator.of(context).push(
-                                //       MaterialPageRoute(
-                                //           builder: (_) => Library(),
-                                //           )).then((value) => Navigator.pop(context));
-                                //     },),
-                                // ])
                                 
                               ],
                             ),
                           ),
-                  
-                          // Padding(
-                          //   padding: const EdgeInsets.only(bottom: 50.0),
-                          //   child: StreamBuilder(
-                          //     stream: StaticStore.player.playerStateStream,
-                          //     builder: (context, snapshot1) {
-                          //       return StaticStore.playing == true || StaticStore.pause==true?
-                          //       MyStickyWidgets.miniplayer(context)
-                          //       : const SizedBox();
-                          //     }
-                          //   ),
-                          // ),
-                          
-                          // MyStickyWidgets.footer(context),
-                          // Container(
-                          //     height: 50,
-                          //     color: Colors.black,
-                          //     child: Row(children: [
-                          //       IconButton(
-                          //         icon: const Icon(
-                          //           LineIcons.home,
-                          //           color: Colors.white,
-                          //         ),
-                          //         onPressed: () {
-                          //           Navigator.of(context)
-                          //               .push(MaterialPageRoute(
-                          //                 builder: (_) => HomeScreen(),
-                          //               ))
-                          //               .then((value) => Navigator.pop(context));
-                          //         },
-                          //       ),
-                          //       Spacer(),
-                          //       IconButton(
-                          //         icon: const Icon(
-                          //           CupertinoIcons.search,
-                          //           color: Colors.white,
-                          //         ),
-                          //         onPressed: () {
-                          //           Navigator.of(context)
-                          //               .push(MaterialPageRoute(
-                          //                 builder: (_) => SearchPage(),
-                          //               ))
-                          //               .then((value) => Navigator.pop(context));
-                          //         },
-                          //       ),
-                          //       Spacer(),
-                          //       IconButton(
-                          //         icon: const Icon(
-                          //           CupertinoIcons.music_albums,
-                          //           color: Colors.white,
-                          //         ),
-                          //         onPressed: () {
-                          //           Navigator.of(context)
-                          //               .push(MaterialPageRoute(
-                          //                 builder: (_) => Library(),
-                          //               ))
-                          //               .then((value) => Navigator.pop(context));
-                          //         },
-                          //       ),
-                          //     ])),
-                      //   ],
-                      // ),
                     ),
                   ),
-                  // Padding(
-                  //       padding: const EdgeInsets.only(bottom: 0.0),
-                  //       child: 
                         StreamBuilder(
                           stream: StaticStore.player.playerStateStream,
                           builder: (context, snapshot1) {

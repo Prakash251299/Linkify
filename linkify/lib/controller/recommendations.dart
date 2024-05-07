@@ -3,13 +3,13 @@ import 'dart:convert';
 // import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:linkify/controller/accesstoken_error.dart';
-import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 // import 'package:linkify/controller/login.dart';
 // import 'package:linkify/controller/logout.dart';
 import 'package:linkify/controller/read_write.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'package:linkify/controller/static_store.dart';
-import 'package:spotify/src/models/_models.dart';
+// import 'package:spotify/src/models/_models.dart';
 // import 'package:linkify/controller/webview.dart';
 // import 'package:linkify/main.dart';
 // import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
@@ -129,7 +129,7 @@ Future<List<FrontPageCategories>> fetchCategory() async {
   // if (StaticStore.dateStored == dateToday) {
   //   return [];
   // }
-  if (StaticStore.categoryInfo.isNotEmpty && StaticStore.dateStored2 == dateToday) {
+  if (StaticStore.dateStored2 == dateToday) {
     return StaticStore.categoryInfo;
   }
   StaticStore.dateStored2 = dateToday;
