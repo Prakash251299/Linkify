@@ -17,6 +17,7 @@ import 'package:linkify/controller/play_spotify_song.dart';
 import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album.dart';
+import 'package:linkify/model/album_track.dart';
 import 'package:linkify/widgets/carousel_view.dart';
 import 'package:marquee/marquee.dart';
 import 'uis/controllers/main_controller.dart';
@@ -27,10 +28,10 @@ import 'uis/screens/artist_profile/artist_profile.dart';
 import 'uis/utils/loading.dart';
 
 class CarouselSongs extends StatefulWidget {
-  // var m = {};
-  Map<String, List<dynamic>>? m = {};
+  // var albumInfo = {};
+  Map<String, List<dynamic>>? albumInfo = {};
 
-  CarouselSongs(this.m, {super.key});
+  CarouselSongs(this.albumInfo, {super.key});
 
   @override
   State<CarouselSongs> createState() => _CarouselSongsState();
@@ -38,7 +39,7 @@ class CarouselSongs extends StatefulWidget {
 
 class _CarouselSongsState extends State<CarouselSongs> {
 
-  PlaySpotifySong _playSpotifySong = PlaySpotifySong();
+  // PlaySpotifySong _playSpotifySong = PlaySpotifySong();
 
   Future<void> fetchAlbumSongs(var albumId, int ind) async {
     DateTime now = DateTime.now(); // 30/09/2021 15:54:30
@@ -47,8 +48,9 @@ class _CarouselSongsState extends State<CarouselSongs> {
     dateToday += now.month.toString();
     dateToday += "-";
     dateToday += now.year.toString();
+    StaticStore.myQueueTrack = StaticStore.trackInfo[ind];
     if (StaticStore.dateStored == dateToday &&
-        StaticStore.m1[ind]['name'] != null) {
+        StaticStore.trackInfo[ind].length != 0) {
       return;
     }
     StaticStore.dateStored = dateToday;
@@ -62,7 +64,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
     // dateToday += "-";
     // dateToday += now.year.toString();
     // if (StaticStore.dateStored == dateToday &&
-    //     StaticStore.m1[ind]['name'] != null) {
+    //     StaticStore.trackInfo[ind]['name'] != null) {
     //   return;
     // }
     // StaticStore.dateStored = dateToday;
@@ -97,11 +99,12 @@ class _CarouselSongsState extends State<CarouselSongs> {
     }
   }
   Future<void> fetchSimilarTracks(var songId, var ind) async {
-    List<String>? name = [];
-    List<String>? id = [];
+    
+    // List<String>? name = [];
+    // List<String>? id = [];
     List<String>? trackArtists = [];
-    List<String>?trackImg = [];
-    List<List<String>>? artistNames = [];
+    // List<String>?trackImg = [];
+    // List<List<String>>? artistNames = [];
     ReadWrite _readWrite = ReadWrite();
     while (true) {
       var accessToken = await _readWrite.getAccessToken();
@@ -112,44 +115,77 @@ class _CarouselSongsState extends State<CarouselSongs> {
       // var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
       print(res.statusCode);
       if (res.statusCode == 200) {
+        List<AlbumTrack>? carouselTrack=[];
         var data = jsonDecode(res.body);
         for (int i = 0; i < 50; i++) {
-          // fetching 50 similar songs
-          name.add(data['tracks'][i]['name']);
-          id.add(data['tracks'][i]['id']);
-          trackImg.add(data['tracks'][i]['album']['images'][0]['url']);
-
-          for(int j=0;j<data['tracks'][i]['artists'].length;j++){
-            trackArtists?.add(data['tracks'][i]['artists'][j]['name']);
-          }
-          artistNames.add(trackArtists!);
           trackArtists=[];
-          // imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
+          for(int j=0;j<data['tracks'][i]['artists'].length;j++){
+            trackArtists.add(data['tracks'][i]['artists'].length!=0?data['tracks'][i]['artists'][j]['name']:"unknown");
+          }
+          AlbumTrack _albumTrack = AlbumTrack.fromJson({
+            "name":data['tracks'][i]['name'],
+            "id":data['tracks'][i]['id'],
+            "trackImg":data['tracks'][i]['album']['images'].length!=0?data['tracks'][i]['album']['images'][0]['url']:"",
+            "trackArtists":trackArtists,
+          });
+
+          if(_albumTrack.name=="" || _albumTrack.id=="" || _albumTrack.imgUrl==""){
+          continue;
+        }else{
+          carouselTrack.add(_albumTrack);
         }
-        // print(artistNames);
-        // print(imgUrl);
-        // DateTime now = DateTime.now(); // 30/09/2021 15:54:30
-        // var dateToday = now.day.toString();
-        // dateToday += "-";
-        // dateToday += now.month.toString();
-        // dateToday += "-";
-        // dateToday += now.year.toString();
-        // if (StaticStore.dateStored != dateToday || StaticStore.m1[ind] == {}) {
-        //   print(dateToday);
-        StaticStore.m1[ind].addEntries({'id': id}.entries);
-        StaticStore.m1[ind].addEntries({'name': name}.entries);
-        StaticStore.m1[ind].addEntries({'artists': artistNames}.entries);
-        StaticStore.m1[ind].addEntries({'trackImg': trackImg}.entries);
-        // StaticStore.dateStored = dateToday;
-        // StaticStore.carouselInd = ind;
-        // m1.addEntries({'date':dateOnly}.entries);
+
+          // fetching 50 similar songs
+        //   name.add(data['tracks'][i]['name']);
+        //   id.add(data['tracks'][i]['id']);
+        //   trackImg.add(data['tracks'][i]['album']['images'][0]['url']);
+
+        //   artistNames.add(trackArtists!);
+        //   trackArtists=[];
         // }
+        // StaticStore.trackInfo[ind].addEntries({'id': id}.entries);
+        // StaticStore.trackInfo[ind].addEntries({'name': name}.entries);
+        // StaticStore.trackInfo[ind].addEntries({'artists': artistNames}.entries);
+        // StaticStore.trackInfo[ind].addEntries({'trackImg': trackImg}.entries);
         // return;
-        // print();
-        // m.addEntries({'image':imgUrl}.entries);
-        // print(m1['name']);
-        return;
-      } else {
+      } 
+      // StaticStore.trackInfo = carouselTrack;
+      StaticStore.trackInfo[ind] = List.from(carouselTrack);
+      return;
+
+    }
+
+
+
+
+
+
+
+      // if (res.statusCode == 200) {
+      //   var data = jsonDecode(res.body);
+      //   for (int i = 0; i < 50; i++) {
+      //     // fetching 50 similar songs
+      //     name.add(data['tracks'][i]['name']);
+      //     id.add(data['tracks'][i]['id']);
+      //     trackImg.add(data['tracks'][i]['album']['images'][0]['url']);
+
+      //     for(int j=0;j<data['tracks'][i]['artists'].length;j++){
+      //       trackArtists?.add(data['tracks'][i]['artists'][j]['name']);
+      //     }
+      //     artistNames.add(trackArtists!);
+      //     trackArtists=[];
+      //   }
+      //   StaticStore.trackInfo[ind].addEntries({'id': id}.entries);
+      //   StaticStore.trackInfo[ind].addEntries({'name': name}.entries);
+      //   StaticStore.trackInfo[ind].addEntries({'artists': artistNames}.entries);
+      //   StaticStore.trackInfo[ind].addEntries({'trackImg': trackImg}.entries);
+      //   return;
+      // } 
+      
+      
+      
+      
+      else {
         AccessError e = AccessError();
         var a = await e.handleError(res);
         if(a==2){
@@ -174,10 +210,10 @@ class _CarouselSongsState extends State<CarouselSongs> {
             filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
             // filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: 
-                // widget.m?['trackName']!=null
-                // widget.m?.length!=0
-                widget.m!['name']!.length!=0
-                //  && widget.m?['trackName']?[0]!=""
+                // widget.albumInfo?['trackName']!=null
+                // widget.albumInfo?.length!=0
+                widget.albumInfo!['name']!.isNotEmpty
+                //  && widget.albumInfo?['trackName']?[0]!=""
                 ?
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +228,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
                         runSpacing: 8,
                         spacing: 8,
                         children: [
-                          for (int i = 0; i < widget.m!['name']!.length && i < 6;i++) ...{
+                          for (int i = 0; i < widget.albumInfo!['name']!.length && i < 6;i++) ...{
                             InkWell(
                               onTap: () async {
                                 print("Inside carousel");
@@ -201,19 +237,31 @@ class _CarouselSongsState extends State<CarouselSongs> {
                                 setState(() {
                                   StaticStore.carouselInd = i;
                                 });
-                          
-                                await fetchAlbumSongs(widget.m?['id']?[i], i);
+
+                                await fetchAlbumSongs(widget.albumInfo?['id']?[i], i);
+                                // StaticStore.myQueueTrack = ;
+
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => CarouselView(
-                                        widget.m?['image']?[i],
-                                        StaticStore.m1[i]['name'],
-                                        widget.m?['trackName']?[i],
-                                        StaticStore.m1[i]['id'],
-                                        StaticStore.m1[i]['artists'],
-                                        StaticStore.m1[i]['trackImg']
-                                        // widget.m?['artists']?[i],
+                                    builder: (context) => 
+                                    CarouselView(
+                                      widget.albumInfo?['image']?[i],
+                                      widget.albumInfo?['trackName']?[i],
+                                      StaticStore.trackInfo[i],
+                                    ),
+                                    
+                                    // CarouselView(
+                                    //     widget.albumInfo?['image']?[i],
+                                    //     widget.albumInfo?['trackName']?[i],
+
+                                    //     StaticStore.trackInfo[i]['name'],
+                                    //     StaticStore.trackInfo[i]['id'],
+                                    //     StaticStore.trackInfo[i]['artists'],
+                                    //     StaticStore.trackInfo[i]['trackImg']
+                                    //     // widget.albumInfo?['artists']?[i],
                                         
-                                    )));
+                                    // )
+                                    
+                                    ));
                           
                                 // });
                               },
@@ -235,7 +283,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
                                       ),
                                       child: CachedNetworkImage(
                                         // imageUrl: user.avatar!,
-                                        imageUrl: widget.m?['image']?[i] ?? "",
+                                        imageUrl: widget.albumInfo?['image']?[i] ?? "",
                                         // imageUrl: "",
                           
                                         width: 55,
@@ -261,11 +309,11 @@ class _CarouselSongsState extends State<CarouselSongs> {
                                           // width:auto,
                                           child:
                                               // Text("jejk"),
-                                              // Text("${widget.m?['name']?[i]}"),
+                                              // Text("${widget.albumInfo?['name']?[i]}"),
                           
                                               // Text("hello",style:TextStyle(color:Colors.white)),
                                               Marquee(
-                                            text: '${widget.m?['trackName']?[i]}   ',
+                                            text: '${widget.albumInfo?['trackName']?[i]}   ',
                                             // text: 'hi   ',
                           
                                             style: TextStyle(color: Colors.white),

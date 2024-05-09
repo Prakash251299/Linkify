@@ -7,7 +7,7 @@ import 'package:linkify/controller/read_write.dart';
 
 Future<List<AlbumTrack>?> fetchPlaylistTracks(String? playlistId)async{
   print("fetching playlist tracks");
-  print(playlistId);
+  // print(playlistId);
 
 
   ReadWrite _readWrite = ReadWrite();
@@ -38,14 +38,14 @@ Future<List<AlbumTrack>?> fetchPlaylistTracks(String? playlistId)async{
           "name":data['items'][i]['track']['name']??"",
           "id":data['items'][i]['track']['id']??"",
           "trackArtists":trackArtists,
-          "trackImg":data['items'][i]['track']['album']['images'].length!=0?data['items'][i]['track']['album']['images'][0]['url']:"",
+          "trackImg":data['items'][i]['track']['album']['images'].length!=0?data['items'][i]['track']['album']['images'][0]['url']:"unknown",
         });
-        if(_singleAlbumTrackInfo.name=="" || _singleAlbumTrackInfo.id=="" || _singleAlbumTrackInfo.imgUrl=="" || _singleAlbumTrackInfo.trackArtists==null){
+        if(_singleAlbumTrackInfo.name=="" || _singleAlbumTrackInfo.id=="" || _singleAlbumTrackInfo.imgUrl==""){
           continue;
         }else{
           _albumTracks.add(_singleAlbumTrackInfo);
         }
-        print(data['items'][i]['track']['name']);
+        // print(data['items'][i]['track']['name']);
         // print(_singleAlbumTrackInfo.imgUrl);
       }
       // print(_albumTracks.length);

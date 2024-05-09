@@ -1,18 +1,28 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/first_page_categories.dart';
+import 'package:linkify/model/album_track.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:spotify/spotify.dart';
 
 class StaticStore{
   static var carouselLength = 6;
   // static List<Map<String,dynamic>>m1=[];
-  static List<Map<String,dynamic>>m1=[
-    {},
-    {},
-    {},
-    {},
-    {},
-    {}
+  // static List<Map<String,dynamic>>trackInfo=[
+  //   {},
+  //   {},
+  //   {},
+  //   {},
+  //   {},
+  //   {}
+  // ];
+  // static List<AlbumTrack>trackInfo=[];
+  static List<List<AlbumTrack>>trackInfo=[
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
   ];
   static List<String>? userGenre;
   // static List<Map<String,int>> userGenre=[];
@@ -41,6 +51,9 @@ class StaticStore{
   static List<dynamic>? currentUserImage=[];
   static int videoPlayingIndex = -1;
   static List<FrontPageCategories>categoryInfo=[];
+  static List<AlbumTrack> myQueueTrack=[];
+  static int queueIndex = 0;
+  static int queueLoaded = 0;
   // UserInfo _userInfo=[];
 
 }

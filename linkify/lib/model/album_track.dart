@@ -1,7 +1,7 @@
 class AlbumTrack{
   String? id="";
   String? name="";
-  List<String>? trackArtists=[];
+  List<dynamic> trackArtists=[];
   String? imgUrl="";
   AlbumTrack.fromJson(json){
     id = json['id'];

@@ -12,7 +12,7 @@ import 'package:linkify/widgets/uis/screens/search/cubit/search_cubit.dart';
 import 'package:linkify/widgets/uis/utils/bottom_nav_bar/models/persisten-bottom-nav-item.widget.dart';
 import '../../controllers/main_controller.dart';
 import '../../methods/string_methods.dart';
-import '../../models/catagory.dart';
+import '../../models/genreTag.dart';
 import '../genre_page/genre_page.dart';
 import '../search_results/search_result.dart';
 
@@ -403,7 +403,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                   const SizedBox(width: 10),
                   Text(
                     "Songs, Artists or Genres",
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Colors.grey.shade800,
                           fontSize: 18,
                         ),
