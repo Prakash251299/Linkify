@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/youtube_player.dart';
 
 class SeekBarData {
   final Duration position;
@@ -170,8 +172,22 @@ class _SeekBarState extends State<SeekBar> {
                       // : Duration(seconds: StaticStore.player.duration!.inSeconds);
                   return StreamBuilder(
                       stream:
-                          StaticStore.player.bufferedPositionStream,
+                          // StaticStore.player.bufferedPositionStream,
+                          StaticStore.player.currentIndexStream,
                       builder: (context, snapshot2) {
+                        // int? currentIndex = snapshot2.data;
+                        // //  ?? 0;
+                        // print(currentIndex.toString());
+
+
+
+                        // if(StaticStore.player.currentIndexStream){
+
+                        // }
+
+
+
+
                         // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
                         //   print("end it");
                         //   StaticStore.playing.value = false;
@@ -181,7 +197,23 @@ class _SeekBarState extends State<SeekBar> {
 
                         //  },
 
-                        // if (StaticStore.player.processingState == ProcessingState.completed){
+                        if (StaticStore.player.processingState == ProcessingState.completed){
+                          YoutubeSongPlayer _player = YoutubeSongPlayer();
+                          StaticStore.playing = true;
+                          StaticStore.pause = false;
+                          if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
+                            // _player.youtubeStop();
+                            StaticStore.queueIndex++;
+                            _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+
+                            
+                            StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                            StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                            StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                            });
+                          }
+                          // print("hi");
+                        }
                         // this.setState(() {
                         //   var a = stopper();
                         // });
@@ -265,11 +297,12 @@ class _SeekBarState extends State<SeekBar> {
                             child: 
                             
                             ProgressBar(
-                              // progress: duration,
                               progress: StaticStore.player.position,
                               thumbGlowColor: Colors.red,
+                              // bufferedBarColor: Colors.grey,
                               total: 
-                              StaticStore.player.duration as Duration,
+                              StaticStore.player.duration!=null?
+                              StaticStore.player.duration as Duration:const Duration(seconds: 0),
                               // duration:duration,
                               // StaticStore.player.duration ??
                               //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
@@ -283,7 +316,8 @@ class _SeekBarState extends State<SeekBar> {
                                   fontSize: 14, color: Colors.white),
                               progressBarColor: Colors.red,
                               baseBarColor: Colors.grey[200],
-                              bufferedBarColor: Colors.grey[350],
+                              // bufferedBarColor: Colors.grey[350],
+                              bufferedBarColor: Colors.grey,
                               thumbColor: Colors.red,
   //                             onSeek: (duration) {
   //   print('User selected a new time: $duration');

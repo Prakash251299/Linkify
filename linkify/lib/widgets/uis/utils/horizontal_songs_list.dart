@@ -5,6 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/first_page_categories.dart';
 import 'package:linkify/controller/playlist_track.dart';
 import 'package:linkify/controller/recommendations.dart';
+import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/widgets/album_view.dart';
 import 'package:linkify/widgets/carousel_view.dart';
@@ -42,7 +43,8 @@ class HorizontalSongList extends StatelessWidget {
                 print("list album clicked");
                 List<AlbumTrack>? _albumTracks = await fetchPlaylistTracks(_categories?.playlists[i].id);
 
-
+                /* Stored queue for front page categories */
+                // StaticStore.myQueueTrack = _albumTracks!;
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists[i].imgUrl, _categories?.playlists[i].name, _albumTracks)));
                 
                 
@@ -78,65 +80,6 @@ class HorizontalSongList extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: 
-                        // Container(
-                        //         // width: 150,
-                        //         // height: 800,
-
-                          // child: 
-                          // Image.network(
-                          //   // "",
-                          //       "${_categories?.playlists?[i].imgUrl}",
-                          //       fit: BoxFit.fill,
-                          //       width: 150,
-                          //       height: 150,
-                                
-                          //       // loadingBuilder: (BuildContext context, Widget child,
-                          //       //     ImageChunkEvent? loadingProgress) {
-                          //       //   if (loadingProgress == null) return child;
-                          //       //   return Center(
-                          //       //     child: CircularProgressIndicator(
-                          //       //       value: loadingProgress.expectedTotalBytes != null
-                          //       //           ? loadingProgress.cumulativeBytesLoaded /
-                          //       //               loadingProgress.expectedTotalBytes!
-                          //       //           : null,
-                          //       //     ),
-                          //       //   );
-                          //       // },
-                          //       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                          //         if (frame != null) return child;
-                          //         return Center(
-                          //           child:const LoadingImage(size: 80)
-                          //           // child: CircularProgressIndicator(
-                          //           //   // value: frame.expectedTotalBytes != null
-                          //           //   //     ? loadingProgress.cumulativeBytesLoaded /
-                          //           //   //         loadingProgress.expectedTotalBytes!
-                          //           //   //     : null,
-                          //           // ),
-                          //         );
-                          //       }
-                                
-                          //       // progressIndicatorBuilder: (context, url, l) =>
-                          //     // const LoadingImage(size: 80),
-
-
-
-                          //       // loadingBuilder: (BuildContext context, Widget child,
-                          //       //     ImageChunkEvent? loadingProgress) {
-                          //       //   if (loadingProgress == null) return child;
-                          //       //   return Center(
-                          //       //     child: CircularProgressIndicator(
-                          //       //       value: loadingProgress.expectedTotalBytes != null
-                          //       //           ? loadingProgress.cumulativeBytesLoaded /
-                          //       //           loadingProgress.expectedTotalBytes!
-                          //       //           : null,
-                          //       //     ),
-                          //       //   );
-                          //       // },
-
-
-
-
-                          //     ),
                         
                         CachedNetworkImage(
                           // imageUrl: song.coverImageUrl!,
@@ -242,7 +185,7 @@ class HorizontalArtistList extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1!
+                            .bodyMedium!
                             .copyWith(color: Colors.grey),
                       )
                     ],

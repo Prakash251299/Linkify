@@ -1,3 +1,5 @@
+// // 375 402
+
 // import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,19 +11,23 @@ import 'package:just_audio/just_audio.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/model/album_track.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 // import 'package:linkify/widgets/music_screen.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
+
+
 class CarouselView extends StatefulWidget {
   var albumImg;
   var albumName;
-  List<String> name;
-  List<String> id;
-  List<List<String>> trackArtists;
-  List<String> trackImg;
-  CarouselView(this.albumImg, this.name, this.albumName, this.id, this.trackArtists,this.trackImg);
+  // List<String> name;
+  // List<String> id;
+  // List<List<String>> trackArtists;
+  // List<String> trackImg;
+  List<AlbumTrack> trackInfo=[];
+  CarouselView(this.albumImg,this.albumName,this.trackInfo);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -183,7 +189,8 @@ class CarouselViewState extends State<CarouselView> {
                       // physics: BouncingScrollPhysics(),
                       physics: AlwaysScrollableScrollPhysics(),
                       // itemCount: 100,
-                      itemCount: widget.name.length,
+                      // itemCount: widget.name.length,
+                      itemCount: widget.trackInfo?.length,
                       // itemCount: m['name'].length!=0?m['name'].length:10,
                       controller: _scrollController,
 
@@ -203,155 +210,250 @@ class CarouselViewState extends State<CarouselView> {
                               InkWell(
                                 borderRadius: BorderRadius.circular(15),
                                 onTap: () async {
+
+
+                                  // await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+
+
+
+
+
+
                                   if (StaticStore.playing == true) {
-                                    // stop song
-                                    if (ind == position) {
-                                      await _player.youtubePause();
-                                      setState(() {
-                                        StaticStore.playing = false;
-                                      });
-                                    } else {
-                                      await _player.youtubeStop();
-                                      await _player.youtubePlay(widget.name[position],widget.trackArtists[position][0]);
-                                      StaticStore.currentSong = widget.name[position];
-                                      StaticStore.currentSongImg = widget.trackImg[position];
-                                      StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+                                      if(StaticStore.currentSong==widget.trackInfo[position].name){
+                                        await _player.youtubePause();
+                                        // setState(() {
+                                          StaticStore.playing = false;
+                                          StaticStore.pause = true;
+                                        // });
+      
+                                      }else{
+                                        // print(widget.trackInfo?[position].name);
+                                        await _player.youtubeStop();
+                                        // Navigator.pop(context);
+                                        // await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
+                                        await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]).then((value) {
 
-                                      // SongModel s = getSongModel(
-                                      // StaticStore.currentArtists.add(widget.trackArtists[position]);
-                                      //   widget.name[position],
-                                      //   widget.albumImg[position],
-                                      //   widget.id[position],
-                                      //   widget.trackArtists[position],
-                                      // );
+                                        // },);
+                                        /* For queue */
+                                        StaticStore.myQueueTrack = widget.trackInfo;
+                                        StaticStore.queueLoaded=1;
+                                        StaticStore.queueIndex = position;
+                                        // StaticStore.pause = false;
+                                        
+                                        StaticStore.currentSong = widget.trackInfo[position].name!;
+                                        StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
+                                        StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
+                                        // setState(() {
+                                          StaticStore.playing = true;
+                                          StaticStore.pause = false;
+                                        // });
+                                        Navigator.pop(context);
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                          widget.trackInfo[position].name,
+                                          // widget.albumImg[position],
+                                          widget.trackInfo[position].id,
+                                          widget.trackInfo[position].trackArtists,
+                                          // widget.trackImg[position]
+                                          widget.trackInfo[position].imgUrl
+                                        )));
+                                        },);
+                                        // Navigator.pop(context);
+                                      }
+                                    }else{
+                                      // if(StaticStore.pause==true){
+      
+                                      // }
+                                      StaticStore.playing=true;
+                                      StaticStore.pause=false;
+                                      if(StaticStore.currentSong==widget.trackInfo[position].name){
+                                        await _player.youtubeResume();
+                                      }else{
+                                        await _player.youtubeStop();
+      
+                                        await _player.youtubePlay(widget.trackInfo[position].name, widget.trackInfo[position].trackArtists[0]).then((value){
 
-                                      // print(StaticStore.player.playerState);
-                                      // return;
-
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                        widget.name[position],
-                                        // widget.albumImg[position],
-                                        widget.id[position],
-                                        widget.trackArtists[position],
-                                        // widget.trackImg[position]
-                                        widget.trackImg[position]
-                                      )));
-                                    }
-                                  } else {
-
-                                    // print(StaticStore.player.playerState);
-                                    // return;
-                                    // play song
-                                    if (ind == position) {
-                                      await _player.youtubeResume();
-                                    } else {
-                                      // await _player.youtubePlay(widget.name[position]);
-                                      //     StaticStore.currentSong = widget.name[position];
-                                      // StaticStore.currentSongImg = widget.trackImg[position];
-                                      //     StaticStore.currentArtists = List.from(widget.trackArtists[position]);
-
-                                          // SongModel s = getSongModel(
-                                            // widget.name[position],
+                                          // });
+                                          /* For queue */
+                                          StaticStore.myQueueTrack = widget.trackInfo;
+                                          StaticStore.queueLoaded=1;
+                                          StaticStore.queueIndex = position;
+                                          StaticStore.currentSong = widget.trackInfo[position].name!;
+                                          StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
+                                          StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
+                                          Navigator.pop(context);
+        
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                            widget.trackInfo[position].name,
                                             // widget.albumImg[position],
-                                            // widget.id[position],
-                                            // widget.trackArtists[position],
-                                          // );
-                                      //     print(StaticStore.player.playerState);
-                                      // return;
-
-
-
-                                      StaticStore.player.playerStateStream.listen((state) {
-                                        if (state.playing){} else
-                                        switch (state.processingState) {
-                                          case ProcessingState.idle: {
-                                            Scaffold(
-                                              body: Center(
-                                                child: CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          }
-                                          case ProcessingState.loading: {
-                                            Scaffold(
-                                              body: Center(
-                                                child: CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          }
-                                          case ProcessingState.buffering: {
-                                            Scaffold(
-                                              body: Center(
-                                                child: CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          }
-                                          case ProcessingState.ready: {
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                            widget.name[position],
-                                            // widget.albumImg[position],
-                                            widget.id[position],
-                                            widget.trackArtists[position],
-                                            widget.trackImg[position]
+                                            widget.trackInfo[position].id,
+                                            widget.trackInfo[position].trackArtists,
+                                            // widget.trackImg[position]
+                                            widget.trackInfo[position].imgUrl
                                           )));
-                                          }
-                                          case ProcessingState.completed: {}
-                                        }
-                                      });
-
-
-
-                                      // StaticStore.player.playerStateStream.listen((state) {
-                                      //   if(state.processingState!=ProcessingState.ready){
-                                      //     Scaffold(
-                                      //       body: Center(
-                                      //         child: CircularProgressIndicator(),
-                                      //       ),
-                                      //     );
-                                      //     // _player.youtubePlay(widget.name[position]);
-                                      //     // StaticStore.currentSong = widget.name[position];
-                                      // StaticStore.currentSongImg = widget.trackImg[position];
-                                      //     // StaticStore.currentArtists = List.from(widget.trackArtists[position]);
-                                      //   }else{
-                                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
-                                      //       widget.name[position],
-                                      //       widget.albumImg[position],
-                                      //       widget.id[position],
-                                      //       widget.trackArtists[position],
-                                      //       widget.trackImg[position]
-                                      //     )));
-
-                                      //   }
-                                      // });
-
-
-
-                                      // _player.youtubePlay(widget.name[position]);
-                                      _player.youtubePlay(widget.name[position],widget.trackArtists[position][0]);
-                                      StaticStore.currentSong = widget.name[position];
-                                      StaticStore.currentSongImg = widget.trackImg[position];
-                                      StaticStore.currentArtists = List.from(widget.trackArtists[position]);
-
-                                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
-                                          //   widget.name[position],
-                                          //   widget.albumImg[position],
-                                          //   widget.id[position],
-                                          //   widget.trackArtists[position],
-                                          //   widget.trackImg[position]
-                                          // )));
+                                        });
+                                      }
+      
                                     }
-                                    setState(() {
-                                      StaticStore.playing = true;
-                                      
-                                    });
-                                    // }
-                                  }
-                                  setState(() {
-                                    StaticStore.playingCarouselInd = StaticStore.carouselInd;
-                                    ind = position;
-                                  });
-                                  // Navigator.push(context,MaterialPageRoute(builder: ((context) => ChatScreen(user:widget.user))));
 
-                                  // print(widget.user.name);
+
+
+
+
+
+
+
+                                  // if (StaticStore.playing == true) {
+                                  //   // stop song
+                                  //   if (ind == position) {
+                                  //     await _player.youtubePause();
+                                  //     // setState(() {
+                                  //       StaticStore.playing = false;
+                                  //       StaticStore.pause = true;
+                                  //     // });
+                                  //   } else {
+                                  //     await _player.youtubeStop();
+                                  //     await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+                                  //     StaticStore.currentSong = widget.trackInfo[position].name!;
+                                  //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
+                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
+
+                                  //     // SongModel s = getSongModel(
+                                  //     // StaticStore.currentArtists.add(widget.trackArtists[position]);
+                                  //     //   widget.name[position],
+                                  //     //   widget.albumImg[position],
+                                  //     //   widget.id[position],
+                                  //     //   widget.trackArtists[position],
+                                  //     // );
+
+                                  //     // print(StaticStore.player.playerState);
+                                  //     // return;
+
+                                  //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                  //       widget.trackInfo?[position].name,
+                                  //       // widget.albumImg[position],
+                                  //       widget.trackInfo?[position].id,
+                                  //       widget.trackInfo?[position].trackArtists,
+                                  //       // widget.trackImg[position]
+                                  //       widget.trackInfo?[position].imgUrl
+                                  //     )));
+                                  //   }
+                                  // } else {
+
+                                  //   // print(StaticStore.player.playerState);
+                                  //   // return;
+                                  //   // play song
+                                  //   if (ind == position) {
+                                  //     await _player.youtubeResume();
+                                  //   } else {
+                                  //     // await _player.youtubePlay(widget.name[position]);
+                                  //     //     StaticStore.currentSong = widget.name[position];
+                                  //     // StaticStore.currentSongImg = widget.trackImg[position];
+                                  //     //     StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+
+                                  //         // SongModel s = getSongModel(
+                                  //           // widget.name[position],
+                                  //           // widget.albumImg[position],
+                                  //           // widget.id[position],
+                                  //           // widget.trackArtists[position],
+                                  //         // );
+                                  //     //     print(StaticStore.player.playerState);
+                                  //     // return;
+
+
+
+                                  //     StaticStore.player.playerStateStream.listen((state) {
+                                  //       if (state.playing){} else
+                                  //       switch (state.processingState) {
+                                  //         case ProcessingState.idle: {
+                                  //           Scaffold(
+                                  //             body: Center(
+                                  //               child: CircularProgressIndicator(),
+                                  //             ),
+                                  //           );
+                                  //         }
+                                  //         case ProcessingState.loading: {
+                                  //           Scaffold(
+                                  //             body: Center(
+                                  //               child: CircularProgressIndicator(),
+                                  //             ),
+                                  //           );
+                                  //         }
+                                  //         case ProcessingState.buffering: {
+                                  //           Scaffold(
+                                  //             body: Center(
+                                  //               child: CircularProgressIndicator(),
+                                  //             ),
+                                  //           );
+                                  //         }
+                                  //         case ProcessingState.ready: {
+                                  //           Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                  //           widget.trackInfo?[position].name,
+                                  //       // widget.albumImg[position],
+                                  //       widget.trackInfo?[position].id,
+                                  //       widget.trackInfo?[position].trackArtists,
+                                  //       // widget.trackImg[position]
+                                  //       widget.trackInfo?[position].imgUrl
+                                  //         )));
+                                  //         }
+                                  //         case ProcessingState.completed: {}
+                                  //       }
+                                  //     });
+
+
+
+                                  //     // StaticStore.player.playerStateStream.listen((state) {
+                                  //     //   if(state.processingState!=ProcessingState.ready){
+                                  //     //     Scaffold(
+                                  //     //       body: Center(
+                                  //     //         child: CircularProgressIndicator(),
+                                  //     //       ),
+                                  //     //     );
+                                  //     //     // _player.youtubePlay(widget.name[position]);
+                                  //     //     // StaticStore.currentSong = widget.name[position];
+                                  //     // StaticStore.currentSongImg = widget.trackImg[position];
+                                  //     //     // StaticStore.currentArtists = List.from(widget.trackArtists[position]);
+                                  //     //   }else{
+                                  //     //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                  //     //       widget.name[position],
+                                  //     //       widget.albumImg[position],
+                                  //     //       widget.id[position],
+                                  //     //       widget.trackArtists[position],
+                                  //     //       widget.trackImg[position]
+                                  //     //     )));
+
+                                  //     //   }
+                                  //     // });
+
+
+
+                                  //     // _player.youtubePlay(widget.name[position]);
+                                  //     _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+                                  //     StaticStore.currentSong = widget.trackInfo[position].name!;
+                                  //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
+                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
+
+                                  //         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
+                                  //         //   widget.name[position],
+                                  //         //   widget.albumImg[position],
+                                  //         //   widget.id[position],
+                                  //         //   widget.trackArtists[position],
+                                  //         //   widget.trackImg[position]
+                                  //         // )));
+                                  //   }
+                                  //   // setState(() {
+                                  //     StaticStore.playing = true;
+                                      
+                                  //   // });
+                                  //   // }
+                                  // }
+                                  // // setState(() {
+                                  //   StaticStore.playingCarouselInd = StaticStore.carouselInd;
+                                  //   ind = position;
+                                  // // });
+                                  // // Navigator.push(context,MaterialPageRoute(builder: ((context) => ChatScreen(user:widget.user))));
+
+                                  // // print(widget.user.name);
                                 },
                                 child: ListTile(
                                   leading: Column(
@@ -367,8 +469,9 @@ class CarouselViewState extends State<CarouselView> {
                                               CachedNetworkImage(
                                             // imageUrl: user.avatar!,
 
-                                            imageUrl: "${widget.trackImg[position]}",
+                                            // imageUrl: "${widget.trackInfo[position]['trackImg']}",
                                             // imageUrl: "",
+                                            imageUrl: widget.trackInfo[position].imgUrl!,
 
                                             width: 55,
                                             height: 55,
@@ -394,69 +497,40 @@ class CarouselViewState extends State<CarouselView> {
 
                                   // title: Text(widget.user.name),
                                   title: Text(
-                                    "${widget.name[position]}",
+                                    "${widget.trackInfo?[position].name}",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   subtitle: 
-                                  // Expanded(child:
-                                  // Column(children: [
-                                    // Expanded(child:
-                                    // Column(children: [
-                                      widget.trackArtists[position].length>1?
-                                      Text('${widget.trackArtists[position][0]}, ${widget.trackArtists[position][1]}',overflow: TextOverflow.ellipsis,
+                                      widget.trackInfo[position].trackArtists.length>1?
+                                      Text('${widget.trackInfo?[position].trackArtists?[0]}, ${widget.trackInfo?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):
-                                      Text('${widget.trackArtists[position][0]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget.trackInfo?[position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
                                           style:TextStyle(color: Colors.white70)
                                       ),
-                                    // ]),
-                                    // ),
-                                  // ]),
-                                  // ),
                                   isThreeLine: true,
                                   trailing: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Icon(
-                                          // StaticStore.playingCarouselInd!=StaticStore.carouselInd?
-                                          // Icons.play_arrow:
-                                          ind != position
+
+
+                                          StaticStore.currentSong!=widget.trackInfo?[position].name
                                             ? Icons.play_arrow
-                                            : StaticStore.playing == true
+                                            : 
+                                            StaticStore.playing == true
                                                 ? Icons.pause
-                                                : Icons.play_arrow),
+                                                : Icons.play_arrow
+                                                
+                                        ),
+
+
                                       ]),
-                                  // :(ind==position && playing==false?Icons.play_arrow:playing==false?Icons.play_arrow:null),),
-                                  // Icons.play_arrow,color: Colors.white,),
-
-                                  // onPressed: (){
-                                  //   if(playing==true){
-                                  //     // stop song
-                                  //     // setState(() {
-                                  //     //   playing = false;
-                                  //     // });
-
-                                  //   }else{
-                                  //     // play song
-                                  //     setState(() {
-                                  //       playing = true;
-                                  //     });
-                                  //   }
-                                  // },
-                                  // ),
                                 ),
                               ),
                             ]),
-                            // Padding(
-                            //   padding: const EdgeInsets.all(20.0),
-                            //   child: Text(
-                            //     // position.toString(),
-                            //     "Hello",
-                            //     style: TextStyle(fontSize: 22.0),
-                            //   ),
-                            // ),
                           ),
                           // ),
 
@@ -465,33 +539,9 @@ class CarouselViewState extends State<CarouselView> {
                       },
                     ),
                     onNotification: (t) {
-                      // if (t is ScrollEndNotification) {
-                        // print(_scrollController.position.pixels);
-                      // }
-                      // setState(() {
-
-                      // });
-
-                      // if (_scrollController.position.pixels > mq.height) {
-                      //   print("hi");
-                      // }
-                      // print(_scrollController.position.pixels);
-                      // _scrollController.position.activity?.isScrolling = false;
-
-                      // print(_scrollController.position);
-
-                      // print(_scrollController.position.activity?.velocity);
-                      // setState(() {});
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) => setState(() {}));
                       _counter = _scrollController.position.pixels;
-                      // print(_counter);
-                      // });
-                      //How many pixels scrolled from pervious frame
-                      // print(t);
-
-                      //List scroll position
-                      // print(t.metrics.pixels);
                       return true;
                     },
                   ),
@@ -515,11 +565,6 @@ class CarouselViewState extends State<CarouselView> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -1,23 +1,22 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
+// import 'dart:convert';
+// import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
+// import 'package:http/http.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:linkify/controller/accesstoken_error.dart';
-import 'package:linkify/controller/firebase_call.dart';
-import 'package:linkify/controller/read_write.dart';
+// import 'package:linkify/controller/accesstoken_error.dart';
+// import 'package:linkify/controller/firebase_call.dart';
+// import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/controller/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
-import 'package:linkify/model/album.dart';
+// import 'package:linkify/model/album.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
-import 'package:linkify/widgets/uis/models/catagory.dart';
+import 'package:linkify/widgets/uis/models/genreTag.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
@@ -193,7 +192,7 @@ import 'package:linkify/widgets/user_network.dart';
                       height: 45,
                       // decoration: TextDecoration.none,
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        // color: Colors.red,
                         // decoration: TextDecoration.none
                         image: DecorationImage(
                             image: NetworkImage(StaticStore.currentSongImg),

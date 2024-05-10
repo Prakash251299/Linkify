@@ -82,7 +82,6 @@ class HomeScreen extends StatelessWidget {
                                     IconButton(
                     onPressed: () async {
                       print('Sign out called');
-                      // await fetchCategory();
                       /* Below code is for signout */
                       await callSignOutApi(context);
                     },
