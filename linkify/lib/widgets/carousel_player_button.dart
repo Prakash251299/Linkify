@@ -70,18 +70,24 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
             // print("position");
             // print(StaticStore.player.position);
 
-            if(StaticStore.queueIndex>0){
+            StaticStore.queueIndex--;
+            if(StaticStore.queueIndex>=0){
               // setState(() {
-              StaticStore.queueIndex--;
                 
               // });
-              StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-              StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-              StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-              await _youtubePlayer.youtubeStop();
-              await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]);
-              StaticStore.playing = true;
-              StaticStore.pause = false;
+              // await _youtubePlayer.youtubeStop().then((value) async {
+
+              await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+                StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                StaticStore.playing = true;
+                StaticStore.pause = false;
+              });
+              // });
+              // setState(() {});
+            }else{
+              StaticStore.queueIndex++;
             }
 
           },
@@ -193,33 +199,27 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
         ),
         IconButton(
           onPressed: () async {
-
-            // if(StaticStore.queueIndex>0){
-            //   // setState(() {
-            //   StaticStore.queueIndex--;
-                
-            //   // });
-            //   StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-            //   StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-            //   await _youtubePlayer.youtubeStop();
-            //   await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]);
-            // }
-
-
-
-
-
-            if(StaticStore.queueIndex<StaticStore.myQueueTrack.length){
+            StaticStore.queueIndex++;
+            if(StaticStore.queueIndex<=StaticStore.myQueueTrack.length-1){
               // setState(() {
-                StaticStore.queueIndex++;
               // });
-              StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-              StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-              StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-              await _youtubePlayer.youtubeStop();
-              await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]);
-              StaticStore.playing = true;
-              StaticStore.pause = false;
+              await _youtubePlayer.youtubeStop().then((value) async {
+                // if(StaticStore.queueIndex>=StaticStore.myQueueTrack.length){
+                //   StaticStore.queueIndex--;
+                //   return;
+                // }
+
+              await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+                StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                StaticStore.playing = true;
+                StaticStore.pause = false;
+              });
+              });
+              // setState(() {});
+            }else{
+              StaticStore.queueIndex--;
             }
           },
           iconSize: 45,

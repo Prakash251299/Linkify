@@ -212,7 +212,7 @@ class CarouselViewState extends State<CarouselView> {
                                 onTap: () async {
 
 
-                                  // await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists![0]);
+                                  // await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
 
 
 
@@ -231,8 +231,10 @@ class CarouselViewState extends State<CarouselView> {
                                         // print(widget.trackInfo?[position].name);
                                         await _player.youtubeStop();
                                         // Navigator.pop(context);
-                                        // await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists![0]);
-                                        await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists![0]);
+                                        // await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
+                                        await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]).then((value) {
+
+                                        // },);
                                         /* For queue */
                                         StaticStore.myQueueTrack = widget.trackInfo;
                                         StaticStore.queueLoaded=1;
@@ -241,7 +243,7 @@ class CarouselViewState extends State<CarouselView> {
                                         
                                         StaticStore.currentSong = widget.trackInfo[position].name!;
                                         StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
-                                        StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists!);
+                                        StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
                                         // setState(() {
                                           StaticStore.playing = true;
                                           StaticStore.pause = false;
@@ -255,6 +257,7 @@ class CarouselViewState extends State<CarouselView> {
                                           // widget.trackImg[position]
                                           widget.trackInfo[position].imgUrl
                                         )));
+                                        },);
                                         // Navigator.pop(context);
                                       }
                                     }else{
@@ -268,24 +271,27 @@ class CarouselViewState extends State<CarouselView> {
                                       }else{
                                         await _player.youtubeStop();
       
-                                        await _player.youtubePlay(widget.trackInfo[position].name, widget.trackInfo[position].trackArtists![0]);
-                                        /* For queue */
-                                        StaticStore.myQueueTrack = widget.trackInfo;
-                                        StaticStore.queueLoaded=1;
-                                        StaticStore.queueIndex = position;
-                                        StaticStore.currentSong = widget.trackInfo[position].name!;
-                                        StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
-                                        StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists!);
-                                        Navigator.pop(context);
-      
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                          widget.trackInfo[position].name,
-                                          // widget.albumImg[position],
-                                          widget.trackInfo[position].id,
-                                          widget.trackInfo[position].trackArtists,
-                                          // widget.trackImg[position]
-                                          widget.trackInfo[position].imgUrl
-                                        )));
+                                        await _player.youtubePlay(widget.trackInfo[position].name, widget.trackInfo[position].trackArtists[0]).then((value){
+
+                                          // });
+                                          /* For queue */
+                                          StaticStore.myQueueTrack = widget.trackInfo;
+                                          StaticStore.queueLoaded=1;
+                                          StaticStore.queueIndex = position;
+                                          StaticStore.currentSong = widget.trackInfo[position].name!;
+                                          StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
+                                          StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
+                                          Navigator.pop(context);
+        
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                            widget.trackInfo[position].name,
+                                            // widget.albumImg[position],
+                                            widget.trackInfo[position].id,
+                                            widget.trackInfo[position].trackArtists,
+                                            // widget.trackImg[position]
+                                            widget.trackInfo[position].imgUrl
+                                          )));
+                                        });
                                       }
       
                                     }
@@ -307,10 +313,10 @@ class CarouselViewState extends State<CarouselView> {
                                   //     // });
                                   //   } else {
                                   //     await _player.youtubeStop();
-                                  //     await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists![0]);
+                                  //     await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
                                   //     StaticStore.currentSong = widget.trackInfo[position].name!;
                                   //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
-                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists!);
+                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
 
                                   //     // SongModel s = getSongModel(
                                   //     // StaticStore.currentArtists.add(widget.trackArtists[position]);
@@ -422,10 +428,10 @@ class CarouselViewState extends State<CarouselView> {
 
 
                                   //     // _player.youtubePlay(widget.name[position]);
-                                  //     _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists![0]);
+                                  //     _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
                                   //     StaticStore.currentSong = widget.trackInfo[position].name!;
                                   //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
-                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists!);
+                                  //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
 
                                   //         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumSongScreen(
                                   //         //   widget.name[position],
@@ -496,7 +502,7 @@ class CarouselViewState extends State<CarouselView> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   subtitle: 
-                                      widget.trackInfo[position].trackArtists!.length>1?
+                                      widget.trackInfo[position].trackArtists.length>1?
                                       Text('${widget.trackInfo?[position].trackArtists?[0]}, ${widget.trackInfo?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):

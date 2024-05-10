@@ -215,26 +215,29 @@ class AlbumViewState extends State<AlbumView> {
 
                                     }else{
                                       // print(widget._albumTracks?[position].name);
-                                      await _player.youtubePlay(widget._albumTracks![position].name,widget._albumTracks![position].trackArtists![0]);
-                                      // StaticStore.pause = false;
-                                      StaticStore.myQueueTrack = widget._albumTracks!;
-                                      StaticStore.queueLoaded = 1;
-                                      StaticStore.queueIndex = position;
-                                      StaticStore.currentSong = widget._albumTracks![position].name!;
-                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
-                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists!);
-                                      // setState(() {
-                                        StaticStore.playing = true;
-                                        StaticStore.pause = false;
-                                      // });
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                        widget._albumTracks![position].name,
-                                        // widget.albumImg[position],
-                                        widget._albumTracks![position].id,
-                                        widget._albumTracks![position].trackArtists,
-                                        // widget.trackImg[position]
-                                        widget._albumTracks![position].imgUrl
-                                      )));
+                                      await _player.youtubePlay(widget._albumTracks![position].name,widget._albumTracks![position].trackArtists[0]).then((value){
+
+                                        // });
+                                        // StaticStore.pause = false;
+                                        StaticStore.myQueueTrack = widget._albumTracks!;
+                                        StaticStore.queueLoaded = 1;
+                                        StaticStore.queueIndex = position;
+                                        StaticStore.currentSong = widget._albumTracks![position].name!;
+                                        StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
+                                        StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists);
+                                        // setState(() {
+                                          StaticStore.playing = true;
+                                          StaticStore.pause = false;
+                                        // });
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                          widget._albumTracks![position].name,
+                                          // widget.albumImg[position],
+                                          widget._albumTracks![position].id,
+                                          widget._albumTracks![position].trackArtists,
+                                          // widget.trackImg[position]
+                                          widget._albumTracks![position].imgUrl
+                                        )));
+                                      });
                                     }
                                   }else{
                                     // if(StaticStore.pause==true){
@@ -247,22 +250,25 @@ class AlbumViewState extends State<AlbumView> {
                                     }else{
                                       await _player.youtubeStop();
 
-                                      await _player.youtubePlay(widget._albumTracks![position].name, widget._albumTracks![position].trackArtists![0]);
-                                      StaticStore.myQueueTrack = widget._albumTracks!;
-                                      StaticStore.queueLoaded=1;
-                                      StaticStore.queueIndex = position;
-                                      StaticStore.currentSong = widget._albumTracks![position].name!;
-                                      StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
-                                      StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists!);
+                                      await _player.youtubePlay(widget._albumTracks![position].name, widget._albumTracks![position].trackArtists[0]).then((value) {
 
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                        widget._albumTracks![position].name,
-                                        // widget.albumImg[position],
-                                        widget._albumTracks![position].id,
-                                        widget._albumTracks![position].trackArtists,
-                                        // widget.trackImg[position]
-                                        widget._albumTracks![position].imgUrl
-                                      )));
+                                        // });
+                                        StaticStore.myQueueTrack = widget._albumTracks!;
+                                        StaticStore.queueLoaded=1;
+                                        StaticStore.queueIndex = position;
+                                        StaticStore.currentSong = widget._albumTracks![position].name!;
+                                        StaticStore.currentSongImg = widget._albumTracks![position].imgUrl!;
+                                        StaticStore.currentArtists = List.from(widget._albumTracks![position].trackArtists);
+
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                          widget._albumTracks![position].name,
+                                          // widget.albumImg[position],
+                                          widget._albumTracks![position].id,
+                                          widget._albumTracks![position].trackArtists,
+                                          // widget.trackImg[position]
+                                          widget._albumTracks![position].imgUrl
+                                        )));
+                                      });
                                     }
 
                                   }
@@ -327,7 +333,7 @@ class AlbumViewState extends State<AlbumView> {
                                   // Column(children: [
                                     // Expanded(child:
                                     // Column(children: [
-                                      widget._albumTracks!=null && widget._albumTracks![position].trackArtists!.length > 1?
+                                      widget._albumTracks!=null && widget._albumTracks![position].trackArtists.length > 1?
                                       Text('${widget._albumTracks?[position].trackArtists?[0]}, ${widget._albumTracks?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):

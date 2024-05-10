@@ -86,25 +86,28 @@ class _QueueScreenState extends State<QueueScreen> {
                                         // print(_queueTracks?[position].name);
                                         await _player.youtubeStop();
                                         // Navigator.pop(context);
-                                        await _player.youtubePlay(_queueTracks[position].name,_queueTracks[position].trackArtists![0]);
-                                        // StaticStore.pause = false;
-                                        StaticStore.queueIndex = position;
-                                        StaticStore.currentSong = _queueTracks[position].name!;
-                                        StaticStore.currentSongImg = _queueTracks[position].imgUrl!;
-                                        StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists!);
-                                        // setState(() {
-                                          StaticStore.playing = true;
-                                          StaticStore.pause = false;
-                                        // });
-                                        Navigator.pop(context);
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                          _queueTracks[position].name,
-                                          // widget.albumImg[position],
-                                          _queueTracks[position].id,
-                                          _queueTracks[position].trackArtists,
-                                          // widget.trackImg[position]
-                                          _queueTracks[position].imgUrl
-                                        )));
+                                        await _player.youtubePlay(_queueTracks[position].name,_queueTracks[position].trackArtists[0]).then((value) {
+
+                                        
+                                          // StaticStore.pause = false;
+                                          StaticStore.queueIndex = position;
+                                          StaticStore.currentSong = _queueTracks[position].name!;
+                                          StaticStore.currentSongImg = _queueTracks[position].imgUrl!;
+                                          StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists);
+                                          // setState(() {
+                                            StaticStore.playing = true;
+                                            StaticStore.pause = false;
+                                          // });
+                                          Navigator.pop(context);
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
+                                            _queueTracks[position].name,
+                                            // widget.albumImg[position],
+                                            _queueTracks[position].id,
+                                            _queueTracks[position].trackArtists,
+                                            // widget.trackImg[position]
+                                            _queueTracks[position].imgUrl
+                                          )));
+                                        });
                                         // Navigator.pop(context);
                                       }
                                     }else{
@@ -118,11 +121,13 @@ class _QueueScreenState extends State<QueueScreen> {
                                       }else{
                                         await _player.youtubeStop();
       
-                                        await _player.youtubePlay(_queueTracks[position].name, _queueTracks[position].trackArtists![0]);
+                                        await _player.youtubePlay(_queueTracks[position].name, _queueTracks[position].trackArtists[0]).then((value) {
+
+                                        
                                         StaticStore.queueIndex = position;
                                         StaticStore.currentSong = _queueTracks[position].name!;
                                         StaticStore.currentSongImg = _queueTracks[position].imgUrl!;
-                                        StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists!);
+                                        StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists);
                                         Navigator.pop(context);
       
                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
@@ -133,6 +138,7 @@ class _QueueScreenState extends State<QueueScreen> {
                                           // widget.trackImg[position]
                                           _queueTracks[position].imgUrl
                                         )));
+                                        });
                                       }
       
                                     }
@@ -196,7 +202,7 @@ class _QueueScreenState extends State<QueueScreen> {
                                     // Column(children: [
                                       // Expanded(child:
                                       // Column(children: [
-                                        _queueTracks!=[] && _queueTracks[position].trackArtists!.length > 1?
+                                        _queueTracks!=[] && _queueTracks[position].trackArtists.length > 1?
                                         Text('${_queueTracks[position].trackArtists?[0]}, ${_queueTracks[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                         style:TextStyle(color: Colors.white70)
                                                 ):

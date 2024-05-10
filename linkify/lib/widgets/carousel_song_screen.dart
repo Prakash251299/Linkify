@@ -4,8 +4,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:linkify/controller/queue_track.dart';
+// import 'package:line_icons/line_icons.dart';
+// import 'package:linkify/controller/queue_track.dart';
 // import 'package:get/get.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
@@ -14,9 +14,9 @@ import 'package:linkify/widgets/queue_screen.dart';
 // import 'package:linkify/widgets/player_buttons.dart';
 import 'package:linkify/widgets/seekbar.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
-import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
-import 'package:linkify/widgets/uis/screens/library/library.dart';
-import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
+// import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
+// import 'package:linkify/widgets/uis/screens/library/library.dart';
+// import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 // import 'package:linkify/widgets/uis/methods/log.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:rxdart/rxdart.dart' as rxdart;
@@ -137,6 +137,9 @@ class _SongScreenState extends State<CarouselSongScreen> {
                   Image.network(
                     StaticStore.myQueueTrack.length>StaticStore.queueIndex?
                     "${StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl}":widget.trackImg,
+                    // "",
+
+
                     // widget.trackImg,
                     // fit: BoxFit.fill,
                     // width: 300 - _counter < 70 ? 70 : 300 - _counter,
@@ -220,7 +223,7 @@ class _MusicPlayer extends StatelessWidget {
                 StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=3
                 
                     ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[2]}":
-                trackArtists.length>=2 
+                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=2 
                     ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}"
                     : "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}"):(trackArtists.length>=3?"${trackArtists[0]}, ${trackArtists[1]}, ${trackArtists[2]}":trackArtists.length>=2?"${trackArtists[0]}, ${trackArtists[1]}":"${trackArtists[0]}"),
                 style: Theme.of(context)

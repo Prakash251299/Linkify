@@ -204,10 +204,13 @@ class _SeekBarState extends State<SeekBar> {
                           if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
                             // _player.youtubeStop();
                             StaticStore.queueIndex++;
-                            _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]);
+                            _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+
+                            
                             StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
                             StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
                             StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                            });
                           }
                           // print("hi");
                         }

@@ -131,7 +131,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                               if (StaticStore.currentSong ==
                                                   state.songs[i].name) {
                                                 await _youtubePlayer
-                                                    .youtubeResume();
+                                                    .youtubeResume().then((value) {
+                                                      StaticStore.playing = true;
+                                                    });
                                               } else {
                                                 await _youtubePlayer
                                                     .youtubeStop();
@@ -140,17 +142,19 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                     .youtubePlay(
                                                         state.songs[i].name,
                                                         state.songs[i]
-                                                            .artists[0]);
-                                                StaticStore.currentSong =
-                                                    state.songs[i].name;
-                                                StaticStore.currentSongImg =
-                                                    state.songs[i].imgUrl;
-                                                StaticStore.currentArtists =
-                                                    List.from(
-                                                        state.songs[i].artists);
+                                                            .artists[0]).then((value) {
+
+                                                    StaticStore.currentSong =
+                                                        state.songs[i].name;
+                                                    StaticStore.currentSongImg =
+                                                        state.songs[i].imgUrl;
+                                                    StaticStore.currentArtists =
+                                                        List.from(
+                                                            state.songs[i].artists);
+                                                    StaticStore.playing = true;
+                                                });
                                               }
                                               // setState(() {
-                                              StaticStore.playing = true;
                                               // });
                                               // StaticStore.pause=false;
                                             } else {
@@ -172,7 +176,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                     .youtubePlay(
                                                         state.songs[i].name,
                                                         state.songs[i]
-                                                            .artists[0]);
+                                                            .artists[0]).then((value) {
+
                                                 StaticStore.currentSong =
                                                     state.songs[i].name;
                                                 StaticStore.currentSongImg =
@@ -182,6 +187,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                         state.songs[i].artists);
                                                 // setState(() {
                                                 StaticStore.playing = true;
+                                                            });
                                                 // });
                                               }
                                               // setState(() {
@@ -430,11 +436,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     //   ),
                     onPressed: () {
                       YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
-                      _youtubePlayer.youtubePlay(searchSong, "");
-                      StaticStore.currentSong = searchSong;
-                      StaticStore.currentArtists = [];
-                      StaticStore.currentSongImg = "";
-                      StaticStore.playing = true;
+                      _youtubePlayer.youtubePlay(searchSong, "").then((value) {
+                        StaticStore.currentSong = searchSong;
+                        StaticStore.currentArtists = [];
+                        StaticStore.currentSongImg = "";
+                        StaticStore.playing = true;
+                      });
                     }),
               ),
             ],
