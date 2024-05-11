@@ -12,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_play_pause_button/button_album_play_pause.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 // import 'package:linkify/widgets/music_screen.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
@@ -190,7 +191,7 @@ class CarouselViewState extends State<CarouselView> {
                       physics: AlwaysScrollableScrollPhysics(),
                       // itemCount: 100,
                       // itemCount: widget.name.length,
-                      itemCount: widget.trackInfo?.length,
+                      itemCount: widget.trackInfo.length,
                       // itemCount: m['name'].length!=0?m['name'].length:10,
                       controller: _scrollController,
 
@@ -212,7 +213,7 @@ class CarouselViewState extends State<CarouselView> {
                                 onTap: () async {
 
 
-                                  // await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+                                  // await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
 
 
 
@@ -228,7 +229,7 @@ class CarouselViewState extends State<CarouselView> {
                                         // });
       
                                       }else{
-                                        // print(widget.trackInfo?[position].name);
+                                        // print(widget.trackInfo[position].name);
                                         await _player.youtubeStop();
                                         // Navigator.pop(context);
                                         // await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
@@ -313,7 +314,7 @@ class CarouselViewState extends State<CarouselView> {
                                   //     // });
                                   //   } else {
                                   //     await _player.youtubeStop();
-                                  //     await _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+                                  //     await _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
                                   //     StaticStore.currentSong = widget.trackInfo[position].name!;
                                   //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
                                   //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
@@ -330,12 +331,12 @@ class CarouselViewState extends State<CarouselView> {
                                   //     // return;
 
                                   //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                  //       widget.trackInfo?[position].name,
+                                  //       widget.trackInfo[position].name,
                                   //       // widget.albumImg[position],
-                                  //       widget.trackInfo?[position].id,
-                                  //       widget.trackInfo?[position].trackArtists,
+                                  //       widget.trackInfo[position].id,
+                                  //       widget.trackInfo[position].trackArtists,
                                   //       // widget.trackImg[position]
-                                  //       widget.trackInfo?[position].imgUrl
+                                  //       widget.trackInfo[position].imgUrl
                                   //     )));
                                   //   }
                                   // } else {
@@ -388,12 +389,12 @@ class CarouselViewState extends State<CarouselView> {
                                   //         }
                                   //         case ProcessingState.ready: {
                                   //           Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
-                                  //           widget.trackInfo?[position].name,
+                                  //           widget.trackInfo[position].name,
                                   //       // widget.albumImg[position],
-                                  //       widget.trackInfo?[position].id,
-                                  //       widget.trackInfo?[position].trackArtists,
+                                  //       widget.trackInfo[position].id,
+                                  //       widget.trackInfo[position].trackArtists,
                                   //       // widget.trackImg[position]
-                                  //       widget.trackInfo?[position].imgUrl
+                                  //       widget.trackInfo[position].imgUrl
                                   //         )));
                                   //         }
                                   //         case ProcessingState.completed: {}
@@ -428,7 +429,7 @@ class CarouselViewState extends State<CarouselView> {
 
 
                                   //     // _player.youtubePlay(widget.name[position]);
-                                  //     _player.youtubePlay(widget.trackInfo?[position].name,widget.trackInfo[position].trackArtists[0]);
+                                  //     _player.youtubePlay(widget.trackInfo[position].name,widget.trackInfo[position].trackArtists[0]);
                                   //     StaticStore.currentSong = widget.trackInfo[position].name!;
                                   //     StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
                                   //     StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
@@ -497,16 +498,16 @@ class CarouselViewState extends State<CarouselView> {
 
                                   // title: Text(widget.user.name),
                                   title: Text(
-                                    "${widget.trackInfo?[position].name}",
+                                    "${widget.trackInfo[position].name}",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   subtitle: 
                                       widget.trackInfo[position].trackArtists.length>1?
-                                      Text('${widget.trackInfo?[position].trackArtists?[0]}, ${widget.trackInfo?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget.trackInfo[position].trackArtists[0]}, ${widget.trackInfo[position].trackArtists[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):
-                                      Text('${widget.trackInfo?[position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget.trackInfo[position].trackArtists[0]}',overflow: TextOverflow.ellipsis,
                                           style:TextStyle(color: Colors.white70)
                                       ),
                                   isThreeLine: true,
@@ -514,17 +515,35 @@ class CarouselViewState extends State<CarouselView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
 
 
-                                          StaticStore.currentSong!=widget.trackInfo?[position].name
-                                            ? Icons.play_arrow
-                                            : 
-                                            StaticStore.playing == true
-                                                ? Icons.pause
-                                                : Icons.play_arrow
+                                          playPauseAlbumButton(widget.trackInfo,position),
+
+                                          // StaticStore.currentSong!=widget.trackInfo[position].name?Icon(Icons.play_arrow,color:Colors.grey):StaticStore.playing == true?Icon(Icons.pause,color:Colors.white):Icon(Icons.play_arrow,color:Colors.yellow),
+
+
+                                        // Icon(
+                                        //   StaticStore.currentSong!=widget.trackInfo[position].name
+                                        //     ? Icons.play_arrow
+                                        //     : 
+                                        //     StaticStore.playing == true
+                                        //         ? Icons.pause
+                                        //         : Icons.play_arrow   
+                                        // ),
+
+
+
+                                        // Icon(
+
+
+                                        //   StaticStore.currentSong!=widget.trackInfo[position].name
+                                        //     ? Icons.play_arrow
+                                        //     : 
+                                        //     StaticStore.playing == true
+                                        //         ? Icons.pause
+                                        //         : Icons.play_arrow
                                                 
-                                        ),
+                                        // ),
 
 
                                       ]),

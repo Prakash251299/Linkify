@@ -54,6 +54,7 @@ class StaticStore{
   static List<AlbumTrack> myQueueTrack=[];
   static int queueIndex = 0;
   static int queueLoaded = 0;
+  static int nextPlay=1;
   // UserInfo _userInfo=[];
 
 }

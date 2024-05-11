@@ -14,7 +14,7 @@ class YoutubeSongPlayer{
       return;
     }
     if(songName!=""){
-      songName+=" $artist lyrics";
+      songName+=" $artist lyrical";
       // songName+=" lyrics";
         try{
           final yt = YoutubeExplode();
@@ -30,6 +30,7 @@ class YoutubeSongPlayer{
           // await player.play(UrlSource(audioUrl.toString()));
           await StaticStore.player.setUrl(audioUrl.toString());
           StaticStore.player.play();
+          StaticStore.nextPlay=1;
 
 
 

@@ -1,3 +1,11 @@
+/*
+CustomScrollView widget is better
+*/
+
+
+
+
+
 // import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +18,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_play_pause_button/button_album_play_pause.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 // import 'package:linkify/widgets/music_screen.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
@@ -334,10 +343,10 @@ class AlbumViewState extends State<AlbumView> {
                                     // Expanded(child:
                                     // Column(children: [
                                       widget._albumTracks!=null && widget._albumTracks![position].trackArtists.length > 1?
-                                      Text('${widget._albumTracks?[position].trackArtists?[0]}, ${widget._albumTracks?[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget._albumTracks?[position].trackArtists[0]}, ${widget._albumTracks?[position].trackArtists[1]}',overflow: TextOverflow.ellipsis,
                                       style:TextStyle(color: Colors.white70)
                                               ):
-                                      Text('${widget._albumTracks![position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
+                                      Text('${widget._albumTracks![position].trackArtists[0]}',overflow: TextOverflow.ellipsis,
                                           style:TextStyle(color: Colors.white70)
                                       ),
                                     // ]),
@@ -349,15 +358,37 @@ class AlbumViewState extends State<AlbumView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          // StaticStore.playingCarouselInd!=StaticStore.carouselInd?
-                                          // Icons.play_arrow:
-                                          // ind != position
-                                          widget._albumTracks?[position].name!=StaticStore.currentSong
-                                            ? Icons.play_arrow
-                                            : StaticStore.playing == true
-                                                ? Icons.pause
-                                                : Icons.play_arrow),
+
+
+
+                                          playPauseAlbumButton(widget._albumTracks,position),
+                                          // widget._albumTracks?[position].name!=StaticStore.currentSong?Icon(Icons.play_arrow,color: Colors.grey,):StaticStore.playing == true?Icon(Icons.pause,color: Colors.white,):Icon(Icons.play_arrow,color: Colors.yellow,),
+
+
+
+
+                                          
+                                        // Icon(
+                                        //   // StaticStore.playingCarouselInd!=StaticStore.carouselInd?
+                                        //   // Icons.play_arrow:
+                                        //   // ind != position
+                                        //   widget._albumTracks?[position].name!=StaticStore.currentSong
+                                        //     ? Icons.play_arrow
+                                        //     : StaticStore.playing == true
+                                        //         ? Icons.pause
+                                        //         : Icons.play_arrow),
+
+
+
+                                        // Icon(
+                                        //   // StaticStore.playingCarouselInd!=StaticStore.carouselInd?
+                                        //   // Icons.play_arrow:
+                                        //   // ind != position
+                                        //   widget._albumTracks?[position].name!=StaticStore.currentSong
+                                        //     ? Icons.play_arrow
+                                        //     : StaticStore.playing == true
+                                        //         ? Icons.pause
+                                        //         : Icons.play_arrow),
                                       ]),
                                   // :(ind==position && playing==false?Icons.play_arrow:playing==false?Icons.play_arrow:null),),
                                   // Icons.play_arrow,color: Colors.white,),

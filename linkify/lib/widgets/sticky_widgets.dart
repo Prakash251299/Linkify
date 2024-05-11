@@ -25,297 +25,554 @@ import 'package:linkify/widgets/user_network.dart';
 
 // class MyStickyWidgets extends StatelessWidget {
 
-  bool _isNumeric(String str) {
-    if(str == "") {
-      return false;
-    }
-    return double.tryParse(str) != null;
+bool _isNumeric(String str) {
+  if (str == "") {
+    return false;
   }
-  // @override
-  
-  Widget footer(var context) {
-    return 
-    Opacity(
-      opacity: 1.0,
-      // opacity: 0.5,
-      child: Container(
+  return double.tryParse(str) != null;
+}
+// @override
+
+Widget footer(var context) {
+  return Opacity(
+    opacity: 1.0,
+    // opacity: 0.5,
+    child: Container(
         // margin: EdgeInsets.only(top: MediaQuery.of(context).size.height-200),
-          height: 50,
-          padding: EdgeInsets.only(left: 20, right: 20),
-          color: Colors.black.withOpacity(0.7),
-          // decoration: BoxDecoration(
-          //   color: Colors.black.withOpacity(0.5),
-          //   gradient: LinearGradient(
-          //     begin: Alignment.bottomCenter,
-          //     end: Alignment.topCenter,
-          //     colors: [
-          //     Colors.black,
-          //     Colors.black,
-          //   ]
-            
-          //   ),
-          // ),
-          child: Row(children: [
-            IconButton(
-              icon: const Icon(
-                LineIcons.home,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => HomeScreen(),
-                    ))
-                    .then((value) => Navigator.pop(context));
-              },
+        height: 50,
+        padding: EdgeInsets.only(left: 20, right: 20),
+        color: Colors.black.withOpacity(0.7),
+        // decoration: BoxDecoration(
+        //   color: Colors.black.withOpacity(0.5),
+        //   gradient: LinearGradient(
+        //     begin: Alignment.bottomCenter,
+        //     end: Alignment.topCenter,
+        //     colors: [
+        //     Colors.black,
+        //     Colors.black,
+        //   ]
+
+        //   ),
+        // ),
+        child: Row(children: [
+          IconButton(
+            icon: const Icon(
+              LineIcons.home,
+              color: Colors.white,
             ),
-            Spacer(),
-            IconButton(
-              icon: const Icon(
-                CupertinoIcons.search,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => SearchPage(),
-                    ))
-                    .then((value) => Navigator.pop(context));
-              },
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                    builder: (_) => HomeScreen(),
+                  ))
+                  .then((value) => Navigator.pop(context));
+            },
+          ),
+          Spacer(),
+          IconButton(
+            icon: const Icon(
+              CupertinoIcons.search,
+              color: Colors.white,
             ),
-            Spacer(),
-            IconButton(
-              icon: Icon(
-                LineIcons.userPlus,
-                color: Colors.white,
-              ),
-              onPressed: () async {
-                NetworkFunction _networkFunction = NetworkFunction();
-      
-                /* If data updation needed in firebase then use the below code */
-                // await s.fetchInfo();
-      
-              
-                var numberOfUsers = 0;
-                DateTime now = DateTime.now();
-                var dateToday = now.day.toString();
-                // if(_isNumeric(StaticStore.dateStored[1])){
-      
-                // }
-      
-                // if(StaticStore.dateStored[0]==dateToday[0]){
-      
-                // }
-      
-      
-      
-                /* Get number of users for recommendation */
-                // numberOfUsers = await _networkFunction.getNumberOfUsers();
-      
-                StoreUserInfo _storeUserInfo = StoreUserInfo();
-                _storeUserInfo.fetchCurrentUserInfo();
-                if(numberOfUsers>=10){
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                    builder: (_) => SearchPage(),
+                  ))
+                  .then((value) => Navigator.pop(context));
+            },
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(
+              LineIcons.userPlus,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              NetworkFunction _networkFunction = NetworkFunction();
+
+              /* If data updation needed in firebase then use the below code */
+              // await s.fetchInfo();
+
+              var numberOfUsers = 0;
+              DateTime now = DateTime.now();
+              var dateToday = now.day.toString();
+              // if(_isNumeric(StaticStore.dateStored[1])){
+
+              // }
+
+              // if(StaticStore.dateStored[0]==dateToday[0]){
+
+              // }
+
+              /* Get number of users for recommendation */
+              // numberOfUsers = await _networkFunction.getNumberOfUsers();
+
+              StoreUserInfo _storeUserInfo = StoreUserInfo();
+              _storeUserInfo.fetchCurrentUserInfo();
+              if (numberOfUsers >= 10) {
                 /* If we have more users then like based friend recommendations will be provided */
-                  List<UserInfo?> userHavingSameInterests =
-                      await _networkFunction.fetchRecommendedUsersInfo();
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => NetworkUser(userHavingSameInterests),
-                  ));
-                }else{
+                List<UserInfo?> userHavingSameInterests =
+                    await _networkFunction.fetchRecommendedUsersInfo();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => NetworkUser(userHavingSameInterests),
+                ));
+              } else {
                 /* All users of our application will be recommended */
                 List<UserInfo?> allUsers =
                     await _networkFunction.fetchAllUsersInfo();
-                    // print(allUsers[0]?.id);
-      
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => NetworkUser(allUsers),
-                  ));
-                }
-      
-      
-              },
-            ),
-          ])),
-    );
+                // print(allUsers[0]?.id);
+
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => NetworkUser(allUsers),
+                ));
+              }
+            },
+          ),
+        ])),
+  );
+}
+
+Widget miniplayer(BuildContext context) {
+  // var c = [Color.fromARGB(221, 66, 37, 37),Color.fromARGB(221, 146, 72, 72),];
+  // var random = Random().nextInt(34)-1;
+  // if(8 in List)
+  List<dynamic> excludedColorList = [2, 5, 8, 11, 14, 19, 22, 27, 29, 31, 32];
+  int d = StaticStore.currentSong.length * 4 % 34;
+  // int d = StaticStore.currentSong.length * 4 % 34;
+  YoutubeSongPlayer _player = YoutubeSongPlayer();
+  int e = d+1;
+  while (excludedColorList.contains(d)) {
+    d++;
+    d = d % 34;
   }
+  while (excludedColorList.contains(e) || e==d) {
+    e++;
+    e = e % 34;
+  }
+  int color = int.parse(tags[d]['color'].toString());
+  int color2 = int.parse(tags[e]['color'].toString());
+  // print(d);
+  return GestureDetector(
+    child: Stack(
+      // mainAxisAlignment: MainAxisAlignment.end,
+      alignment: Alignment.bottomCenter,
+      children: [
+        // _BackgroundFilter(),
+        Container(
+          // height:100,
+          // padding: EdgeInsets.only(bottom:50),
+          margin: EdgeInsets.only(bottom: 50),
 
-  Widget miniplayer(var context) {
-    // var c = [Color.fromARGB(221, 66, 37, 37),Color.fromARGB(221, 146, 72, 72),];
-    // var random = Random().nextInt(34)-1;
-    // if(8 in List)
-    List<dynamic> excludedColorList = [2, 5, 8, 11, 14, 19, 22, 27, 29, 31, 32];
-    int d = StaticStore.currentSong.length * 4 % 34;
-    YoutubeSongPlayer _player = YoutubeSongPlayer();
-    while (excludedColorList.contains(d)) {
-      d++;
-      d = d%34;
-    }
-    int color = int.parse(tags[d]['color'].toString());
-    // print(d);
-    return GestureDetector(
-      child: 
-      Container(
-        // height:100,
-        // padding: EdgeInsets.only(bottom:50),
-        margin: EdgeInsets.only(bottom:50),
-
-        // color: Color(tags[0]['color']),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color(color).withOpacity(1),
-        ),
-        // color:Colors.red,
-        // width: 360,
-        // width: MediaQuery.of(context).size.width,
-        height: 60,
-        // height: 110,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          // itemCount: list.length,
-          itemCount: 2,
-          itemBuilder: ((context, index) {
-            // bool last = list.length == (index + 1);
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 8,
-                  // right: last ? 16 : 0,
-                  // right: 16,
-                ),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      // padding: EdgeInsets.only(right:80),
-                      width: 45,
-                      height: 45,
-                      // decoration: TextDecoration.none,
-                      decoration: BoxDecoration(
-                        // color: Colors.red,
-                        // decoration: TextDecoration.none
-                        image: DecorationImage(
-                            image: NetworkImage(StaticStore.currentSongImg),
-                            fit: BoxFit.cover),
+          // color: Color(tags[0]['color']),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            // color: Color(color).withOpacity(1),
+            // decoration: BoxDecoration(
+            gradient: LinearGradient(
+              // begin: Alignment.topCenter,
+              // end: Alignment.bottomCenter,
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [
+                // Colors.brown,
+                Color(color2).withOpacity(1),
+                Color(color).withOpacity(1),
+              ],
+            ),
+            // ),
+          ),
+          // color:Colors.red,
+          // width: 360,
+          // width: MediaQuery.of(context).size.width,
+          height: 60,
+          // height: 110,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            // itemCount: list.length,
+            itemCount: 2,
+            itemBuilder: ((context, index) {
+              // bool last = list.length == (index + 1);
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 8,
+                    // right: last ? 16 : 0,
+                    // right: 16,
+                  ),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        // padding: EdgeInsets.only(right:80),
+                        width: 45,
+                        height: 45,
+                        // decoration: TextDecoration.none,
+                        decoration: BoxDecoration(
+                          // color: Colors.red,
+                          // decoration: TextDecoration.none
+                          image: DecorationImage(
+                              image: NetworkImage(StaticStore.currentSongImg),
+                              fit: BoxFit.cover),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 8),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // img
+                      SizedBox(width: 8),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // img
 
-                          // Container(
-                          //   // width: 150,
-                          //   // height: 80,
+                            // Container(
+                            //   // width: 150,
+                            //   // height: 80,
 
-                          //   decoration: BoxDecoration(
-                          //     color: Colors.red,
+                            //   decoration: BoxDecoration(
+                            //     color: Colors.red,
 
-                          //     // image: DecorationImage(
-                          //     // image: NetworkImage(list[index].img),
-                          //     // fit: BoxFit.cover),
-                          //   ),
-                          // ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          // name
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width/1.5,
-                            // width:,
-                            child: Text(
-                                // "hello",
-                                "${StaticStore.currentSong}",
-                                // list[index].title,
-                                style: const TextStyle(
-                                  decoration: TextDecoration.none,
+                            //     // image: DecorationImage(
+                            //     // image: NetworkImage(list[index].img),
+                            //     // fit: BoxFit.cover),
+                            //   ),
+                            // ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            // name
+                            SizedBox(
+                              // width: MediaQuery.of(context).size.width / 1.5,
+                              width: 100,
+                              child: Text(
+                                  // "hello",
+                                  "${StaticStore.currentSong}",
+                                  // list[index].title,
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.none,
                                     color: Color(0xffffffff),
                                     fontWeight: FontWeight.w700,
                                     fontFamily: "Raleway",
                                     fontStyle: FontStyle.normal,
                                     fontSize: 13.0,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                textAlign: TextAlign.left),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          // show-creator
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width/1.5,
-                            child: Text(
-                                // list[index].creator ?? '',
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  textAlign: TextAlign.left),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            // show-creator
+                            SizedBox(
+                              // width: MediaQuery.of(context).size.width / 1.5,
+                              width: MediaQuery.of(context).size.width/1.5,
+                              child: Text(
+                                  // list[index].creator ?? '',
 
-                                // "jasjkd",
+                                  // "jasjkd",
 
-                                StaticStore.currentArtists.length > 1
-                                    ? "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}"
-                                    : StaticStore.currentArtists.length > 0 && StaticStore.currentArtists.length <= 1?"${StaticStore.currentArtists[0]}":"unknown",
-                                    
-                                style: const TextStyle(
-                                  decoration: TextDecoration.none,
-                                    color: Colors.white70,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Raleway",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 13.0,
-                                    overflow: TextOverflow.ellipsis),
-                                maxLines: 1,
-                                textAlign: TextAlign.left),
-                          ),
-                        ]),
-                    Spacer(),
-                    IconButton(
-                        onPressed: () async {
-                          if (StaticStore.pause == true) {
-                            await _player.youtubeResume();
-                            StaticStore.pause = false;
-                            StaticStore.playing = true;
-                          } else {
-                            await _player.youtubePause();
-                            StaticStore.pause = true;
-                            StaticStore.playing = false;
-                          }
-
-                          // StaticStore.pause==true?await _player.youtubeResume():await _player.youtubePause();
-                        },
-                        icon: StaticStore.pause == true
-                            ? Icon(
-                                CupertinoIcons.play,
-                                color: Colors.white,
-                              )
-                            : Icon(
-                                CupertinoIcons.pause,
-                                color: Colors.white,
-                              ))
-                  ],
+                                  StaticStore.currentArtists.length > 1
+                                      ? "${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}"
+                                      : StaticStore.currentArtists.length > 0 &&
+                                              StaticStore
+                                                      .currentArtists.length <=
+                                                  1
+                                          ? "${StaticStore.currentArtists[0]}"
+                                          : "unknown",
+                                  style: const TextStyle(
+                                      decoration: TextDecoration.none,
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Raleway",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 13.0,
+                                      overflow: TextOverflow.ellipsis),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.left),
+                            ),
+                          ]),
+                      // Spacer(),
+                      
+                      
+                      // Icon(Icons.menu),
+                      Container(
+                        // height: 20,
+                        width: 20,
+                        // color: Colors.grey,
+                        child: IconButton(
+                            onPressed: () async {
+                              if (StaticStore.pause == true) {
+                                await _player.youtubeResume();
+                                StaticStore.pause = false;
+                                StaticStore.playing = true;
+                              } else {
+                                await _player.youtubePause();
+                                StaticStore.pause = true;
+                                StaticStore.playing = false;
+                              }
+                            },
+                            icon: StaticStore.pause == true
+                                ? Icon(
+                                    CupertinoIcons.play,
+                                    color: Colors.white,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.pause,
+                                    color: Colors.white,
+                                  )),
+                      ),
+                      // SizedBox(width:13),
+                      Container(
+                        // height: ,
+                        width: 40,
+                        // color: Colors.amber,
+                        child: playNext(_player)
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
-      ),
-      onTap: () {
-        // print(StaticStore.currentSong.length);
-        // return;
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
+        // Spacer(),
+        indicator(context),
+      ],
+    ),
+    onTap: () {
+      // print(StaticStore.currentSong.length);
+      // return;
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => CarouselSongScreen(
-                StaticStore.currentSong,
-                StaticStore.currentSong,
-                StaticStore.currentArtists,
-                StaticStore.currentSongImg))));
-      },
-    );
-  }
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: ((context) => CarouselSongScreen(
+              StaticStore.currentSong,
+              StaticStore.currentSong,
+              StaticStore.currentArtists,
+              StaticStore.currentSongImg))));
+    },
+  );
+}
 
-  // @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+// @override
+// Widget build(BuildContext context) {
+//   // TODO: implement build
+//   throw UnimplementedError();
 // }
+// }
+
+// import 'battery_status.dart';
+// import 'index.dart';
+
+/// A widget that displays the battery level and status.
+// class DefaultBatteryIndicator extends StatelessWidget {
+//   DefaultBatteryIndicator({
+//     super.key,
+//     // required this.status,
+// var trackHeight = 10.0;
+var curve = Curves.ease;
+var duration = const Duration(seconds: 1);
+//   });
+//   // : assert(trackAspectRatio >= 1, 'width:height must >= 1');
+
+//   /// The battery status.
+//   // final DefaultBatteryStatus status;
+
+//   /// The height of the track.
+//   final double trackHeight;
+
+//   /// The width of the track.
+//   final double trackAspectRatio;
+
+//   /// The curve of the animation.
+//   final Curve curve;
+
+//   /// The duration of the animation.
+//   final Duration duration;
+
+// @override
+
+Widget playNext(_player) {
+  return 
+  IconButton(
+      onPressed: () async {
+        if (StaticStore.nextPlay == 1) {
+          StaticStore.nextPlay = 0;
+          // }
+          StaticStore.queueIndex++;
+          if (StaticStore.queueIndex <= StaticStore.myQueueTrack.length - 1) {
+            // setState(() {
+            // });
+            await _player.youtubeStop().then((value) async {
+              // if(StaticStore.queueIndex>=StaticStore.myQueueTrack.length){
+              //   StaticStore.queueIndex--;
+              //   return;
+              // }
+    
+              await _player
+                  .youtubePlay(
+                      StaticStore.myQueueTrack[StaticStore.queueIndex].name,
+                      StaticStore
+                          .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
+                  .then((value) {
+                StaticStore.currentSong =
+                    StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                StaticStore.currentArtists =
+                    StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                StaticStore.currentSongImg =
+                    StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                StaticStore.playing = true;
+                StaticStore.pause = false;
+              });
+            });
+            // setState(() {});
+          } else {
+            StaticStore.queueIndex--;
+            StaticStore.nextPlay = 1;
+          }
+        }
+      },
+      // iconSize: 45,
+      icon: const Icon(
+        Icons.skip_next,
+        color: Colors.white,
+      ),
+    // ),
+  );
+}
+
+Widget indicator(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
+  final track = _buildTrack(context, colorScheme);
+  // final knob = _buildKnob(context, colorScheme);
+
+  return StreamBuilder<Object>(
+      stream: StaticStore.player.playerStateStream,
+      builder: (context, snapshot) {
+        return Container(
+          margin: EdgeInsets.only(bottom: 50),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [track],
+          ),
+        );
+      });
+}
+
+Widget _buildTrack(BuildContext context, ColorScheme colorScheme) {
+  // final borderRadius = BorderRadius.circular(trackHeight / 4);
+  // final borderColor = Theme.of(context).colorScheme.onSurface;
+  var trackHeight = 10.0;
+  final bar = _buildBar(context, trackHeight * 5 / 6, colorScheme);
+  // final icon = _buildIcon();
+
+  final children = [bar];
+
+  return Container(
+    // height: trackHeight,
+    height: 2,
+    // color: Colors.red,
+    // width: trackHeight * trackAspectRatio,
+    width: MediaQuery.of(context).size.width,
+    // width: 100,
+    // decoration: BoxDecoration(
+    //   borderRadius: borderRadius,
+    //   border: Border.all(color: borderColor),
+    // ),
+    child: Stack(
+      children: children,
+    ),
+  );
+}
+
+Widget _buildBar(
+  BuildContext context,
+  double barHeight,
+  ColorScheme colorScheme,
+) {
+  // final barWidth = trackHeight * trackAspectRatio;
+  final borderRadius = barHeight / 5;
+  var wid = MediaQuery.of(context).size;
+
+  // final currentColor = status.getBatteryColor(colorScheme);
+
+  return
+      // Padding(
+      //   padding: EdgeInsets.all(trackHeight / 12),
+      //   child:
+      StreamBuilder<Object>(
+          stream: StaticStore.player.positionStream,
+          builder: (context, snapshot) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius),
+              child: Stack(
+                children: [
+                  const SizedBox.expand(),
+                  AnimatedContainer(
+                    duration: duration,
+                    width: StaticStore.player.duration==null?0:(StaticStore.player.position.inSeconds * wid.width) /
+                        StaticStore.player.duration!.inSeconds,
+                    // width: barWidth * status.value / 100,
+                    // width: barWidth*1/2,
+                    // width:MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    curve: curve,
+                    decoration: BoxDecoration(
+                      // color: currentColor,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+              // ),
+            );
+          });
+}
+
+// Widget _buildIcon() {
+//   return Center(
+//     child: LayoutBuilder(
+//       builder: (context, constraints) {
+//         return AnimatedSwitcher(
+//           duration: Duration(milliseconds: duration.inMilliseconds ~/ 5),
+//           switchInCurve: curve,
+//           switchOutCurve: curve,
+//           child: status.type.isCharing
+//               ? Icon(
+//                   Icons.electric_bolt,
+//                   color: Theme.of(context).colorScheme.onSurface,
+//                   size: constraints.maxHeight,
+//                   shadows: [
+//                     const Shadow(blurRadius: 0.5),
+//                     Shadow(
+//                       color: Theme.of(context).colorScheme.onSurface,
+//                       blurRadius: 1,
+//                     ),
+//                   ],
+//                 )
+//               : null,
+//         );
+//       },
+//     ),
+//   );
+// }
+
+// Widget _buildKnob(BuildContext context, ColorScheme colorScheme) {
+//   final double knobHeight = trackHeight / 3;
+//   final double knobWidth = knobHeight / 2;
+//   final borderColor = Theme.of(context).colorScheme.onSurface;
+
+//   return Padding(
+//     padding: EdgeInsets.only(left: trackHeight / 20),
+//     child: Container(
+//       width: knobWidth,
+//       height: knobHeight,
+//       decoration: BoxDecoration(
+//         color: borderColor,
+//         borderRadius: BorderRadius.horizontal(
+//           right: Radius.circular(knobWidth / 3),
+//         ),
+//       ),
+//     ),
+//   );
+// }
+// // }

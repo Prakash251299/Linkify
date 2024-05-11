@@ -53,13 +53,12 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                       () async {
                           if (StaticStore.player.position.inSeconds >
                               10) {
+                                // StaticStore.playing=true;
+                                // await _youtubePlayer.youtubeResume();
                             await StaticStore.player.seek(Duration(
-                                seconds: StaticStore
-                                        .player.position.inSeconds -
-                                    10));
+                                seconds: StaticStore.player.position.inSeconds -10));
                           } else {
-                            await StaticStore.player
-                                .seek(const Duration(seconds: 0));
+                            await StaticStore.player.seek(const Duration(seconds: 0));
                           }
                         },
                       // : null,
@@ -69,6 +68,8 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
           onPressed: () async {
             // print("position");
             // print(StaticStore.player.position);
+            if(StaticStore.nextPlay==1){
+              StaticStore.nextPlay=0;
 
             StaticStore.queueIndex--;
             if(StaticStore.queueIndex>=0){
@@ -88,6 +89,9 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
               // setState(() {});
             }else{
               StaticStore.queueIndex++;
+              StaticStore.nextPlay=1;
+
+            }
             }
 
           },
@@ -125,7 +129,6 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
           builder: (context, snapshot) {
             return IconButton(
               onPressed: () async {
-
                 if(StaticStore.playing==true){
                   _youtubePlayer.youtubePause();
                   StaticStore.playing = false;
@@ -135,54 +138,12 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                   StaticStore.playing = true;
                   StaticStore.pause = false;
                 }
-
-
-
-                // if (StaticStore.playing == false) {
-                //   // if(StaticStore.pause==true){
-                //   StaticStore.pause=false;
-                //   if (StaticStore.currentSong == widget.name) {
-                //     await _youtubePlayer.youtubeResume();
-                //   } else {
-                //     await _youtubePlayer.youtubeStop();
-                //     // _youtubePlayer.youtubePlay(state.songs[i].name);
-                //     await _youtubePlayer.youtubePlay(widget.name,widget.trackArtists[0]);
-                //     StaticStore.currentSong = widget.name;
-                //     StaticStore.currentSongImg = widget.trackImg;
-                //     StaticStore.currentArtists = List.from(widget.trackArtists);
-            
-            
-                //   }
-                //   // setState(() {
-                //     StaticStore.playing = true;
-                //   // });
-                //   // StaticStore.pause=false;
-                // } else {
-                //   /* Here is the problem */
-                //   if (StaticStore.currentSong == widget.name) { 
-                //     await _youtubePlayer.youtubePause();
-                //     StaticStore.pause = true;
-                //     print("same");
-                //     // setState(() {
-                //       StaticStore.playing = false;
-                //     // });
-                //   } else {
-                //     // StaticStore.pause = true;
-                //     // }else{
-                //     await _youtubePlayer.youtubeStop();
-                //     await _youtubePlayer.youtubePlay(widget.name,widget.trackArtists[0]);
-                //     StaticStore.currentSong = widget.name;
-                //     StaticStore.currentSongImg = widget.trackImg;
-                //     StaticStore.currentArtists = List.from(widget.trackArtists);
-                //     // setState(() {
-                //       StaticStore.playing = true;
-                //     // });
-                //   }
-                //   // setState(() {
-                //   //   StaticStore.playing = false;
-                //   // });
-                //   // }
-                // }
+                if(StaticStore.player.processingState == ProcessingState.completed){
+                  print("completed1");
+                  await StaticStore.player.seek(const Duration(seconds: 0));
+                  // StaticStore.player.play();
+                  // print("completed2");
+                }
               },
               iconSize: 75,
               icon: StaticStore.playing == true
@@ -199,6 +160,10 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
         ),
         IconButton(
           onPressed: () async {
+
+            if(StaticStore.nextPlay==1){
+              StaticStore.nextPlay=0;
+            // }
             StaticStore.queueIndex++;
             if(StaticStore.queueIndex<=StaticStore.myQueueTrack.length-1){
               // setState(() {
@@ -220,6 +185,9 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
               // setState(() {});
             }else{
               StaticStore.queueIndex--;
+              StaticStore.nextPlay=1;
+
+            }
             }
           },
           iconSize: 45,
@@ -241,8 +209,8 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                                         .player.position.inSeconds +
                                     10));
                           } else {
-                            await StaticStore.player
-                                .seek(const Duration(seconds: 0));
+                            // await StaticStore.player.seek(const Duration(seconds: 0));
+                            await StaticStore.player.seek(Duration(seconds: StaticStore.player.duration!.inSeconds));
                           }
                         },
                       // : null,
