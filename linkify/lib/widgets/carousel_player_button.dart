@@ -89,6 +89,8 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
               // setState(() {});
             }else{
               StaticStore.queueIndex++;
+              StaticStore.nextPlay=1;
+
             }
             }
 
@@ -183,6 +185,8 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
               // setState(() {});
             }else{
               StaticStore.queueIndex--;
+              StaticStore.nextPlay=1;
+
             }
             }
           },

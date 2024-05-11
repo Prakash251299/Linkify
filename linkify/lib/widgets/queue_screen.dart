@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_play_pause_button/button_album_play_pause.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
@@ -20,6 +21,7 @@ class _QueueScreenState extends State<QueueScreen> {
   List<AlbumTrack> _queueTracks = StaticStore.myQueueTrack;
   YoutubeSongPlayer _player = YoutubeSongPlayer();
   var _counter=0.0;
+  late AnimationController _animation_controller;
   
 
   @override
@@ -203,10 +205,10 @@ class _QueueScreenState extends State<QueueScreen> {
                                       // Expanded(child:
                                       // Column(children: [
                                         _queueTracks!=[] && _queueTracks[position].trackArtists.length > 1?
-                                        Text('${_queueTracks[position].trackArtists?[0]}, ${_queueTracks[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
+                                        Text('${_queueTracks[position].trackArtists[0]}, ${_queueTracks[position].trackArtists[1]}',overflow: TextOverflow.ellipsis,
                                         style:TextStyle(color: Colors.white70)
                                                 ):
-                                        Text('${_queueTracks[position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
+                                        Text('${_queueTracks[position].trackArtists[0]}',overflow: TextOverflow.ellipsis,
                                             style:TextStyle(color: Colors.white70)
                                         ),
                                       // ]),
@@ -218,45 +220,49 @@ class _QueueScreenState extends State<QueueScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            // StaticStore.playingCarouselInd!=StaticStore.carouselInd?
-                                            // Icons.play_arrow:
-                                            // ind != position
-                                            _queueTracks[position].name!=StaticStore.currentSong
-                                              ? Icons.play_arrow
-                                              : StaticStore.playing == true
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+
+
+                                              playPauseAlbumButton(_queueTracks,position),
+
+
+
+            //                                 StreamBuilder(
+            //                                   stream: StaticStore.player.playerStateStream, builder:(context,snapshot){
+            //                                   return 
+            //                                   // SizedBox();
+
+
+            // //                                   AnimatedIcon(
+            // //   icon: AnimatedIcons.menu_close,
+            // //   progress: _animation_controller,
+            // //   // size: 200,
+            // //   // semanticLabel: 'Show menu',
+            // // );
+            
+
+            //                                 _queueTracks[position].name!=StaticStore.currentSong?Icon(Icons.play_arrow,color:Colors.grey):StaticStore.playing == true?Icon(Icons.pause,color: Colors.white,):Icon(Icons.play_arrow,color: Colors.yellow,);
+
+
+
+            //                                 }),
+
+
+                                            IconButton(
+                                              onPressed: (){
+                                                StaticStore.myQueueTrack.removeAt(position);
+
+                                              }, 
+                                              icon: const Icon(Icons.delete,color: Colors.grey,)
+                                            ),
+                                          ],)
+
                                         ]),
-                                    // :(ind==position && playing==false?Icons.play_arrow:playing==false?Icons.play_arrow:null),),
-                                    // Icons.play_arrow,color: Colors.white,),
-      
-                                    // onPressed: (){
-                                    //   if(playing==true){
-                                    //     // stop song
-                                    //     // setState(() {
-                                    //     //   playing = false;
-                                    //     // });
-      
-                                    //   }else{
-                                    //     // play song
-                                    //     setState(() {
-                                    //       playing = true;
-                                    //     });
-                                    //   }
-                                    // },
-                                    // ),
                                   ),
                                 ),
                               ]),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(20.0),
-                              //   child: Text(
-                              //     // position.toString(),
-                              //     "Hello",
-                              //     style: TextStyle(fontSize: 22.0),
-                              //   ),
-                              // ),
                             ),
                             // ),
       

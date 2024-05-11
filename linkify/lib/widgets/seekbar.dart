@@ -97,7 +97,7 @@ class _SeekBarState extends State<SeekBar> {
 
 
 
-
+                      
                         if (StaticStore.player.processingState == ProcessingState.completed){
                           YoutubeSongPlayer _player = YoutubeSongPlayer();
                           StaticStore.pause = false;
@@ -106,6 +106,8 @@ class _SeekBarState extends State<SeekBar> {
                           }
                           if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
                             // _player.youtubeStop();
+                            if(StaticStore.nextPlay==1){
+                              StaticStore.nextPlay=0;
                             StaticStore.queueIndex++;
                             _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
                               StaticStore.playing = true;
@@ -114,8 +116,10 @@ class _SeekBarState extends State<SeekBar> {
                               StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
                             });
                           }
+                          }
                           // print("hi");
                         }
+                      // }
 
 
 

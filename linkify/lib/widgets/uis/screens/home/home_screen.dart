@@ -1,16 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/get_greeting.dart';
 import 'package:linkify/controller/logout.dart';
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/widgets/restart_app.dart';
 // import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:linkify/widgets/uis/screens/library/library.dart';
 // import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 // import '../../controllers/main_controller.dart';
@@ -26,6 +31,11 @@ class HomeScreen extends StatelessWidget {
     Key? key,
     // required this.con,
   }) : super(key: key);
+  @override
+  // void initState(){
+
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +92,23 @@ class HomeScreen extends StatelessWidget {
                                     IconButton(
                     onPressed: () async {
                       print('Sign out called');
+                      // RestartWidget.restartApp(context);
                       /* Below code is for signout */
+//                       var appDir = (await getTemporaryDirectory()).path;
+// new Directory(appDir).delete(recursive: true);
+                      // await DefaultCacheManager().emptyCache();
+
+
+
+
+                      // StaticStore.player ;
+
+
+
+
+
                       await callSignOutApi(context);
+                      // RestartWidget.restartApp(context);
                     },
                     icon: Icon(Icons.more_vert,color: Colors.white,), // more_vert _icon
                                     ),
