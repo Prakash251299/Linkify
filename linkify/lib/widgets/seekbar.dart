@@ -91,6 +91,42 @@ class _SeekBarState extends State<SeekBar> {
             StreamBuilder(
                 stream: StaticStore.player.positionStream,
                 builder: (context, snapshot1) {
+
+
+
+
+
+
+
+                        if (StaticStore.player.processingState == ProcessingState.completed){
+                          YoutubeSongPlayer _player = YoutubeSongPlayer();
+                          StaticStore.pause = false;
+                          if(StaticStore.queueIndex==StaticStore.myQueueTrack.length-1){
+                            StaticStore.playing = false;
+                          }
+                          if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
+                            // _player.youtubeStop();
+                            StaticStore.queueIndex++;
+                            _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+                              StaticStore.playing = true;
+                              StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                              StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                              StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                            });
+                          }
+                          // print("hi");
+                        }
+
+
+
+
+
+
+
+
+
+
+
                   // setState(() {
 
                   // });
@@ -175,45 +211,64 @@ class _SeekBarState extends State<SeekBar> {
                           // StaticStore.player.bufferedPositionStream,
                           StaticStore.player.currentIndexStream,
                       builder: (context, snapshot2) {
-                        // int? currentIndex = snapshot2.data;
-                        // //  ?? 0;
-                        // print(currentIndex.toString());
-
-
-
-                        // if(StaticStore.player.currentIndexStream){
-
-                        // }
 
 
 
 
-                        // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
-                        //   print("end it");
-                        //   StaticStore.playing.value = false;
-                        // }
-
-
-
-                        //  },
+                        if(StaticStore.player.playing==true){
+                          StaticStore.playing=true;
+                        }
 
                         if (StaticStore.player.processingState == ProcessingState.completed){
-                          YoutubeSongPlayer _player = YoutubeSongPlayer();
-                          StaticStore.playing = true;
-                          StaticStore.pause = false;
-                          if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
-                            // _player.youtubeStop();
-                            StaticStore.queueIndex++;
-                            _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
-
-                            
-                            StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-                            StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-                            StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-                            });
+                          // YoutubeSongPlayer _player = YoutubeSongPlayer();
+                          // StaticStore.pause = false;
+                          if(StaticStore.queueIndex==StaticStore.myQueueTrack.length-1){
+                            StaticStore.playing = false;
                           }
-                          // print("hi");
                         }
+
+
+
+
+
+                        // if (StaticStore.player.processingState == ProcessingState.completed){
+
+                        // }
+
+
+
+
+
+
+
+
+                        // if (StaticStore.player.processingState == ProcessingState.completed){
+                        //   YoutubeSongPlayer _player = YoutubeSongPlayer();
+                        //   StaticStore.pause = false;
+                        //   if(StaticStore.queueIndex==StaticStore.myQueueTrack.length-1){
+                        //     StaticStore.playing = false;
+                        //   }
+                        //   if(StaticStore.queueIndex+1<StaticStore.myQueueTrack.length){
+                        //     // _player.youtubeStop();
+                        //     // StaticStore.queueIndex++;
+                        //     _player.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name, StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]).then((value) {
+                        //       StaticStore.playing = true;
+                        //       StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+                        //       StaticStore.currentArtists = StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                        //       StaticStore.currentSongImg = StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+                        //     });
+                        //   }
+                        //   // print("hi");
+                        // }
+
+
+
+
+
+
+
+
+
                         // this.setState(() {
                         //   var a = stopper();
                         // });
