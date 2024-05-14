@@ -63,9 +63,9 @@ void onStart(ServiceInstance service){
       }
       print("Background service running");
       // YoutubeSongPlayer _player = YoutubeSongPlayer();
-      if(StaticStore.player.playing){
-        print("background calling song completed");
-      }
+      // if(StaticStore.player.playing){
+      //   print("background calling song completed");
+      // }
       // _player.youtubePlay(songName, artist)
       service.invoke('update');
     });

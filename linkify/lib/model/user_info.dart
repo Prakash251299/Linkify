@@ -4,6 +4,8 @@ class UserInfo {
   String? href;
   String? id;
   List<dynamic>? image;
+  // String? image;
+
   String? type;
   String? uri;
   Followers? followers;

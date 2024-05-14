@@ -36,6 +36,7 @@ class YoutubeSongPlayer{
 
 
           playSong(audioUrl);
+          // StaticStore.player.
 
           // await StaticStore.player.setUrl(audioUrl.toString());
           // StaticStore.player.play();

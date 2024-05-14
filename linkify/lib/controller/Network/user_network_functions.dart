@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 
 class NetworkFunction {
-  Future<UserInfo?> fetchUserInfo(var userId) async {
+  Future<UserInfo> fetchUserInfo(var userId) async {
     var db = FirebaseFirestore.instance;
     UserInfo users = UserInfo();
     await db.collection("users").doc(userId).get().then((v) async {
       // UserInfo k = v.data() as UserInfo;
+      try{
       users.displayName = v.data()?['name'];
       // users.displayName = k.displayName;
       users.image = v.data()?['images'];
@@ -16,20 +18,38 @@ class NetworkFunction {
       // print(users.id);
       users.spotifyBasedGenre = v.data()?['spotifyGenre'];
       // print(v.data());
-      return users;
+      return users;}
+      catch(e){
+        print("User id doesn't exist in users collection on firebase");
+      }
     });
     return users;
   }
 
-  Future<List<UserInfo?>> fetchRecommendedUsersInfo() async {
+  Future<List<UserInfo>?> fetchRecommendedUsersInfo() async {
     List<dynamic>? likeUsersId = []; // In firebase type is dynamic
-    List<UserInfo?> likeUsersInfo = [];
+    List<UserInfo>? likeUsersInfo = [];
+    StoreUserInfo _storeUserInfo = StoreUserInfo();
+    if(StaticStore.currentUserGenreId=="" || StaticStore.currentUserGenreId==null){
+      await _storeUserInfo.fetch_store_user_info();
+      print("Fetched user info because it was null");
+    }
+    // UserInfo? currentUser = await _storeUserInfo.fetchCurrentUserInfo();
+    // print(currentUser?.spotifyBasedGenre);
+    // print(StaticStore.userGenre);
+
+    // return null;
     await FirebaseFirestore.instance
         .collection('spotifyBasedGenreUsers')
         .get()
         .then((value) async {
-      likeUsersId =
-          await value.docs[0]['genreList'][StaticStore.currentUserGenreId];
+      likeUsersId = value.docs[0]['genreList'][StaticStore.currentUserGenreId];
+      // print(StaticStore.);
+      // print(value.docs[0]['genreList'][StaticStore.currentUserGenreId]);
+      // return null;
+
+
+
       likeUsersId?.remove(StaticStore.currentUserId);
       for (int i = 0; likeUsersId != null && i < likeUsersId!.length; i++) {
         likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
@@ -40,9 +60,9 @@ class NetworkFunction {
     return likeUsersInfo;
   }
 
-  Future<List<UserInfo?>> fetchAllUsersInfo() async {
+  Future<List<UserInfo>?> fetchAllUsersInfo() async {
     List<dynamic>? allUsersId = []; // In firebase type is dynamic
-    List<UserInfo?> allUsersInfo = [];
+    List<UserInfo>? allUsersInfo = [];
     await FirebaseFirestore.instance
         .collection('users')
         .get()

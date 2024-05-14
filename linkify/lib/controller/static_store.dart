@@ -49,6 +49,7 @@ class StaticStore{
   static String? currentUserEmail="";
   static String? currentUserCountry="";
   static List<dynamic>? currentUserImage=[];
+  // static String? currentUserImage="";
   static int videoPlayingIndex = -1;
   static List<FrontPageCategories>categoryInfo=[];
   static List<AlbumTrack> myQueueTrack=[];

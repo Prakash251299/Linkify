@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:linkify/chatting/widget/chat_screen.dart';
+import 'package:linkify/widgets/Network/chatting/widget/chat_screen.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:linkify/widgets/loading_user_img.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 
 class NetworkUser extends StatefulWidget {
-  List<UserInfo?>likeUsersInfo;
+  List<UserInfo>?likeUsersInfo;
   NetworkUser(this.likeUsersInfo,{super.key});
 
   @override
@@ -36,7 +36,7 @@ class _NetworkUserState extends State<NetworkUser> {
           leading: IconButton(icon:Icon(Icons.arrow_back),color: Colors.white,onPressed: (){
             Navigator.pop(context);
           },),
-          title: Text("Connect and talk",style:TextStyle(color:Colors.white)),
+          title: Text("My friends",style:TextStyle(color:Colors.white)),
           backgroundColor: Colors.black,
 
         ),
@@ -52,7 +52,7 @@ class _NetworkUserState extends State<NetworkUser> {
                 ListView.builder(
                               scrollDirection: Axis.vertical,
                               physics: AlwaysScrollableScrollPhysics(),
-                              itemCount: widget.likeUsersInfo.length,
+                              itemCount: widget.likeUsersInfo?.length,
                 
                               itemBuilder: (context, index) {
                                 return Column(children: [
@@ -63,11 +63,11 @@ class _NetworkUserState extends State<NetworkUser> {
                                       InkWell(
                                         borderRadius: BorderRadius.circular(15),
                                         onTap: () async {
-                                          List<String?> s = [StaticStore.currentUserId,widget.likeUsersInfo[index]!.id];
+                                          List<String?> s = [StaticStore.currentUserId,widget.likeUsersInfo?[index].id];
                                           s.sort();
                                           String messageId = "${s[0]}_${s[1]}";
                                           
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatScreen(widget.likeUsersInfo[index]!,messageId)));
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatScreen(widget.likeUsersInfo![index],messageId)));
                                         },
                                         child: ListTile(
                                           leading: Column(
@@ -80,7 +80,7 @@ class _NetworkUserState extends State<NetworkUser> {
                                                   child:
                                                   // StaticStore.currentSongImg==""?
                                                       // CachedNetworkImage(imageUrl: ""),
-                                                      widget.likeUsersInfo[index]?.image?.length==0?
+                                                      widget.likeUsersInfo?[index].image?.length==0?
                 
                                                       Container(
                                                         width: 55,
@@ -95,7 +95,7 @@ class _NetworkUserState extends State<NetworkUser> {
                                                       CachedNetworkImage(
                                                     // imageUrl: user.avatar!,
                 
-                                                    imageUrl: widget.likeUsersInfo[index]?.image?.length==2?"${widget.likeUsersInfo[index]?.image?[1]['url']}":"${widget.likeUsersInfo[index]?.image?[0]['url']}",
+                                                    imageUrl: widget.likeUsersInfo?[index].image?.length==2?"${widget.likeUsersInfo?[index].image?[1]['url']}":"${widget.likeUsersInfo?[index].image?[0]['url']}",
                 
                                                     width: 55,
                                                     height: 55,
@@ -117,13 +117,13 @@ class _NetworkUserState extends State<NetworkUser> {
                                               ]),
                                           title: Text(
                                             
-                                            "${widget.likeUsersInfo[index]?.displayName}",
+                                            "${widget.likeUsersInfo?[index].displayName}",
                                             // "${widget.likeUsersInfo[index]?.id}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(color: Colors.white),
                                           ),
                                           subtitle: Text(
-                                            "${widget.likeUsersInfo[index]?.spotifyBasedGenre}",
+                                            "${widget.likeUsersInfo?[index].spotifyBasedGenre}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(color: Colors.grey),
                                           ),
@@ -146,17 +146,6 @@ class _NetworkUserState extends State<NetworkUser> {
           ],
         ),
                     
-        
-        
-        
-        // StreamBuilder(
-        //   stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //     print(snapshot.data?.docs[0]['name']);
-        //     print("hello");
-        //     return SizedBox();
-        //   },
-        // )
       )
     );
   }

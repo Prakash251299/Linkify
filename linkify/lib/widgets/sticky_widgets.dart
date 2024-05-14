@@ -6,21 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:http/http.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/Network/fetch_friends.dart';
 // import 'package:linkify/controller/accesstoken_error.dart';
 // import 'package:linkify/controller/firebase_call.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/get_user_info.dart';
-import 'package:linkify/controller/user_network_functions.dart';
+import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
 // import 'package:linkify/model/album.dart';
 import 'package:linkify/model/user_info.dart';
+import 'package:linkify/widgets/Network/friend_suggestion.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/uis/models/genreTag.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
-import 'package:linkify/widgets/user_network.dart';
+import 'package:linkify/widgets/Network/user_network.dart';
 // import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // class MyStickyWidgets extends StatelessWidget {
@@ -109,51 +111,78 @@ Widget footer(var context) {
             ),
             onPressed: () async {
               StaticStore.screen = 2;
-              NetworkFunction _networkFunction = NetworkFunction();
+              // await fetchAllFriends(context);
 
-              /* If data updation needed in firebase then use the below code */
-              // await s.fetchInfo();
 
-              var numberOfUsers = 0;
-              DateTime now = DateTime.now();
-              var dateToday = now.day.toString();
-              // if(_isNumeric(StaticStore.dateStored[1])){
+              // Navigator.pushReplacement(context,MaterialPageRoute(
+              //     builder: (_) => NetworkUser(alluser)),
+              //   ));
+              List<UserInfo>? bestMatch = await fetchBestMatchFriends();
+              List<UserInfo>? goodMatch = [];
+              List<UserInfo>? allUsers = await fetchAllFriends();
+              // print(allUsers?[0].displayName);
+              // print(bestMatch?[0].displayName);
+              // print(allUsers?[0].image?[0]['url']);
 
-              // }
 
-              // if(StaticStore.dateStored[0]==dateToday[0]){
 
-              // }
 
-              /* Get number of users for recommendation */
-              // numberOfUsers = await _networkFunction.getNumberOfUsers();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
+              // Navigator.of(context).push(builder:()=MaterialPageRoute(
+              //     builder: (_) => Suggestion(bestMatch,goodMatch,allUsers),
+              //   ));
 
-              StoreUserInfo _storeUserInfo = StoreUserInfo();
-              _storeUserInfo.fetchCurrentUserInfo();
-              if (numberOfUsers >= 10) {
-                /* If we have more users then like based friend recommendations will be provided */
-                List<UserInfo?> userHavingSameInterests =
-                    await _networkFunction.fetchRecommendedUsersInfo();
-                Navigator.pushReplacement(context,MaterialPageRoute(
-                  builder: (_) => NetworkUser(userHavingSameInterests),
-                ));
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (_) => NetworkUser(userHavingSameInterests),
-                // ));
-              } else {
-                /* All users of our application will be recommended */
-                List<UserInfo?> allUsers =
-                    await _networkFunction.fetchAllUsersInfo();
-                // print(allUsers[0]?.id);
+              
 
-                Navigator.pushReplacement(context,MaterialPageRoute(
-                  builder: (_) => NetworkUser(allUsers),
-                ));
 
-                // Navigator.of(context).push(MaterialPageRoute(
+              // await fetchFriends(context);
+
+              // NetworkFunction _networkFunction = NetworkFunction();
+
+              // /* If data updation needed in firebase then use the below code */
+              // // await s.fetchInfo();
+
+              // var numberOfUsers = 0;
+              // // DateTime now = DateTime.now();
+              // // var dateToday = now.day.toString();
+              // // if(_isNumeric(StaticStore.dateStored[1])){
+
+              // // }
+
+              // // if(StaticStore.dateStored[0]==dateToday[0]){
+
+              // // }
+
+              // /* Get number of users for recommendation */
+              // // numberOfUsers = await _networkFunction.getNumberOfUsers();
+
+
+              // // StoreUserInfo _storeUserInfo = StoreUserInfo();
+              // // _storeUserInfo.fetchCurrentUserInfo();
+              // if (numberOfUsers >= 10) {
+              //   /* If we have more users then like based friend recommendations will be provided */
+              //   List<UserInfo?> userHavingSameInterests =
+              //       await _networkFunction.fetchRecommendedUsersInfo();
+              //   Navigator.pushReplacement(context,MaterialPageRoute(
+              //     builder: (_) => NetworkUser(userHavingSameInterests),
+              //   ));
+               // // Navigator.of(context).push(MaterialPageRoute(
+               // //   builder: (_) => NetworkUser(userHavingSameInterests),
+               // // ));
+              // } else {
+              //   /* All users of our application will be recommended */
+              //   List<UserInfo?> allUsers =
+              //       await _networkFunction.fetchAllUsersInfo();
+              //   // print(allUsers[0]?.id);
+
+                // Navigator.pushReplacement(context,MaterialPageRoute(
                 //   builder: (_) => NetworkUser(allUsers),
                 // ));
-              }
+
+              //   // Navigator.of(context).push(MaterialPageRoute(
+              //   //   builder: (_) => NetworkUser(allUsers),
+              //   // ));
+              // }
             },
           ),
         ])),

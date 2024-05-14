@@ -12,6 +12,9 @@ Future<void> playSong(songUrl) async {
       print('A stream error occurred: $e');
     });
     try {
+      // await StaticStore.player.setUrl(songUrl);
+
+
       await StaticStore.player.setAudioSource(AudioSource.uri(
         // Uri.parse(songUrl),
         songUrl,
@@ -24,6 +27,14 @@ Future<void> playSong(songUrl) async {
       ),
       ));
       StaticStore.player.play();
+
+      
+      // if(StaticStore.player.playing){
+      //   print("song playing");
+      // }
+      // if(StaticStore.player.processingState==ProcessingState.completed){
+      //   print("song completed plzz");
+      // }
 
       // _player.youtubePlay("Mahiye jinna sohna","");
     } catch (e, stackTrace) {
