@@ -56,39 +56,59 @@ Widget footer(var context) {
         // ),
         child: Row(children: [
           IconButton(
-            icon: const Icon(
-              LineIcons.home,
-              color: Colors.white,
-            ),
+            icon:StaticStore.screen==0?Icon(Icons.home,color: Colors.white,):Icon(LineIcons.home,color: Colors.white70,),
+
+            // icon: const Icon(
+            //   LineIcons.home,
+              // color: Colors.white,
+            // ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
+              StaticStore.screen = 0;
+
+
+              // Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (_) => HomeScreen(),
+              //     ));
+
+
+              Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (_) => HomeScreen(),
-                  ))
-                  .then((value) => Navigator.pop(context));
+                  ));
+                  // .then((value) => Navigator.pop(context));
             },
           ),
-          Spacer(),
+          const Spacer(),
           IconButton(
-            icon: const Icon(
-              CupertinoIcons.search,
+            icon: StaticStore.screen==1? Icon(
+              Icons.search,
               color: Colors.white,
-            ),
+            ):Icon(Icons.search,color: Colors.white70,),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
+              StaticStore.screen = 1;
+               Navigator.pushReplacement(context,MaterialPageRoute(
                     builder: (_) => SearchPage(),
-                  ))
-                  .then((value) => Navigator.pop(context));
+                  ));
+                  // .then((value) => Navigator.pop(context));
+
+
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(
+              //       builder: (_) => SearchPage(),
+              //     ))
+              //     .then((value) => Navigator.pop(context));
             },
           ),
           Spacer(),
           IconButton(
-            icon: Icon(
+            icon: StaticStore.screen==2?Icon(
               LineIcons.userPlus,
               color: Colors.white,
+            ):Icon(
+              LineIcons.userPlus,
+              color: Colors.white70,
             ),
             onPressed: () async {
+              StaticStore.screen = 2;
               NetworkFunction _networkFunction = NetworkFunction();
 
               /* If data updation needed in firebase then use the below code */
@@ -114,18 +134,25 @@ Widget footer(var context) {
                 /* If we have more users then like based friend recommendations will be provided */
                 List<UserInfo?> userHavingSameInterests =
                     await _networkFunction.fetchRecommendedUsersInfo();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.pushReplacement(context,MaterialPageRoute(
                   builder: (_) => NetworkUser(userHavingSameInterests),
                 ));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => NetworkUser(userHavingSameInterests),
+                // ));
               } else {
                 /* All users of our application will be recommended */
                 List<UserInfo?> allUsers =
                     await _networkFunction.fetchAllUsersInfo();
                 // print(allUsers[0]?.id);
 
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.pushReplacement(context,MaterialPageRoute(
                   builder: (_) => NetworkUser(allUsers),
                 ));
+
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => NetworkUser(allUsers),
+                // ));
               }
             },
           ),
@@ -209,13 +236,13 @@ Widget miniplayer(BuildContext context) {
                         width: 45,
                         height: 45,
                         // decoration: TextDecoration.none,
-                        decoration: BoxDecoration(
+                        decoration: StaticStore.currentSongImg!=""?BoxDecoration(
                           // color: Colors.red,
                           // decoration: TextDecoration.none
                           image: DecorationImage(
                               image: NetworkImage(StaticStore.currentSongImg),
                               fit: BoxFit.cover),
-                        ),
+                        ):BoxDecoration(),
                       ),
                       SizedBox(width: 8),
                       Column(

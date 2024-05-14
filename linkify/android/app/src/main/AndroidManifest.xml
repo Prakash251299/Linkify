@@ -16,8 +16,10 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         >
+        <!-- <activity
+            android:name=".MainActivity" -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -61,66 +63,27 @@
                 <data android:pathPrefix="/start" />
             </intent-filter>
 
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:host="linkify" />
-                <data android:pathPrefix="/start" />
-            </intent-filter> -->
-
-
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="linkify" />
-                <data android:pathPrefix="/start" />
-            </intent-filter> -->
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="linkify" />
-                <data android:pathPattern="/start" /> -->
-            <!-- </intent-filter> -->
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="linkify" />
-                <data android:pathPrefix="/start" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="linkify" />
-                <data android:pathPattern="/start" />
-            </intent-filter> -->
-            <!-- <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="ishuapp" android:scheme="https" android:pathPrefix="/start"/> -->
-
-
         </activity>
+
+
+        <!-- For background music playing -->
+        <service
+            android:name="com.ryanheise.audioservice.AudioService"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </receiver> 
 
 
         <!-- Don't delete the meta-data below.

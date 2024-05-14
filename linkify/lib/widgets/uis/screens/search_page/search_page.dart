@@ -24,57 +24,57 @@ class SearchPage extends StatelessWidget {
     // required this.con,
   }) : super(key: key);
 
-  List<PersistentBottomNavBarItem> _navBarsItems(var context) {
-    return [
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) => HomeScreen(),
-          //       )).then((value) => Navigator.pop(context));
-          // },),
-          icon: const Icon(Icons.home),
-          inactiveIcon: const Icon(LineIcons.home),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) =>
-          //       SearchPage()
-          //       // AppStateManager.persistentTabController.jumpToTab(0);
-          //       ));
-          // },),
-          // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
-          onPressed: (_) {
-            print("hello");
-            Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(
-                builder: (BuildContext context) {
-                  return SearchPage();
-                },
-              ),
-              (_) => false,
-            );
-          },
-          icon: const Icon(CupertinoIcons.search),
-          inactiveIcon: const Icon(CupertinoIcons.search),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
-          //   Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //       builder: (_) => Library(),
-          //       )).then((value) => Navigator.pop(context));
-          // },),
-          icon: const Icon(CupertinoIcons.music_albums),
-          inactiveIcon: const Icon(CupertinoIcons.music_albums),
-          activeColorSecondary: Colors.white,
-          activeColorPrimary: Colors.grey),
-    ];
-  }
+  // List<PersistentBottomNavBarItem> _navBarsItems(var context) {
+  //   return [
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) => HomeScreen(),
+  //         //       )).then((value) => Navigator.pop(context));
+  //         // },),
+  //         icon: const Icon(Icons.home),
+  //         inactiveIcon: const Icon(LineIcons.home),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) =>
+  //         //       SearchPage()
+  //         //       // AppStateManager.persistentTabController.jumpToTab(0);
+  //         //       ));
+  //         // },),
+  //         // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+  //         onPressed: (_) {
+  //           print("hello");
+  //           Navigator.of(context).pushAndRemoveUntil(
+  //             CupertinoPageRoute(
+  //               builder: (BuildContext context) {
+  //                 return SearchPage();
+  //               },
+  //             ),
+  //             (_) => false,
+  //           );
+  //         },
+  //         icon: const Icon(CupertinoIcons.search),
+  //         inactiveIcon: const Icon(CupertinoIcons.search),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //     PersistentBottomNavBarItem(
+  //         // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
+  //         //   Navigator.of(context).push(
+  //         //   MaterialPageRoute(
+  //         //       builder: (_) => Library(),
+  //         //       )).then((value) => Navigator.pop(context));
+  //         // },),
+  //         icon: const Icon(CupertinoIcons.music_albums),
+  //         inactiveIcon: const Icon(CupertinoIcons.music_albums),
+  //         activeColorSecondary: Colors.white,
+  //         activeColorPrimary: Colors.grey),
+  //   ];
+  // }
 
   // Widget footer(var context){
   //   return Container(
@@ -109,6 +109,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final allTags = tags.map((e) => TagsModel.fromJson(e)).toList();
+    print("Searchpage");
     return BlocProvider(
         create: (context) => SearchCubit()..getGenre(),
         // create:(_){},

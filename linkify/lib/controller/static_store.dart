@@ -55,6 +55,7 @@ class StaticStore{
   static int queueIndex = 0;
   static int queueLoaded = 0;
   static int nextPlay=1;
+  static int screen = 0;
   // UserInfo _userInfo=[];
 
 }

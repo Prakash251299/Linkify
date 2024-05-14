@@ -129,7 +129,7 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
           builder: (context, snapshot) {
             return IconButton(
               onPressed: () async {
-                if(StaticStore.playing==true){
+                if(StaticStore.player.playing==true){
                   _youtubePlayer.youtubePause();
                   StaticStore.playing = false;
                   StaticStore.pause = true;
@@ -138,6 +138,18 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                   StaticStore.playing = true;
                   StaticStore.pause = false;
                 }
+                
+
+
+                // if(StaticStore.playing==true){
+                //   _youtubePlayer.youtubePause();
+                //   StaticStore.playing = false;
+                //   StaticStore.pause = true;
+                // }else{
+                //   _youtubePlayer.youtubeResume();
+                //   StaticStore.playing = true;
+                //   StaticStore.pause = false;
+                // }
                 if(StaticStore.player.processingState == ProcessingState.completed){
                   print("completed1");
                   await StaticStore.player.seek(const Duration(seconds: 0));

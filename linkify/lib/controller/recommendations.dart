@@ -33,9 +33,9 @@ Future<Map<String, List<dynamic>>?> getCarouselSongs() async {
     // print(res.statusCode);
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      print("kl");
-      print(data['items'].length);
-      print("kl");
+      // print("kl");
+      // print(data['items'].length);
+      print("carouselSongs fetching in recommendation");
       if (data['items'].length > 0) {
         for (int i = 0; i < data['items'].length; i++) {
           // print(data['items'].keys.toList()[0]);

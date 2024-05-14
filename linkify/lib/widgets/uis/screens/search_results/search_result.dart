@@ -436,11 +436,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     //   ),
                     onPressed: () {
                       YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
-                      _youtubePlayer.youtubePlay(searchSong, "").then((value) {
+                      if(searchSong==""){
+                        return;
+                      }
+                      _youtubePlayer.youtubePlay(searchSong, "").then((value){
                         StaticStore.currentSong = searchSong;
                         StaticStore.currentArtists = [];
                         StaticStore.currentSongImg = "";
                         StaticStore.playing = true;
+                        StaticStore.myQueueTrack=[];
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CarouselSongScreen(searchSong, "", "unknown", "")));
                       });
                     }),
               ),

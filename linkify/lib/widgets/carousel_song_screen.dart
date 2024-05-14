@@ -134,6 +134,8 @@ class _SongScreenState extends State<CarouselSongScreen> {
           
                   child: 
                   // StaticStore.myQueueTrack.length>StaticStore.queueIndex?
+
+                    StaticStore.currentSongImg!=""?
                   Image.network(
                     StaticStore.myQueueTrack.length>StaticStore.queueIndex?
                     "${StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl}":widget.trackImg,
@@ -156,7 +158,7 @@ class _SongScreenState extends State<CarouselSongScreen> {
                         ),
                       );
                     },
-                  ),
+                  ):SizedBox(),
                 ),
               ),
               // ClipRect(
@@ -219,6 +221,7 @@ class _MusicPlayer extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 // "",
+                StaticStore.currentArtists.isEmpty?"unknown":
                 StaticStore.myQueueTrack.length>StaticStore.queueIndex?(
                 StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=3
                 
