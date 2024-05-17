@@ -1,7 +1,7 @@
 // import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:linkify/chatting/modal/mes_info.dart';
+import 'package:linkify/widgets/Network/chatting/modal/mes_info.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 // import 'apis.dart';

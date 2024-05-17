@@ -83,6 +83,10 @@ dependencies:
   video_player: ^2.8.6
   firebase_storage: ^11.7.4
   flutter_cache_manager: ^3.3.1
+  just_audio_background: ^0.0.1-beta.11
+  audio_session: ^0.1.19
+  flutter_background_service: ^5.0.5
+  flutter_local_notifications: ^17.1.2
   # webview_cookie_manager: ^2.0.6
   # media_kit: ^1.1.10+1
   # media_kit_video: ^1.2.4

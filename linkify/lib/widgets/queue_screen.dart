@@ -49,7 +49,11 @@ class _QueueScreenState extends State<QueueScreen> {
           },),
       ),
       body: NotificationListener(
-                      child: ListView.builder(
+                      child: 
+                      StaticStore.myQueueTrack.isEmpty?
+                      Center(child: Text("No songs in queue"),)
+                      :
+                      ListView.builder(
                         scrollDirection: Axis.vertical,
                         // shrinkWrap: true,
                         // physics: ClampingScrollPhysics(),

@@ -1,9 +1,14 @@
 
 
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:linkify/controller/notification_player.dart/background.dart';
+import 'package:linkify/controller/notification_player.dart/play_song.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
 
 
 class YoutubeSongPlayer{
@@ -14,6 +19,7 @@ class YoutubeSongPlayer{
       return;
     }
     if(songName!=""){
+      // await initializeService();
       songName+=" $artist lyrical";
       // songName+=" lyrics";
         try{
@@ -24,21 +30,25 @@ class YoutubeSongPlayer{
           final videoId = video.id.value;
           var manifest = await yt.videos.streamsClient.getManifest(videoId);
           var audio = await manifest.audioOnly.first;
-          // SongDataController.songList.add(audio as SongModel);
           var audioUrl = await audio.url;
           print(audioUrl);
-          // await player.play(UrlSource(audioUrl.toString()));
-          await StaticStore.player.setUrl(audioUrl.toString());
-          StaticStore.player.play();
+
+
+
+          playSong(audioUrl);
+          // StaticStore.player.
+
+          // await StaticStore.player.setUrl(audioUrl.toString());
+          // StaticStore.player.play();
           StaticStore.nextPlay=1;
 
 
 
 
 
-          // await player.play(UrlSource('https://open.spotify.com/track/2FCXQHugkoHE1K3tiDu8pu'));
         }
         catch(e){
+          print("Error: $e");
           print("Youtube player can't play songs");
         }
       }

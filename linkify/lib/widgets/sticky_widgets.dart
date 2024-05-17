@@ -6,21 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:http/http.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/Network/fetch_friends.dart';
+import 'package:linkify/controller/firebase_call.dart';
 // import 'package:linkify/controller/accesstoken_error.dart';
 // import 'package:linkify/controller/firebase_call.dart';
 // import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/get_user_info.dart';
-import 'package:linkify/controller/user_network_functions.dart';
+import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
 // import 'package:linkify/model/album.dart';
 import 'package:linkify/model/user_info.dart';
+import 'package:linkify/widgets/Network/friend_suggestion.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/uis/models/genreTag.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
-import 'package:linkify/widgets/user_network.dart';
+import 'package:linkify/widgets/Network/user_network.dart';
 // import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // class MyStickyWidgets extends StatelessWidget {
@@ -56,77 +59,185 @@ Widget footer(var context) {
         // ),
         child: Row(children: [
           IconButton(
-            icon: const Icon(
-              LineIcons.home,
-              color: Colors.white,
-            ),
+            icon:StaticStore.screen==0?Icon(Icons.home,color: Colors.white,):Icon(LineIcons.home,color: Colors.white70,),
+
+            // icon: const Icon(
+            //   LineIcons.home,
+              // color: Colors.white,
+            // ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
+              StaticStore.screen = 0;
+
+
+              // Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (_) => HomeScreen(),
+              //     ));
+
+
+              Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (_) => HomeScreen(),
-                  ))
-                  .then((value) => Navigator.pop(context));
+                  ));
+                  // .then((value) => Navigator.pop(context));
             },
           ),
-          Spacer(),
+          const Spacer(),
           IconButton(
-            icon: const Icon(
-              CupertinoIcons.search,
+            icon: StaticStore.screen==1? Icon(
+              Icons.search,
               color: Colors.white,
-            ),
+            ):Icon(Icons.search,color: Colors.white70,),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
+              StaticStore.screen = 1;
+               Navigator.pushReplacement(context,MaterialPageRoute(
                     builder: (_) => SearchPage(),
-                  ))
-                  .then((value) => Navigator.pop(context));
+                  ));
+                  // .then((value) => Navigator.pop(context));
+
+
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(
+              //       builder: (_) => SearchPage(),
+              //     ))
+              //     .then((value) => Navigator.pop(context));
             },
           ),
           Spacer(),
           IconButton(
-            icon: Icon(
+            icon: StaticStore.screen==2?Icon(
               LineIcons.userPlus,
               color: Colors.white,
+            ):Icon(
+              LineIcons.userPlus,
+              color: Colors.white70,
             ),
             onPressed: () async {
-              NetworkFunction _networkFunction = NetworkFunction();
+              StaticStore.screen = 2;
+              // await fetchAllFriends(context);
 
-              /* If data updation needed in firebase then use the below code */
-              // await s.fetchInfo();
 
-              var numberOfUsers = 0;
-              DateTime now = DateTime.now();
-              var dateToday = now.day.toString();
-              // if(_isNumeric(StaticStore.dateStored[1])){
+              // Navigator.pushReplacement(context,MaterialPageRoute(
+              //     builder: (_) => NetworkUser(alluser)),
+              //   ));
+              StaticStore.requestStatusValue?.clear();
+              List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
+              List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
+              List<UserInfo>? allUsers = await fetchAllFriends(3);
+              // print(allUsers?[0].displayName);
+              // print(bestMatch?[0].displayName);
+              // print(allUsers?[0].image?[0]['url']);
 
-              // }
 
-              // if(StaticStore.dateStored[0]==dateToday[0]){
 
-              // }
+              // List<List<String>> requestStatusValue=[List.filled(bestMatch!.length, "0"),List.filled(goodMatch!.length, "0"),List.filled(3, "0")];
 
-              /* Get number of users for recommendation */
-              // numberOfUsers = await _networkFunction.getNumberOfUsers();
 
-              StoreUserInfo _storeUserInfo = StoreUserInfo();
-              _storeUserInfo.fetchCurrentUserInfo();
-              if (numberOfUsers >= 10) {
-                /* If we have more users then like based friend recommendations will be provided */
-                List<UserInfo?> userHavingSameInterests =
-                    await _networkFunction.fetchRecommendedUsersInfo();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => NetworkUser(userHavingSameInterests),
-                ));
-              } else {
-                /* All users of our application will be recommended */
-                List<UserInfo?> allUsers =
-                    await _networkFunction.fetchAllUsersInfo();
-                // print(allUsers[0]?.id);
-
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => NetworkUser(allUsers),
-                ));
+              if(bestMatch!=null){
+                print("bestmatch has data");
+                List<String>temp=[];
+                for(int i=0;i<3 && i<bestMatch.length;i++){
+                  temp.add(await getFriendStatus(bestMatch[i].id));
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(bestMatch.length, "0"));
               }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              if(goodMatch!=null){
+                print("goodmatch has data");
+                List<String>temp=[];
+                for(int i=0;i<3 && i<goodMatch.length;i++){
+                  temp.add(await getFriendStatus(goodMatch[i].id));
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(goodMatch.length, "0"));
+              }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              if(allUsers!=null){
+                print("allusers has data");
+                List<String>temp=[];
+                String a = "";
+                for(int i=0;i<3 && i<allUsers.length;i++){
+                  a = await getFriendStatus(allUsers[i].id);
+                  print("allusersStatus: $a");
+                  temp.add(a);
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(allUsers.length, "0"));
+              }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              // StaticStore.requestStatusValue=[List.filled(bestMatch!.length, "0"),List.filled(goodMatch!.length, "0"),List.filled(allUsers!.length, "0")];
+
+
+
+
+
+
+              print(StaticStore.requestStatusValue);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
+
+
+
+
+              // Navigator.of(context).push(builder:()=MaterialPageRoute(
+              //     builder: (_) => Suggestion(bestMatch,goodMatch,allUsers),
+              //   ));
+
+              
+
+
+              // await fetchFriends(context);
+
+              // NetworkFunction _networkFunction = NetworkFunction();
+
+              // /* If data updation needed in firebase then use the below code */
+              // // await s.fetchInfo();
+
+              // var numberOfUsers = 0;
+              // // DateTime now = DateTime.now();
+              // // var dateToday = now.day.toString();
+              // // if(_isNumeric(StaticStore.dateStored[1])){
+
+              // // }
+
+              // // if(StaticStore.dateStored[0]==dateToday[0]){
+
+              // // }
+
+              // /* Get number of users for recommendation */
+              // // numberOfUsers = await _networkFunction.getNumberOfUsers();
+
+
+              // // StoreUserInfo _storeUserInfo = StoreUserInfo();
+              // // _storeUserInfo.fetchCurrentUserInfo();
+              // if (numberOfUsers >= 10) {
+              //   /* If we have more users then like based friend recommendations will be provided */
+              //   List<UserInfo?> userHavingSameInterests =
+              //       await _networkFunction.fetchRecommendedUsersInfo();
+              //   Navigator.pushReplacement(context,MaterialPageRoute(
+              //     builder: (_) => NetworkUser(userHavingSameInterests),
+              //   ));
+               // // Navigator.of(context).push(MaterialPageRoute(
+               // //   builder: (_) => NetworkUser(userHavingSameInterests),
+               // // ));
+              // } else {
+              //   /* All users of our application will be recommended */
+              //   List<UserInfo?> allUsers =
+              //       await _networkFunction.fetchAllUsersInfo();
+              //   // print(allUsers[0]?.id);
+
+                // Navigator.pushReplacement(context,MaterialPageRoute(
+                //   builder: (_) => NetworkUser(allUsers),
+                // ));
+
+              //   // Navigator.of(context).push(MaterialPageRoute(
+              //   //   builder: (_) => NetworkUser(allUsers),
+              //   // ));
+              // }
             },
           ),
         ])),
@@ -209,13 +320,13 @@ Widget miniplayer(BuildContext context) {
                         width: 45,
                         height: 45,
                         // decoration: TextDecoration.none,
-                        decoration: BoxDecoration(
+                        decoration: StaticStore.currentSongImg!=""?BoxDecoration(
                           // color: Colors.red,
                           // decoration: TextDecoration.none
                           image: DecorationImage(
                               image: NetworkImage(StaticStore.currentSongImg),
                               fit: BoxFit.cover),
-                        ),
+                        ):BoxDecoration(),
                       ),
                       SizedBox(width: 8),
                       Column(
@@ -527,52 +638,3 @@ Widget _buildBar(
             );
           });
 }
-
-// Widget _buildIcon() {
-//   return Center(
-//     child: LayoutBuilder(
-//       builder: (context, constraints) {
-//         return AnimatedSwitcher(
-//           duration: Duration(milliseconds: duration.inMilliseconds ~/ 5),
-//           switchInCurve: curve,
-//           switchOutCurve: curve,
-//           child: status.type.isCharing
-//               ? Icon(
-//                   Icons.electric_bolt,
-//                   color: Theme.of(context).colorScheme.onSurface,
-//                   size: constraints.maxHeight,
-//                   shadows: [
-//                     const Shadow(blurRadius: 0.5),
-//                     Shadow(
-//                       color: Theme.of(context).colorScheme.onSurface,
-//                       blurRadius: 1,
-//                     ),
-//                   ],
-//                 )
-//               : null,
-//         );
-//       },
-//     ),
-//   );
-// }
-
-// Widget _buildKnob(BuildContext context, ColorScheme colorScheme) {
-//   final double knobHeight = trackHeight / 3;
-//   final double knobWidth = knobHeight / 2;
-//   final borderColor = Theme.of(context).colorScheme.onSurface;
-
-//   return Padding(
-//     padding: EdgeInsets.only(left: trackHeight / 20),
-//     child: Container(
-//       width: knobWidth,
-//       height: knobHeight,
-//       decoration: BoxDecoration(
-//         color: borderColor,
-//         borderRadius: BorderRadius.horizontal(
-//           right: Radius.circular(knobWidth / 3),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-// // }
