@@ -58,5 +58,6 @@ class StaticStore{
   static int nextPlay=1;
   static int screen = 0;
   // UserInfo _userInfo=[];
+  static List<List<String>?>? requestStatusValue=[];
 
 }

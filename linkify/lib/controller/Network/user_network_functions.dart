@@ -18,21 +18,21 @@ class NetworkFunction {
       // print(users.id);
       users.spotifyBasedGenre = v.data()?['spotifyGenre'];
       // print(v.data());
-      return users;}
-      catch(e){
+      return users;
+      }catch(e){
         print("User id doesn't exist in users collection on firebase");
       }
     });
     return users;
   }
 
-  Future<List<UserInfo>?> fetchRecommendedUsersInfo() async {
+  Future<List<UserInfo>?> fetchRecommendedUsersInfo(numberOfUsers) async {
     List<dynamic>? likeUsersId = []; // In firebase type is dynamic
     List<UserInfo>? likeUsersInfo = [];
     StoreUserInfo _storeUserInfo = StoreUserInfo();
     if(StaticStore.currentUserGenreId=="" || StaticStore.currentUserGenreId==null){
       await _storeUserInfo.fetch_store_user_info();
-      print("Fetched user info because it was null");
+      print("Fetched user info again, because it was null");
     }
     // UserInfo? currentUser = await _storeUserInfo.fetchCurrentUserInfo();
     // print(currentUser?.spotifyBasedGenre);
@@ -51,7 +51,7 @@ class NetworkFunction {
 
 
       likeUsersId?.remove(StaticStore.currentUserId);
-      for (int i = 0; likeUsersId != null && i < likeUsersId!.length; i++) {
+      for (int i = 0; likeUsersId != null && i < likeUsersId!.length && i<numberOfUsers; i++) {
         likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
       }
       return likeUsersInfo;
@@ -60,7 +60,7 @@ class NetworkFunction {
     return likeUsersInfo;
   }
 
-  Future<List<UserInfo>?> fetchAllUsersInfo() async {
+  Future<List<UserInfo>?> fetchAllUsersInfo(numberOfUsers) async {
     List<dynamic>? allUsersId = []; // In firebase type is dynamic
     List<UserInfo>? allUsersInfo = [];
     await FirebaseFirestore.instance
@@ -74,7 +74,7 @@ class NetworkFunction {
         if(allUsersId.length>2){
           allUsersId.remove(StaticStore.currentUserId);
         }
-        for (int i = 0;i < allUsersId.length;i++) {
+        for (int i = 0;i < allUsersId.length && i < numberOfUsers;i++) {
           allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
         }
         return allUsersInfo;

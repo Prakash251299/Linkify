@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 // import 'package:http/http.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/Network/fetch_friends.dart';
+import 'package:linkify/controller/firebase_call.dart';
 // import 'package:linkify/controller/accesstoken_error.dart';
 // import 'package:linkify/controller/firebase_call.dart';
 // import 'package:linkify/controller/read_write.dart';
@@ -117,17 +118,71 @@ Widget footer(var context) {
               // Navigator.pushReplacement(context,MaterialPageRoute(
               //     builder: (_) => NetworkUser(alluser)),
               //   ));
-              List<UserInfo>? bestMatch = await fetchBestMatchFriends();
-              List<UserInfo>? goodMatch = [];
-              List<UserInfo>? allUsers = await fetchAllFriends();
+              StaticStore.requestStatusValue?.clear();
+              List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
+              List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
+              List<UserInfo>? allUsers = await fetchAllFriends(3);
               // print(allUsers?[0].displayName);
               // print(bestMatch?[0].displayName);
               // print(allUsers?[0].image?[0]['url']);
 
 
 
+              // List<List<String>> requestStatusValue=[List.filled(bestMatch!.length, "0"),List.filled(goodMatch!.length, "0"),List.filled(3, "0")];
 
+
+              if(bestMatch!=null){
+                print("bestmatch has data");
+                List<String>temp=[];
+                for(int i=0;i<3 && i<bestMatch.length;i++){
+                  temp.add(await getFriendStatus(bestMatch[i].id));
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(bestMatch.length, "0"));
+              }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              if(goodMatch!=null){
+                print("goodmatch has data");
+                List<String>temp=[];
+                for(int i=0;i<3 && i<goodMatch.length;i++){
+                  temp.add(await getFriendStatus(goodMatch[i].id));
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(goodMatch.length, "0"));
+              }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              if(allUsers!=null){
+                print("allusers has data");
+                List<String>temp=[];
+                String a = "";
+                for(int i=0;i<3 && i<allUsers.length;i++){
+                  a = await getFriendStatus(allUsers[i].id);
+                  print("allusersStatus: $a");
+                  temp.add(a);
+                }
+                StaticStore.requestStatusValue?.add(temp);
+                // StaticStore.requestStatusValue?.add(List.filled(allUsers.length, "0"));
+              }
+              else{
+                StaticStore.requestStatusValue?.add([]);
+              }
+              // StaticStore.requestStatusValue=[List.filled(bestMatch!.length, "0"),List.filled(goodMatch!.length, "0"),List.filled(allUsers!.length, "0")];
+
+
+
+
+
+
+              print(StaticStore.requestStatusValue);
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
+
+
+
+
               // Navigator.of(context).push(builder:()=MaterialPageRoute(
               //     builder: (_) => Suggestion(bestMatch,goodMatch,allUsers),
               //   ));
@@ -583,52 +638,3 @@ Widget _buildBar(
             );
           });
 }
-
-// Widget _buildIcon() {
-//   return Center(
-//     child: LayoutBuilder(
-//       builder: (context, constraints) {
-//         return AnimatedSwitcher(
-//           duration: Duration(milliseconds: duration.inMilliseconds ~/ 5),
-//           switchInCurve: curve,
-//           switchOutCurve: curve,
-//           child: status.type.isCharing
-//               ? Icon(
-//                   Icons.electric_bolt,
-//                   color: Theme.of(context).colorScheme.onSurface,
-//                   size: constraints.maxHeight,
-//                   shadows: [
-//                     const Shadow(blurRadius: 0.5),
-//                     Shadow(
-//                       color: Theme.of(context).colorScheme.onSurface,
-//                       blurRadius: 1,
-//                     ),
-//                   ],
-//                 )
-//               : null,
-//         );
-//       },
-//     ),
-//   );
-// }
-
-// Widget _buildKnob(BuildContext context, ColorScheme colorScheme) {
-//   final double knobHeight = trackHeight / 3;
-//   final double knobWidth = knobHeight / 2;
-//   final borderColor = Theme.of(context).colorScheme.onSurface;
-
-//   return Padding(
-//     padding: EdgeInsets.only(left: trackHeight / 20),
-//     child: Container(
-//       width: knobWidth,
-//       height: knobHeight,
-//       decoration: BoxDecoration(
-//         color: borderColor,
-//         borderRadius: BorderRadius.horizontal(
-//           right: Radius.circular(knobWidth / 3),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-// // }

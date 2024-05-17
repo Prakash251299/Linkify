@@ -124,3 +124,123 @@ class FirebaseCall{
   }
 
 }
+
+String requestIdGenerator(var otherUser){
+  List<String?> s = [StaticStore.currentUserId,otherUser];
+  s.sort();
+  String requestId = "${s[0]}_${s[1]}";
+  return requestId;
+}
+
+
+
+
+
+
+
+
+
+
+
+class Friends extends StatefulWidget {
+  const Friends({super.key});
+
+  Future<String>friendStatusStore(requestReceiver)async{
+
+  var requestId = requestIdGenerator(requestReceiver);
+  var db = FirebaseFirestore.instance;
+  try{
+  await db
+        .collection("friendStatus")
+        .doc(requestId)
+        .set({"requestStatus":"${StaticStore.currentUserId}"},SetOptions(merge: true));
+        print("friend status fetcher");
+        
+        // StaticStore.requestStatusValue = "1";
+        return "1";
+  // return 1;
+        // .onError((e, _) => print("Error Storing message info in firebase: $e"));
+        // .get().then((value) {
+        //   print(value.exists);
+        // });
+  }catch(e){
+    return "0";
+  }
+}
+  @override
+  State<Friends> createState() => _FriendsState();
+}
+
+class _FriendsState extends State<Friends> {
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+// Future<String>freindStatusStore(requestReceiver)async{
+//   var requestId = requestIdGenerator(requestReceiver);
+//   var db = FirebaseFirestore.instance;
+//   try{
+//   await db
+//         .collection("friendStatus")
+//         .doc(requestId)
+//         .set({"requestStatus":"${StaticStore.currentUserId}"},SetOptions(merge: true));
+//         return "1";
+//   // return 1;
+//         // .onError((e, _) => print("Error Storing message info in firebase: $e"));
+//         // .get().then((value) {
+//         //   print(value.exists);
+//         // });
+//   }catch(e){
+//     return "0";
+//   }
+// }
+
+
+Future<String>getFreindStatus(requestReceiver)async{
+  var requestId = requestIdGenerator(requestReceiver);
+  var db = FirebaseFirestore.instance;
+  try{
+  await db
+        .collection("friendStatus")
+        .doc(requestId)
+        .get().then((value) {
+          if(value.exists){
+            print(value.data()?['requestStatus']);
+          }
+        });
+        return "1";
+  }catch(e){
+    return "0";
+  }
+        // .get().then((value) {
+        //   print(value.exists);
+        // });
+}
+
+
+Future<String>getFriendStatus(requestReceiver)async{
+  var requestId = requestIdGenerator(requestReceiver);
+  var db = FirebaseFirestore.instance;
+  try{
+  var a = await db
+        .collection("friendStatus")
+        .doc(requestId)
+        .get();
+        // .then((value) {
+        //   if(value.exists){
+        //     // print(value.data()?['requestStatus']);
+        //     return (value.data()?['requestStatus']);
+        //   }
+        // });
+        // print("firebaseCalling: ${a['requestStatus']}");
+        return a['requestStatus'];
+  }catch(e){
+    return "";
+  }
+}
