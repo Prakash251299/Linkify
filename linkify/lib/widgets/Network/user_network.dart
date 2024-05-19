@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:linkify/controller/notification/notification_functions.dart';
 import 'package:linkify/widgets/Network/chatting/widget/chat_screen.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
@@ -11,7 +12,8 @@ import 'package:linkify/widgets/sticky_widgets.dart';
 
 class NetworkUser extends StatefulWidget {
   List<UserInfo>?likeUsersInfo;
-  NetworkUser(this.likeUsersInfo,{super.key});
+  String title;
+  NetworkUser(this.likeUsersInfo,this.title,{super.key});
 
   @override
   State<NetworkUser> createState() => _NetworkUserState();
@@ -36,7 +38,7 @@ class _NetworkUserState extends State<NetworkUser> {
           leading: IconButton(icon:Icon(Icons.arrow_back),color: Colors.white,onPressed: (){
             Navigator.pop(context);
           },),
-          title: Text("My friends",style:TextStyle(color:Colors.white)),
+          title: Text("${widget.title}",style:TextStyle(color:Colors.white)),
           backgroundColor: Colors.black,
 
         ),
@@ -129,10 +131,36 @@ class _NetworkUserState extends State<NetworkUser> {
                                           ),
                                           isThreeLine: true,
                                           trailing: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                              ]),
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          widget.title=="Requests"?Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+
+
+
+                                            Container(
+                                              // width: 30,
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  await rejectFriendRequest(widget.likeUsersInfo?[index].id);
+                                                  widget.likeUsersInfo?.remove(widget.likeUsersInfo?[index]);
+                                                }, 
+                                                icon: const Icon(Icons.delete,color: Colors.grey,)
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () async {
+                                                await acceptFriendRequest(widget.likeUsersInfo?[index].id);
+                                                widget.likeUsersInfo?.remove(widget.likeUsersInfo?[index]);
+
+                                              }, 
+                                              icon: const Icon(Icons.add,color: Colors.grey,)
+                                            ),
+                                          ],):SizedBox(),
+
+                                        ]),
                                         ),
                                       ),
                                     ]),

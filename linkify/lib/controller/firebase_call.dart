@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 
@@ -202,26 +203,26 @@ class _FriendsState extends State<Friends> {
 // }
 
 
-Future<String>getFreindStatus(requestReceiver)async{
-  var requestId = requestIdGenerator(requestReceiver);
-  var db = FirebaseFirestore.instance;
-  try{
-  await db
-        .collection("friendStatus")
-        .doc(requestId)
-        .get().then((value) {
-          if(value.exists){
-            print(value.data()?['requestStatus']);
-          }
-        });
-        return "1";
-  }catch(e){
-    return "0";
-  }
-        // .get().then((value) {
-        //   print(value.exists);
-        // });
-}
+// Future<String>getFreindStatus(requestReceiver)async{
+//   var requestId = requestIdGenerator(requestReceiver);
+//   var db = FirebaseFirestore.instance;
+//   try{
+//   await db
+//         .collection("friendStatus")
+//         .doc(requestId)
+//         .get().then((value) {
+//           if(value.exists){
+//             print(value.data()?['requestStatus']);
+//           }
+//         });
+//         return "1";
+//   }catch(e){
+//     return "0";
+//   }
+//         // .get().then((value) {
+//         //   print(value.exists);
+//         // });
+// }
 
 
 Future<String>getFriendStatus(requestReceiver)async{
@@ -232,15 +233,86 @@ Future<String>getFriendStatus(requestReceiver)async{
         .collection("friendStatus")
         .doc(requestId)
         .get();
-        // .then((value) {
-        //   if(value.exists){
-        //     // print(value.data()?['requestStatus']);
-        //     return (value.data()?['requestStatus']);
-        //   }
-        // });
-        // print("firebaseCalling: ${a['requestStatus']}");
         return a['requestStatus'];
   }catch(e){
     return "";
   }
+}
+
+
+Future<void>storeFriendRequest(requestReceiverId)async{
+  // var requestId = requestIdGenerator(requestReceiver);
+  if(requestReceiverId==StaticStore.currentUserId){
+    return;
+  }
+  var db = FirebaseFirestore.instance;
+  print("Storing friend request: $requestReceiverId");
+  try{
+  var a = await db
+        .collection("friendRequest")
+        .doc(requestReceiverId)
+        .set({"users":FieldValue.arrayUnion([StaticStore.currentUserId])},SetOptions(merge: true))
+        .onError((e, _) => print("Error Storing message info in firebase: $e"));
+        return;
+  }catch(e){
+    return;
+  }
+}
+
+
+Future<List<dynamic>?> fetchFriendRequests()async{
+  // var requestId = requestIdGenerator(requestReceiver);
+  StoreUserInfo _storeUserInfo = StoreUserInfo();
+  StaticStore.currentUserId==""?
+  await _storeUserInfo.fetchCurrentUserInfo():null;
+  var db = FirebaseFirestore.instance;
+  try{
+    var a = await db
+        .collection("friendRequest")
+        .doc(StaticStore.currentUserId)
+        .get();
+    print("fetching:");
+    print(StaticStore.currentUserId);
+    if(a.exists){
+      print(a['users']);
+      return a['users'];
+    }
+    return null;
+  }catch(e){
+    print("fetch friend request error occured");
+    return null;
+  }
+}
+
+
+Future<void> updateRequestStatus(requestStatus,userId)async{
+  var requestId = requestIdGenerator(userId);
+  var db = FirebaseFirestore.instance;
+  var a = await db
+        .collection("friendStatus")
+        .doc(requestId)
+        .set({'requestStatus':'$requestStatus'});
+        // print(a['requestStatus']);
+}
+
+Future<void> deleteFriendRequest(String userId)async{
+  print("delete from firebase called");
+  var db = FirebaseFirestore.instance;
+  var a = await db
+        .collection("friendRequest")
+        .doc(StaticStore.currentUserId)
+        .get();
+        if(a.exists){
+          print(a['users']);
+          List<dynamic> friendRequests = a['users'];
+          friendRequests.remove(userId);
+          await db
+                .collection("friendRequest")
+                .doc(StaticStore.currentUserId)
+                .set({"users":friendRequests});
+                // .delete();
+                // .delete({"users":FieldValue.arrayRemove([])},SetOptions(merge: true));
+        }else{
+          print("user doesn't exist");
+        }
 }
