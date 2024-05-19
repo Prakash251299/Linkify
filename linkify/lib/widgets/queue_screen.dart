@@ -233,27 +233,6 @@ class _QueueScreenState extends State<QueueScreen> {
 
 
 
-            //                                 StreamBuilder(
-            //                                   stream: StaticStore.player.playerStateStream, builder:(context,snapshot){
-            //                                   return 
-            //                                   // SizedBox();
-
-
-            // //                                   AnimatedIcon(
-            // //   icon: AnimatedIcons.menu_close,
-            // //   progress: _animation_controller,
-            // //   // size: 200,
-            // //   // semanticLabel: 'Show menu',
-            // // );
-            
-
-            //                                 _queueTracks[position].name!=StaticStore.currentSong?Icon(Icons.play_arrow,color:Colors.grey):StaticStore.playing == true?Icon(Icons.pause,color: Colors.white,):Icon(Icons.play_arrow,color: Colors.yellow,);
-
-
-
-            //                                 }),
-
-
                                             IconButton(
                                               onPressed: (){
                                                 StaticStore.myQueueTrack.removeAt(position);

@@ -627,18 +627,21 @@ class _SuggestionState extends State<Suggestion> {
                                                             "friend request sent");
                                                         // print(
                                                         // "friend request sent");
-
+                                                        await storeFriendRequest(widget.bestMatch?[i].id);
                                                         await _friends
                                                             .friendStatusStore(
                                                                 widget
-                                                                    .allUsers?[
+                                                                    .bestMatch?[
                                                                         i]
                                                                     .id)
                                                             .then((value) {
                                                           setState(() {
                                                             StaticStore
                                                                     .requestStatusValue?[
-                                                                0]?[i] = "1";
+                                                                2]?[i] = widget
+                                                                    .bestMatch![
+                                                                        i]
+                                                                    .id.toString();
                                                           });
                                                           print("updated");
                                                         });
@@ -790,6 +793,8 @@ class _SuggestionState extends State<Suggestion> {
                                                         print(
                                                             "friend request sent");
 
+                                                        await storeFriendRequest(widget.allUsers?[i].id);
+
                                                         await _friends
                                                             .friendStatusStore(
                                                                 widget
@@ -800,24 +805,17 @@ class _SuggestionState extends State<Suggestion> {
                                                           setState(() {
                                                             StaticStore
                                                                     .requestStatusValue?[
-                                                                2]?[i] = "1";
+                                                                2]?[i] = widget
+                                                                    .allUsers![
+                                                                        i]
+                                                                    .id.toString();
                                                           });
                                                           print("updated");
                                                         });
                                                         print(StaticStore
                                                                 .requestStatusValue?[
                                                             2]?[i]);
-                                                        // send friend request here
-                                                        // requestStatusValue = await _friends.friendStatusStore(_recommendedUserInfo?[i].id);
-                                                        // var temp = await _friends.friendStatusStore(widget.allUsers?[i].id);
-                                                        // setState(() {
-                                                        //   requestStatusValue = temp;
-                                                        // });
-
-                                                        // requestStatusValue = await getFriendStatus(_recommendedUserInfo?[i].id);
-                                                        // print(requestStatusValue);
                                                       },
-                                                      // icon:(getFreindStatus(_recommendedUserInfo?[i].id))=="0"?Icon(Icons.send,color: const Color.fromARGB(179, 210, 172, 172),):Icon(Icons.done_outline),
                                                       icon:
                                                           StaticStore.requestStatusValue?[
                                                                       2]?[i] ==
@@ -866,13 +864,6 @@ class _SuggestionState extends State<Suggestion> {
                       }
 
                       // }
-
-                      // widget.bestMatch?.length!=0?
-                      // _myWidget.myWidget(context, "Most like you",widget.bestMatch,requestStatusValue):SizedBox(),
-                      // widget.goodMatch?.length!=0?
-                      // _myWidget.myWidget(context, "Good match",widget.goodMatch,requestStatusValue):SizedBox(),
-                      // widget.allUsers?.length!=0?
-                      // _myWidget.myWidget(context, "All users",widget.allUsers,requestStatusValue):SizedBox(),
                     ],
                   );
                 }),
@@ -881,271 +872,6 @@ class _SuggestionState extends State<Suggestion> {
   }
 }
 
-// class MyWidget extends StatefulWidget {
-//   MyWidget({super.key});
-
-//   _MyWidgetState _myWidgetState = _MyWidgetState();
-
-//   Widget myWidget(context, title, _recommendedUserInfo, requestStatusValue) {
-//     return _myWidgetState.suggestionOptons(
-//         context, title, _recommendedUserInfo, requestStatusValue);
-//   }
-
-//   @override
-//   State<MyWidget> createState() => _MyWidgetState();
-// }
-
-// class _MyWidgetState extends State<MyWidget> {
-//   Widget suggestionOptons(context, title, List<UserInfo>? _recommendedUserInfo,
-//       requestStatusValue) {
-//     Friends _friends = Friends();
-//     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
-//     return StreamBuilder<Object>(
-//         stream:
-//             FirebaseFirestore.instance.collection("friendStatus").snapshots(),
-//         builder: (context, snapshot) {
-//           return Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Padding(
-//                   padding:
-//                       const EdgeInsets.only(left: 18, top: 18.0, bottom: 15),
-//                   child: Text(
-//                     "$title",
-//                     style: TextStyle(fontSize: 22),
-//                   ),
-//                 ),
-//                 Container(
-//                   height: _recommendedUserInfo?.length == 2 ? 200 : 100,
-//                   child: ListView.builder(
-//                       scrollDirection: Axis.vertical,
-//                       // physics: NeverScrollableScrollPhysics(),
-//                       // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-//                       itemCount: _recommendedUserInfo?.length == 2 ? 2 : 1,
-//                       // itemCount:null,
-//                       itemBuilder: (context, i) {
-//                         return Card(
-//                           color: Colors.black,
-//                           child: Column(children: [
-//                             InkWell(
-//                               borderRadius: BorderRadius.circular(15),
-//                               onTap: () async {},
-//                               child: ListTile(
-//                                 leading: Column(children: [
-//                                   ClipRRect(
-//                                     borderRadius: BorderRadius.only(
-//                                       topLeft: Radius.circular(3),
-//                                       bottomLeft: Radius.circular(3),
-//                                     ),
-//                                     child: CachedNetworkImage(
-//                                       // imageUrl: user.avatar!,
-
-//                                       // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-//                                       imageUrl: _recommendedUserInfo?[i]
-//                                                   .image
-//                                                   ?.length !=
-//                                               0
-//                                           ? "${_recommendedUserInfo?[i].image?[0]['url']}"
-//                                           : "",
-//                                       // imageUrl: "",
-
-//                                       width: 55,
-//                                       height: 55,
-//                                       memCacheHeight:
-//                                           (55 * devicePexelRatio).round(),
-//                                       memCacheWidth:
-//                                           (55 * devicePexelRatio).round(),
-//                                       maxHeightDiskCache:
-//                                           (55 * devicePexelRatio).round(),
-//                                       maxWidthDiskCache:
-//                                           (55 * devicePexelRatio).round(),
-//                                       progressIndicatorBuilder:
-//                                           (context, url, l) => LoadingImage(
-//                                               icon: Icon(LineIcons.user)),
-//                                       fit: BoxFit.cover,
-//                                     ),
-//                                   ),
-//                                 ]),
-//                                 title: Text(
-//                                   // "${widget._albumTracks?[position].name}",
-//                                   "${_recommendedUserInfo?[i].displayName}",
-//                                   overflow: TextOverflow.ellipsis,
-//                                   style: TextStyle(color: Colors.white),
-//                                 ),
-//                                 subtitle: Text(
-//                                   "${_recommendedUserInfo?[i].spotifyBasedGenre}",
-//                                   style: TextStyle(color: Colors.white70),
-//                                   overflow: TextOverflow.ellipsis,
-//                                 ),
-//                                 isThreeLine: true,
-//                                 trailing: Column(
-//                                     mainAxisAlignment: MainAxisAlignment.center,
-//                                     children: [
-//                                       IconButton(
-//                                         onPressed: () async {
-//                                           print("friend request sent");
-//                                           // send friend request here
-//                                           // requestStatusValue = await _friends.friendStatusStore(_recommendedUserInfo?[i].id);
-//                                           var temp =
-//                                               await _friends.friendStatusStore(
-//                                                   _recommendedUserInfo?[i].id);
-//                                           setState(() {
-//                                             requestStatusValue = temp;
-//                                           });
-
-//                                           // requestStatusValue = await getFriendStatus(_recommendedUserInfo?[i].id);
-//                                           // print(requestStatusValue);
-//                                         },
-//                                         // icon:(getFreindStatus(_recommendedUserInfo?[i].id))=="0"?Icon(Icons.send,color: const Color.fromARGB(179, 210, 172, 172),):Icon(Icons.done_outline),
-//                                         icon: requestStatusValue == "0"|| requestStatusValue==null
-//                                             ? Icon(Icons.send,
-//                                                 color: Colors.white)
-//                                             : Icon(
-//                                                 Icons.done_outline,
-//                                                 color: Colors.white,
-//                                               ),
-//                                       )
-//                                     ]),
-//                               ),
-//                             ),
-//                           ]),
-//                         );
-//                       }),
-//                 ),
-//                 _recommendedUserInfo != null
-//                     ? (_recommendedUserInfo.length > 2
-//                         ? Padding(
-//                             padding: const EdgeInsets.only(bottom: 18.0),
-//                             child: Row(
-//                               mainAxisAlignment: MainAxisAlignment.center,
-//                               children: [
-//                                 InkWell(
-//                                   child: Text(
-//                                     "show more",
-//                                     style: TextStyle(color: Colors.white),
-//                                   ),
-//                                 )
-//                               ],
-//                             ),
-//                           )
-//                         : SizedBox())
-//                     : SizedBox(),
-//               ]);
-//         });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-
-// Widget suggestionOptons(context, title, List<UserInfo>? _recommendedUserInfo,requestStatusValue) {
-//   Friends _friends = Friends();
-//   final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
-//   return StreamBuilder<Object>(
-//     stream: FirebaseFirestore.instance.collection("friendStatus").snapshots(),
-//     builder: (context, snapshot) {
-//       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//         Padding(
-//           padding: const EdgeInsets.only(left: 18, top: 18.0, bottom: 15),
-//           child: Text(
-//             "$title",
-//             style: TextStyle(fontSize: 22),
-//           ),
-//         ),
-//         Container(
-//           height: _recommendedUserInfo?.length==2?200:100,
-//           child: ListView.builder(
-//               scrollDirection: Axis.vertical,
-//               // physics: NeverScrollableScrollPhysics(),
-//               // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-//               itemCount: _recommendedUserInfo?.length==2?2:1,
-//               // itemCount:null,
-//               itemBuilder: (context, i) {
-//                 return Card(
-//                   color: Colors.black,
-//                   child: Column(children: [
-
-//                     InkWell(
-//                       borderRadius: BorderRadius.circular(15),
-//                       onTap: () async {},
-//                       child: ListTile(
-//                         leading: Column(children: [
-//                           ClipRRect(
-//                             borderRadius: BorderRadius.only(
-//                               topLeft: Radius.circular(3),
-//                               bottomLeft: Radius.circular(3),
-//                             ),
-//                             child: CachedNetworkImage(
-//                               // imageUrl: user.avatar!,
-
-//                               // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-//                               imageUrl: _recommendedUserInfo?[i].image?.length!=0?"${_recommendedUserInfo?[i].image?[0]['url']}":"",
-//                               // imageUrl: "",
-
-//                               width: 55,
-//                               height: 55,
-//                               memCacheHeight: (55 * devicePexelRatio).round(),
-//                               memCacheWidth: (55 * devicePexelRatio).round(),
-//                               maxHeightDiskCache: (55 * devicePexelRatio).round(),
-//                               maxWidthDiskCache: (55 * devicePexelRatio).round(),
-//                               progressIndicatorBuilder: (context, url, l) =>
-//                                   LoadingImage(icon: Icon(LineIcons.user)),
-//                               fit: BoxFit.cover,
-//                             ),
-//                           ),
-//                         ]),
-//                         title: Text(
-//                           // "${widget._albumTracks?[position].name}",
-//                           "${_recommendedUserInfo?[i].displayName}",
-//                           overflow: TextOverflow.ellipsis,
-//                           style: TextStyle(color: Colors.white),
-//                         ),
-//                         subtitle: Text("${_recommendedUserInfo?[i].spotifyBasedGenre}",style: TextStyle(color: Colors.white70),overflow: TextOverflow.ellipsis,),
-//                         isThreeLine: true,
-//                         trailing: Column(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               IconButton(
-//                                 onPressed: () async {
-//                                   print("friend request sent");
-//                                   // send friend request here
-//                                   StaticStore.requestStatusValue = await _friends.friendStatusStore(_recommendedUserInfo?[i].id);
-//                                   // requestStatusValue = await _friends.friendStatusStore(_recommendedUserInfo?[i].id);
-
-//                                   // requestStatusValue = await getFriendStatus(_recommendedUserInfo?[i].id);
-//                                   // print(requestStatusValue);
-//                                 },
-//                                 icon:(getFreindStatus(_recommendedUserInfo?[i].id))=="0"?Icon(Icons.send,color: const Color.fromARGB(179, 210, 172, 172),):Icon(Icons.done_outline),
-//                                 // icon:StaticStore.requestStatusValue=="0"?Icon(Icons.send,color: Color.fromARGB(179, 15, 12, 12),):Icon(Icons.done_outline),
-//                               )
-//                             ]),
-//                       ),
-//                     ),
-//                   ]),
-//                 );
-//               }),
-//         ),
-//         _recommendedUserInfo!=null?(_recommendedUserInfo.length>2?
-//         Padding(
-//           padding: const EdgeInsets.only(bottom: 18.0),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               InkWell(
-//                 child: Text(
-//                   "show more",
-//                   style: TextStyle(color: Colors.white),
-//                 ),
-//               )
-//             ],
-//           ),
-//         ):SizedBox()):SizedBox(),
-//       ]);
-//     }
-//   );
-// }
 
 /* For Connected people */
 Widget friendOptions(context, List<UserInfo>? friends) {
@@ -1181,7 +907,7 @@ Widget friendOptions(context, List<UserInfo>? friends) {
     ),
     onTap: () {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => NetworkUser(friends)));
+          .push(MaterialPageRoute(builder: (context) => NetworkUser(friends,"Friends")));
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NetworkUser(friends)));
     },
   );
