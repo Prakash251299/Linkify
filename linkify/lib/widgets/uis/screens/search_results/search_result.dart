@@ -2,17 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/queue_track.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
-import 'package:linkify/widgets/music_screen.dart';
+// import 'package:linkify/widgets/music_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 // import '../../controllers/main_controller.dart';
 import '../../models/loading_enum.dart';
 // import '../artist_profile/artist_profile.dart';
-import '../../utils/botttom_sheet_widget.dart';
+// import '../../utils/botttom_sheet_widget.dart';
 import '../../utils/loading.dart';
 // import '../../utils/recent_search.dart';
 
@@ -46,11 +47,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   @override
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
-    String searchSong="";
+    String searchSong = "";
 
-    return 
-    
-    Stack(
+    return Stack(
       alignment: Alignment.bottomCenter,
       children: [
         BlocProvider(
@@ -59,17 +58,17 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                 builder: (context, state) {
               // print("called again");
               // if (state.songs.length != 0) {
-                // print(state.songs[0].artists.toString());
-                // artists = state.songs[i].artists.toString().replaceAll('[', "");
-                // artists = artists.replaceAll(']', "");
-                // print(artists);
-                // state.replaceAll(RegExp('['), ''),
-                // if(state.songs[0].artists.length>=2){
-                //   artists = state.songs[0].artists[0]+state.songs[0].artists[1];
-                // }else{
-                //   artists = state.songs[0].artists[0];
-                // }
-                // print(artists);
+              // print(state.songs[0].artists.toString());
+              // artists = state.songs[i].artists.toString().replaceAll('[', "");
+              // artists = artists.replaceAll(']', "");
+              // print(artists);
+              // state.replaceAll(RegExp('['), ''),
+              // if(state.songs[0].artists.length>=2){
+              //   artists = state.songs[0].artists[0]+state.songs[0].artists[1];
+              // }else{
+              //   artists = state.songs[0].artists[0];
+              // }
+              // print(artists);
               // }
               return
                   // SizedBox();
@@ -87,7 +86,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                             //   BlocProvider.of<SearchResultsCubit>(context)
                             //       .isNullToggle();
                             // }
-        
+
                             BlocProvider.of<SearchResultsCubit>(context)
                                 .searchSongs(s);
                             // sea
@@ -128,65 +127,101 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                           if (state.songs.length > 0) {
                                             if (StaticStore.playing == false) {
                                               // if(StaticStore.pause==true){
-                                              // StaticStore.pause=false;
+                                              StaticStore.pause = false;
                                               if (StaticStore.currentSong ==
                                                   state.songs[i].name) {
                                                 await _youtubePlayer
-                                                    .youtubeResume();
+                                                    .youtubeResume().then((value) {
+                                                      StaticStore.playing = true;
+                                                    });
                                               } else {
-                                                await _youtubePlayer.youtubeStop();
+                                                await _youtubePlayer
+                                                    .youtubeStop();
                                                 // _youtubePlayer.youtubePlay(state.songs[i].name);
-                                                await _youtubePlayer.youtubePlay(
-                                                    state.songs[i].name,state.songs[i].artists[0]);
-                                                StaticStore.currentSong = state.songs[i].name;
-                                                StaticStore.currentSongImg = state.songs[i].imgUrl;
-                                                StaticStore.currentArtists = List.from(state.songs[i].artists);
+                                                await _youtubePlayer
+                                                    .youtubePlay(
+                                                        state.songs[i].name,
+                                                        state.songs[i]
+                                                            .artists[0]).then((value) {
+
+                                                    StaticStore.currentSong =
+                                                        state.songs[i].name;
+                                                    StaticStore.currentSongImg =
+                                                        state.songs[i].imgUrl;
+                                                    StaticStore.currentArtists =
+                                                        List.from(
+                                                            state.songs[i].artists);
+                                                    StaticStore.playing = true;
+                                                });
                                               }
-                                              setState(() {
-                                                StaticStore.playing = true;
-                                              });
+                                              // setState(() {
+                                              // });
                                               // StaticStore.pause=false;
                                             } else {
                                               if (StaticStore.currentSong ==
                                                   state.songs[i].name) {
-                                                await _youtubePlayer.youtubePause();
-                                                // StaticStore.pause = true;
+                                                await _youtubePlayer
+                                                    .youtubePause();
+                                                StaticStore.pause = true;
                                                 // print("same");
-                                                setState(() {
-                                                  StaticStore.playing = false;
-                                                });
+                                                // setState(() {
+                                                StaticStore.playing = false;
+                                                // });
                                               } else {
-                                                // StaticStore.pause = true;
+                                                StaticStore.pause = false;
                                                 // }else{
-                                                await _youtubePlayer.youtubeStop();
-                                                await _youtubePlayer.youtubePlay(
-                                                    state.songs[i].name,state.songs[i].artists[0]);
-                                                StaticStore.currentSong = state.songs[i].name;
-                                                StaticStore.currentSongImg = state.songs[i].imgUrl;
-                                                StaticStore.currentArtists = List.from(state.songs[i].artists);
-                                                setState(() {
-                                                  StaticStore.playing = true;
-                                                });
+                                                await _youtubePlayer
+                                                    .youtubeStop();
+                                                await _youtubePlayer
+                                                    .youtubePlay(
+                                                        state.songs[i].name,
+                                                        state.songs[i]
+                                                            .artists[0]).then((value) {
+
+                                                StaticStore.currentSong =
+                                                    state.songs[i].name;
+                                                StaticStore.currentSongImg =
+                                                    state.songs[i].imgUrl;
+                                                StaticStore.currentArtists =
+                                                    List.from(
+                                                        state.songs[i].artists);
+                                                // setState(() {
+                                                StaticStore.playing = true;
+                                                            });
+                                                // });
                                               }
                                               // setState(() {
                                               //   StaticStore.playing = false;
                                               // });
                                               // }
                                             }
-        
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>CarouselSongScreen(
-                                              state.songs[i].name,
-                                              state.songs[i].id,
-                                              state.songs[i].artists,
-                                              state.songs[i].imgUrl,
-                                              )
-                                              ));
+
+                                            await fetchQueueTrack(
+                                                state.songs[i].name,
+                                                state.songs[i].id,
+                                                state.songs[i].artists,
+                                                state.songs[i].imgUrl);
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CarouselSongScreen(
+                                                          state.songs[i].name,
+                                                          state.songs[i].id,
+                                                          state
+                                                              .songs[i].artists,
+                                                          state.songs[i].imgUrl,
+                                                        )));
                                           }
-        
+
+                                          // StaticStore.myQueueTrack = [];
+                                          /* this setState is necessary for song screen information to get updated */
+                                          // setState(() {});
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 12.0, bottom: 12.0, top: 12.0),
+                                              left: 12.0,
+                                              bottom: 12.0,
+                                              top: 12.0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -196,10 +231,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                   children: [
                                                     ClipRRect(
                                                       borderRadius:
-                                                          BorderRadius.circular(3),
+                                                          BorderRadius.circular(
+                                                              3),
                                                       child: CachedNetworkImage(
-                                                        imageUrl:
-                                                            state.songs[i].imgUrl,
+                                                        imageUrl: state
+                                                            .songs[i].imgUrl,
                                                         width: 50,
                                                         height: 50,
                                                         memCacheHeight: (50 *
@@ -221,25 +257,28 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                     Flexible(
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              state.songs[i].name,
-                                                              maxLines: 1,
+                                                              state.songs[i]
+                                                                  .name,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme
-                                                                  .bodyText1!
+                                                                  .bodyMedium!
                                                                   .copyWith(
                                                                       color:
                                                                           // isPlaying ?
-                                                                          Colors.lightGreenAccent[
-                                                                              700]
+                                                                          Colors
+                                                                              .lightGreenAccent[700]
                                                                       // : Colors.white,
                                                                       // overflow:
                                                                       //     TextOverflow
@@ -250,14 +289,17 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                                 height: 5),
                                                             Text(
                                                               artists,
-                                                              style:
-                                                                  Theme.of(context)
-                                                                      .textTheme
-                                                                      .bodyText1!
-                                                                      .copyWith(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      ),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                           ],
                                                         ),
@@ -268,7 +310,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                               ),
                                               IconButton(
                                                 splashRadius: 20,
-                                                padding: const EdgeInsets.all(0),
+                                                padding:
+                                                    const EdgeInsets.all(0),
                                                 onPressed: () {
                                                   showModalBottomSheet(
                                                       useRootNavigator: true,
@@ -278,13 +321,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                           Colors.black38,
                                                       context: context,
                                                       builder: (context) {
-                                                        return
-                                                        SizedBox();
-                                                            /* For shoowing search result song name with options */
-                                                            // BottomSheetWidget(
-                                                                //     // con: con,
-                                                                //     // song: state.songs[i]
-                                                                // );
+                                                        return SizedBox();
+                                                        /* For shoowing search result song name with options */
+                                                        // BottomSheetWidget(
+                                                        //     // con: con,
+                                                        //     // song: state.songs[i]
+                                                        // );
                                                       });
                                                 },
                                                 icon: const Icon(
@@ -306,25 +348,24 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                               ),
                             );
                           }
-        
+
                           return Container();
                         },
                       ));
             })),
-            
-             Padding(
-               padding: const EdgeInsets.only(bottom:50.0),
-               child: StreamBuilder(
-                  stream: StaticStore.player.playerStateStream,
-                  builder: (context, snapshot1) {
-                    return StaticStore.playing == true || StaticStore.pause==true?
-                    MyStickyWidgets.miniplayer(context)
-                    : const SizedBox();
-                  }
-                ),
-             ),
-              MyStickyWidgets.footer(context),
 
+        //  Padding(
+        //    padding: const EdgeInsets.only(bottom:50.0),
+        //    child:
+        StreamBuilder(
+            stream: StaticStore.player.playerStateStream,
+            builder: (context, snapshot1) {
+              return StaticStore.playing == true || StaticStore.pause == true
+                  ? miniplayer(context)
+                  : const SizedBox();
+            }),
+        //  ),
+        footer(context),
       ],
     );
   }
@@ -335,13 +376,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   // final bool isSong;
   String searchSong;
   final void Function() onPressed;
-  CustomAppBar({
-    Key? key,
-    required this.onChanged,
-    // required this.isSong,
-    required this.onPressed,
-    required this.searchSong
-  }) : super(key: key);
+  CustomAppBar(
+      {Key? key,
+      required this.onChanged,
+      // required this.isSong,
+      required this.onPressed,
+      required this.searchSong})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -382,26 +423,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Container(
                 color: Colors.grey.shade800,
                 child: IconButton(
-                  splashRadius: 20,
-                  icon:
-                      // isSong ?
-                      const Icon(
-                    LineIcons.youtube,
-                    color: Colors.white,
-                  ),
-                  // : const Icon(
-                  //     LineIcons.user,
-                  //     color: Colors.white,
-                  //   ),
-                  onPressed: (){
-                    YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
-                    _youtubePlayer.youtubePlay(searchSong, "");
-                    StaticStore.currentSong = searchSong;
-                    StaticStore.currentArtists = [];
-                    StaticStore.currentSongImg = "";
-                    StaticStore.playing = true;
-                  }
-                ),
+                    splashRadius: 20,
+                    icon:
+                        // isSong ?
+                        const Icon(
+                      LineIcons.youtube,
+                      color: Colors.white,
+                    ),
+                    // : const Icon(
+                    //     LineIcons.user,
+                    //     color: Colors.white,
+                    //   ),
+                    onPressed: () {
+                      YoutubeSongPlayer _youtubePlayer = YoutubeSongPlayer();
+                      if(searchSong==""){
+                        return;
+                      }
+                      _youtubePlayer.youtubePlay(searchSong, "").then((value){
+                        StaticStore.currentSong = searchSong;
+                        StaticStore.currentArtists = [];
+                        StaticStore.currentSongImg = "";
+                        StaticStore.playing = true;
+                        StaticStore.myQueueTrack=[];
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CarouselSongScreen(searchSong, "", "unknown", "")));
+                      });
+                    }),
               ),
             ],
           ),

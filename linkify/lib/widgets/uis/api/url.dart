@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:linkify/controller/accesstoken_error.dart';
 import 'package:linkify/controller/read_write.dart';
-import 'package:linkify/model/carousel.dart';
+// import 'package:linkify/model/carousel.dart';
 import 'package:linkify/model/liked_songs.dart';
 import 'package:linkify/widgets/uis/screens/liked_songs/liked_songs.dart';
 
@@ -15,7 +15,7 @@ const String basePath = '/api/v1';
 class CallApi{
   ReadWrite _readWrite = ReadWrite();
   AccessError _accessError = AccessError();
-  static var accessToken;
+  var accessToken;
   // CallApi c = CallApi();
 
 

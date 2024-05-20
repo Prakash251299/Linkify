@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:linkify/controller/categories.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/widgets/uis/models/album_model.dart';
 import '../../../models/loading_enum.dart';

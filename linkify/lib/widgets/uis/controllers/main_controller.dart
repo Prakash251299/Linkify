@@ -164,7 +164,7 @@ class MainController extends ChangeNotifier {
               title: audio.name,
               // artist: audio.name,
               // album: audio.userid,
-              image: MetasImage.network(audio.imgUrl!),
+              image: MetasImage.network(audio.imgUrl),
             ));
       }).toList()
     ];

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/user_genre.dart';
-import 'package:linkify/model/carousel.dart';
+// import 'package:linkify/model/carousel.dart';
 import 'package:linkify/model/liked_songs.dart';
 import 'package:linkify/widgets/uis/api/url.dart';
 import 'package:linkify/widgets/uis/repositories/get_search_results.dart';

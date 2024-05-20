@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:linkify/chatting/controller/important_functions.dart';
-import 'package:linkify/chatting/widget/picked_image_video_screen.dart';
+import 'package:linkify/widgets/Network/chatting/controller/important_functions.dart';
+import 'package:linkify/widgets/Network/chatting/widget/picked_image_video_screen.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/static_store.dart';
 

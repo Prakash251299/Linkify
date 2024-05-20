@@ -1,6 +1,6 @@
 class LikedTracks{
-  static List<String>?name;
-  static List<String>?id;
+  List<String>?name;
+  List<String>?id;
   void storeLikedTracks(var json){
     // print(json);
     for(int i=0;i<json.length;i++){
