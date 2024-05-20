@@ -17,6 +17,7 @@ import 'package:linkify/controller/logout.dart';
 import 'package:linkify/controller/notification/notification_functions.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
+import 'package:linkify/widgets/Network/request_notification_screen.dart';
 import 'package:linkify/widgets/Network/user_network.dart';
 import 'package:linkify/widgets/restart_app.dart';
 // import 'package:linkify/widgets/carousel_song_screen.dart';
@@ -105,10 +106,15 @@ class HomeScreen extends StatelessWidget {
                                     List<dynamic>? friendRequests = await fetchFriendRequests();
                                     List<UserInfo>? _userInfo = friendRequests?.length!=0?
                                     await FetchRequestNotifications(friendRequests):null;
+
+
+
+
+                                    
                                     // NetworkFunction _fetchUserInfo = NetworkFunction();
 
                                     // _fetchUserInfo.fetchUserInfo();
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>NetworkUser(_userInfo,"Requests")));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen(_userInfo)));
                                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationScreen(_userInfo)));
                                     // 
                                   }, 
