@@ -19,6 +19,7 @@ Future<void>acceptFriendRequest(userId)async{
   print("friend request accepted");
   // FirebaseCall _firebaseCaller = FirebaseCall();
   await updateRequestStatus("1",userId);
+  await addFriend(userId);
   await deleteFriendRequest(userId);
 }
 

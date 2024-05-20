@@ -10,16 +10,16 @@ import 'package:linkify/model/user_info.dart';
 import 'package:linkify/widgets/loading_user_img.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 
-class NetworkUser extends StatefulWidget {
-  List<dynamic>?friends;
-  String title;
-  NetworkUser(this.friends,this.title,{super.key});
+class RequestNotificationScreen extends StatefulWidget {
+  List<UserInfo>?friendRequests;
+  // String title;
+  RequestNotificationScreen(this.friendRequests,{super.key});
 
   @override
-  State<NetworkUser> createState() => _NetworkUserState();
+  State<RequestNotificationScreen> createState() => _NetworkUserState();
 }
 
-class _NetworkUserState extends State<NetworkUser> {
+class _NetworkUserState extends State<RequestNotificationScreen> {
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _NetworkUserState extends State<NetworkUser> {
           leading: IconButton(icon:Icon(Icons.arrow_back),color: Colors.white,onPressed: (){
             Navigator.pop(context);
           },),
-          title: Text("${widget.title}",style:TextStyle(color:Colors.white)),
+          title: Text("Friends requests",style:TextStyle(color:Colors.white)),
           backgroundColor: Colors.black,
 
         ),
@@ -48,14 +48,28 @@ class _NetworkUserState extends State<NetworkUser> {
           alignment: Alignment.bottomCenter,
           children: [
             StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('spotifyBasedGenreUsers').snapshots(),
+              stream: FirebaseFirestore.instance.collection('friendRequest').doc('${StaticStore.currentUserId}').snapshots(),
               builder: (context, snapshot) {
+                // print("fetching request data from snapshot");
+                // // print(snapshot.data?.doc('sad').get());
+                // List<dynamic>? friendRequests = snapshot.data?.data()?['users'];
+                // List<UserInfo>? _userInfo;
+                // // _userInfo = 
+                // // (friendRequests?.length!=0?
+                // FetchRequestNotifications(friendRequests).then((value) {
+                //   _userInfo = value;
+                //   print("userInfo fetching from request_notification_screen");
+                //   // print("userInfo fetching from request_notification_screen");
+                // });
+                // print("$_userInfo");
+                // return 
+                // SizedBox();
                 return 
-                widget.friends?.length!=0?
+                widget.friendRequests!= null && widget.friendRequests?.length!=0?
                 ListView.builder(
                               scrollDirection: Axis.vertical,
                               physics: AlwaysScrollableScrollPhysics(),
-                              itemCount: widget.friends?.length,
+                              itemCount: widget.friendRequests?.length,
                 
                               itemBuilder: (context, index) {
                                 return Column(children: [
@@ -66,11 +80,11 @@ class _NetworkUserState extends State<NetworkUser> {
                                       InkWell(
                                         borderRadius: BorderRadius.circular(15),
                                         onTap: () async {
-                                          List<String?> s = [StaticStore.currentUserId,widget.friends?[index].id];
+                                          List<String?> s = [StaticStore.currentUserId,widget.friendRequests?[index].id];
                                           s.sort();
                                           String messageId = "${s[0]}_${s[1]}";
                                           
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatScreen(widget.friends![index],messageId)));
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatScreen(widget.friendRequests![index],messageId)));
                                         },
                                         child: ListTile(
                                           leading: Column(
@@ -83,7 +97,7 @@ class _NetworkUserState extends State<NetworkUser> {
                                                   child:
                                                   // StaticStore.currentSongImg==""?
                                                       // CachedNetworkImage(imageUrl: ""),
-                                                      widget.friends?[index].image?.length==0?
+                                                      widget.friendRequests?[index].image?.length==0?
                 
                                                       Container(
                                                         width: 55,
@@ -98,7 +112,7 @@ class _NetworkUserState extends State<NetworkUser> {
                                                       CachedNetworkImage(
                                                     // imageUrl: user.avatar!,
                 
-                                                    imageUrl: widget.friends?[index].image?.length==2?"${widget.friends?[index].image?[1]['url']}":"${widget.friends?[index].image?[0]['url']}",
+                                                    imageUrl: widget.friendRequests?[index].image?.length==2?"${widget.friendRequests?[index].image?[1]['url']}":"${widget.friendRequests?[index].image?[0]['url']}",
                 
                                                     width: 55,
                                                     height: 55,
@@ -120,13 +134,13 @@ class _NetworkUserState extends State<NetworkUser> {
                                               ]),
                                           title: Text(
                                             
-                                            "${widget.friends?[index].displayName}",
-                                            // "${widget.friends[index]?.id}",
+                                            "${widget.friendRequests?[index].displayName}",
+                                            // "${widget.friendRequests[index]?.id}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(color: Colors.white),
                                           ),
                                           subtitle: Text(
-                                            "${widget.friends?[index].spotifyBasedGenre}",
+                                            "${widget.friendRequests?[index].spotifyBasedGenre}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(color: Colors.grey),
                                           ),
@@ -136,31 +150,31 @@ class _NetworkUserState extends State<NetworkUser> {
                                             MainAxisAlignment.center,
                                         children: [
                                           // widget.title=="Requests"?
-                                          // Row(
-                                          //   mainAxisSize: MainAxisSize.min,
-                                          //   children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
 
 
 
-                                          //   Container(
-                                          //     // width: 30,
-                                          //     child: IconButton(
-                                          //       onPressed: () async {
-                                          //         await rejectFriendRequest(widget.friends?[index].id);
-                                          //         widget.friends?.remove(widget.friends?[index]);
-                                          //       }, 
-                                          //       icon: const Icon(Icons.delete,color: Colors.grey,)
-                                          //     ),
-                                          //   ),
-                                          //   IconButton(
-                                          //     onPressed: () async {
-                                          //       await acceptFriendRequest(widget.friends?[index].id);
-                                          //       widget.friends?.remove(widget.friends?[index]);
+                                            Container(
+                                              // width: 30,
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  await rejectFriendRequest(widget.friendRequests?[index].id);
+                                                  widget.friendRequests?.remove(widget.friendRequests?[index]);
+                                                }, 
+                                                icon: const Icon(Icons.delete,color: Colors.grey,)
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () async {
+                                                await acceptFriendRequest(widget.friendRequests?[index].id);
+                                                widget.friendRequests?.remove(widget.friendRequests?[index]);
 
-                                          //     }, 
-                                          //     icon: const Icon(Icons.add,color: Colors.grey,)
-                                          //   ),
-                                          // ],)
+                                              }, 
+                                              icon: const Icon(Icons.add,color: Colors.grey,)
+                                            ),
+                                          ],),
                                           // :SizedBox(),
 
                                         ]),
@@ -171,7 +185,7 @@ class _NetworkUserState extends State<NetworkUser> {
                                 ]);
                               },
                             ):
-                            Center(child:Text("No friends available"));
+                            Center(child: Text("No Requests"),);
               }
             ),
             footer(context),

@@ -242,9 +242,9 @@ Future<String>getFriendStatus(requestReceiver)async{
 
 Future<void>storeFriendRequest(requestReceiverId)async{
   // var requestId = requestIdGenerator(requestReceiver);
-  if(requestReceiverId==StaticStore.currentUserId){
-    return;
-  }
+  // if(requestReceiverId==StaticStore.currentUserId){
+  //   return;
+  // }
   var db = FirebaseFirestore.instance;
   print("Storing friend request: $requestReceiverId");
   try{
@@ -315,4 +315,31 @@ Future<void> deleteFriendRequest(String userId)async{
         }else{
           print("user doesn't exist");
         }
+}
+
+
+Future<void> addFriend(userId)async{
+  var db = FirebaseFirestore.instance;
+  await db
+  .collection("friends")
+  .doc(StaticStore.currentUserId)
+  .set({"users":FieldValue.arrayUnion([userId])},SetOptions(merge: true));
+  await db
+  .collection("friends")
+  .doc(userId)
+  .set({"users":FieldValue.arrayUnion([StaticStore.currentUserId])},SetOptions(merge: true));
+}
+
+Future<List<dynamic>> fetchFriends()async{
+  List<dynamic> friends=[];
+  var db = FirebaseFirestore.instance;
+  var a = await db
+  .collection("friends")
+  .doc(StaticStore.currentUserId)
+  .get();
+  if(a.exists){
+    friends = a['users'];
+    return friends;
+  }
+  return [];
 }
