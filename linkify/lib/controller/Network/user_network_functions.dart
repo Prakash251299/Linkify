@@ -67,7 +67,7 @@ class NetworkFunction {
         .collection('users')
         .get()
         .then((value) async {
-      // try{
+      try{
         for(int i=0;i<value.docs.length;i++){
           allUsersId.add(value.docs[i].id);
         }
@@ -78,10 +78,10 @@ class NetworkFunction {
           allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
         }
         return allUsersInfo;
-      // }catch(e){
-        // print("Error happened while callling for the alluserInfo");
-        // return allUsersInfo;
-      // }
+      }catch(e){
+        print("Error happened while callling for the alluserInfo");
+        return allUsersInfo;
+      }
     });
 
     return allUsersInfo;

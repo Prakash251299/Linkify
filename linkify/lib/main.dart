@@ -136,76 +136,125 @@ class MyAppState extends State<MyApp> {
       ),
       
       
-      home:
-      Builder(
-        builder: (context) => Center(
-          child: 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          ElevatedButton(
-            child: Text("Device Song"),
-            onPressed: () async => {
-
-
-
-
-
-              if(SongDataController.loaded==true){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
-              }else{
-                  if(await c.getLocalSongs()==1)
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
-              }
+      home: App()
+      // Builder(
+      //   builder: (context) {
+      //     // return 
+      //     if(loginController.getLoginStatus()==1){
+      //            Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+      //           //  return App();
 
 
 
 
 
 
-            },
-          ),
+      //           //  print("Already logged in");
+      //         }else{
+      //           try{
+      //             loginController.login(context);
+      //             if(loginController.loginStatus==1){
+      //               print("logged in");
 
-
-
-          ElevatedButton(
-            child: Text("Cloud Songs"),
-            onPressed: () async {
-              if(await loginController.getLoginStatus()==1){
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
-
-
-
-
-
-
-                 print("Already logged in");
-              }else{
-                try{
-                  await loginController.login(context);
-                  if(loginController.loginStatus==1){
-                    print("logged in");
-
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
-                  }
-                }catch(e){
-                    print("something at start went wrong while login");
-                }
-              }
+      //               Navigator.pop(context);
+      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+      //             }
+      //           }catch(e){
+      //               print("something at start went wrong while login");
+      //           }
+      //         }
+          
+      //     return App();
+      //   }
+      // )
 
 
 
 
 
-            },
-          ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Builder(
+      //   builder: (context) => Center(
+      //     child: 
+      //     Row(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //     ElevatedButton(
+      //       child: Text("Device Song"),
+      //       onPressed: () async => {
+
+
+      //         if(SongDataController.loaded==true){
+      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
+      //         }else{
+      //             if(await c.getLocalSongs()==1)
+      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
+      //         }
+
+
+
+
+
+
+      //       },
+      //     ),
+
+
+
+      //     ElevatedButton(
+      //       child: Text("Cloud Songs"),
+      //       onPressed: () async {
+              // if(await loginController.getLoginStatus()==1){
+              //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+
+
+
+
+
+
+              //    print("Already logged in");
+              // }else{
+              //   try{
+              //     await loginController.login(context);
+              //     if(loginController.loginStatus==1){
+              //       print("logged in");
+
+              //       Navigator.pop(context);
+              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+              //     }
+              //   }catch(e){
+              //       print("something at start went wrong while login");
+              //   }
+              // }
+
+
+
+
+
+      //       },
+      //     ),
           
 
 
 
           
-          ]),
+      //     ]),
 
 
 
@@ -213,8 +262,19 @@ class MyAppState extends State<MyApp> {
 
 
 
-        ),
-      ),
+      //   ),
+      // ),
+
+
+
+
+
+
+
+
+
+
+
     );
     
     

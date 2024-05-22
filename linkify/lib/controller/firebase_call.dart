@@ -67,13 +67,9 @@ class FirebaseCall{
     }
     genreId = genreId.replaceAll(' ','');
 
-    // After finding current genreId checking it with the previous one
+    // After finding current genreId, checking it with the previous one
     if(StaticStore.currentUserGenreId == genreId){
       return;
-    }else{
-      /* Delete user id from spotifyUserBasedGenre collection for updating info */
-      /* fetch all users in that list then remove the current user's id */
-      
     }
     StaticStore.currentUserGenreId = genreId;
     List<dynamic> tempUserList=[];
@@ -81,35 +77,22 @@ class FirebaseCall{
     await db
     .collection("spotifyBasedGenreUsers")
     .get().then((value) async {
-      // print(value.docs[0]['genreList']['_dance']),
-      // print(value.docs[0]['_dance']),
 
-      print("Hi");
+      // print("CheckState: spotifyBasedGenreUsers get");
       if(value.docs[0]['genreList'][genreId]!=null){
-        print("Yes");
         await db
         .collection("spotifyBasedGenreUsers")
         .doc("genre")
         .set({'genreList':{genreId:FieldValue.arrayUnion([StaticStore.currentUserId])}},SetOptions(merge: true))
         .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
 
-
-        // await db
-        // .collection("spotifyBasedGenreUsers")
-        // .doc("genre")
-        // // .set({"genreList":{genreId:tempUserList}})
-        // .set({'genreList':{genreId:tempUserList}},SetOptions(merge: true))
-        // .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
-
       }else{
-        print("No");
         tempUserList.add(StaticStore.currentUserId);
         await db
         .collection("spotifyBasedGenreUsers")
         .doc("genre")
         .set({'genreList':{genreId:tempUserList}},SetOptions(merge: true))
         .onError((e, _) => print("Error writing spotifyUserGenre info in firebase: $e"));
-      //   print("No"),
       }
     },
     );
@@ -125,6 +108,10 @@ class FirebaseCall{
   }
 
 }
+
+
+
+
 
 String requestIdGenerator(var otherUser){
   List<String?> s = [StaticStore.currentUserId,otherUser];
@@ -240,6 +227,10 @@ Future<String>getFriendStatus(requestReceiver)async{
 }
 
 
+
+
+
+
 Future<void>storeFriendRequest(requestReceiverId)async{
   // var requestId = requestIdGenerator(requestReceiver);
   // if(requestReceiverId==StaticStore.currentUserId){
@@ -260,8 +251,17 @@ Future<void>storeFriendRequest(requestReceiverId)async{
 }
 
 
+
+
+
+
+
+
+
+
+
+
 Future<List<dynamic>?> fetchFriendRequests()async{
-  // var requestId = requestIdGenerator(requestReceiver);
   StoreUserInfo _storeUserInfo = StoreUserInfo();
   StaticStore.currentUserId==""?
   await _storeUserInfo.fetchCurrentUserInfo():null;
@@ -284,7 +284,6 @@ Future<List<dynamic>?> fetchFriendRequests()async{
   }
 }
 
-
 Future<void> updateRequestStatus(requestStatus,userId)async{
   var requestId = requestIdGenerator(userId);
   var db = FirebaseFirestore.instance;
@@ -292,8 +291,13 @@ Future<void> updateRequestStatus(requestStatus,userId)async{
         .collection("friendStatus")
         .doc(requestId)
         .set({'requestStatus':'$requestStatus'});
-        // print(a['requestStatus']);
 }
+
+
+
+
+
+
 
 Future<void> deleteFriendRequest(String userId)async{
   print("delete from firebase called");
@@ -318,6 +322,16 @@ Future<void> deleteFriendRequest(String userId)async{
 }
 
 
+
+
+
+
+
+
+
+
+
+
 Future<void> addFriend(userId)async{
   var db = FirebaseFirestore.instance;
   await db
@@ -329,6 +343,22 @@ Future<void> addFriend(userId)async{
   .doc(userId)
   .set({"users":FieldValue.arrayUnion([StaticStore.currentUserId])},SetOptions(merge: true));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Future<List<dynamic>> fetchFriends()async{
   List<dynamic> friends=[];

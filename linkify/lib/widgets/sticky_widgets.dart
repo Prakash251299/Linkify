@@ -45,6 +45,7 @@ Widget footer(var context) {
         height: 50,
         padding: EdgeInsets.only(left: 20, right: 20),
         color: Colors.black.withOpacity(0.7),
+        // color: Colors.red,
         // decoration: BoxDecoration(
         //   color: Colors.black.withOpacity(0.5),
         //   gradient: LinearGradient(

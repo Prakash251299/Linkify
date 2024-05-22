@@ -6,16 +6,6 @@ import 'package:spotify/spotify.dart';
 
 class StaticStore{
   static var carouselLength = 6;
-  // static List<Map<String,dynamic>>m1=[];
-  // static List<Map<String,dynamic>>trackInfo=[
-  //   {},
-  //   {},
-  //   {},
-  //   {},
-  //   {},
-  //   {}
-  // ];
-  // static List<AlbumTrack>trackInfo=[];
   static List<List<AlbumTrack>>trackInfo=[
     [],
     [],
@@ -25,12 +15,6 @@ class StaticStore{
     []
   ];
   static List<String>? userGenre;
-  // static List<Map<String,int>> userGenre=[];
-  // static void setCarousel(){
-  //   for(int i=0;i<carouselLength;i++){
-  //     m1.add({});
-  //   }
-  // }
   static String dateStored = "1-1-2024";
   static String dateStored2 = "1-1-2024";
   static var carouselInd = -10;
@@ -49,7 +33,6 @@ class StaticStore{
   static String? currentUserEmail="";
   static String? currentUserCountry="";
   static List<dynamic>? currentUserImage=[];
-  // static String? currentUserImage="";
   static int videoPlayingIndex = -1;
   static List<FrontPageCategories>categoryInfo=[];
   static List<AlbumTrack> myQueueTrack=[];
@@ -57,7 +40,5 @@ class StaticStore{
   static int queueLoaded = 0;
   static int nextPlay=1;
   static int screen = 0;
-  // UserInfo _userInfo=[];
   static List<List<String>?>? requestStatusValue=[];
-
 }
