@@ -40,5 +40,5 @@ class StaticStore{
   static int queueLoaded = 0;
   static int nextPlay=1;
   static int screen = 0;
-  static List<List<String>?>? requestStatusValue=[];
+  static List<List<String>?>? requestStatusValue=[[],[],[]];
 }

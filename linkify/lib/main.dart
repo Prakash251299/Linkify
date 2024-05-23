@@ -45,6 +45,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    // if(loginController.getLoginStatus()==0){
+    //   loginController.login(context);
+    // }
     super.initState();
     // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     //   statusBarColor: Colors.black,
@@ -136,7 +139,8 @@ class MyAppState extends State<MyApp> {
       ),
       
       
-      home: App()
+      home: 
+      // App()
       // Builder(
       //   builder: (context) {
       //     // return 
@@ -189,72 +193,72 @@ class MyAppState extends State<MyApp> {
 
 
 
-      // Builder(
-      //   builder: (context) => Center(
-      //     child: 
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //     ElevatedButton(
-      //       child: Text("Device Song"),
-      //       onPressed: () async => {
+      Builder(
+        builder: (context) => Center(
+          child: 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+          ElevatedButton(
+            child: Text("Device Song"),
+            onPressed: () async => {
 
 
-      //         if(SongDataController.loaded==true){
-      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
-      //         }else{
-      //             if(await c.getLocalSongs()==1)
-      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
-      //         }
-
-
-
-
-
-
-      //       },
-      //     ),
-
-
-
-      //     ElevatedButton(
-      //       child: Text("Cloud Songs"),
-      //       onPressed: () async {
-              // if(await loginController.getLoginStatus()==1){
-              //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+              if(SongDataController.loaded==true){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
+              }else{
+                  if(await c.getLocalSongs()==1)
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeNav())),
+              }
 
 
 
 
 
 
-              //    print("Already logged in");
-              // }else{
-              //   try{
-              //     await loginController.login(context);
-              //     if(loginController.loginStatus==1){
-              //       print("logged in");
+            },
+          ),
 
-              //       Navigator.pop(context);
-              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
-              //     }
-              //   }catch(e){
-              //       print("something at start went wrong while login");
-              //   }
-              // }
+
+
+          ElevatedButton(
+            child: Text("Cloud Songs"),
+            onPressed: () async {
+              if(await loginController.getLoginStatus()==1){
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
 
 
 
 
 
-      //       },
-      //     ),
+
+                 print("Already logged in");
+              }else{
+                try{
+                  await loginController.login(context);
+                  if(loginController.loginStatus==1){
+                    print("logged in");
+
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+                  }
+                }catch(e){
+                    print("something at start went wrong while login");
+                }
+              }
+
+
+
+
+
+            },
+          ),
           
 
 
 
           
-      //     ]),
+          ]),
 
 
 
@@ -262,8 +266,8 @@ class MyAppState extends State<MyApp> {
 
 
 
-      //   ),
-      // ),
+        ),
+      ),
 
 
 

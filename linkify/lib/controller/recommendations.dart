@@ -9,6 +9,7 @@ import 'package:linkify/controller/first_page_categories.dart';
 import 'package:linkify/controller/read_write.dart';
 // import 'package:http/http.dart' as http;
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 // import 'package:spotify/src/models/_models.dart';
 // import 'package:linkify/controller/webview.dart';
 // import 'package:linkify/main.dart';
@@ -148,7 +149,7 @@ Future<List<FrontPageCategories>> fetchCategory() async {
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       // for(int i=0;i<data['categories']['items'].length;i++){
-      for (int i = 0; i < data['categories']['items'].length && i < 10; i++) {
+      for (int i = 0; i < data['categories']['items'].length && i < numberOfFrontPageCategories; i++) {
         // print(data['categories']['items'][i]['name']);
         List<Items>? item =
             await fetchCategoryPlaylists(data['categories']['items'][i]['id']);

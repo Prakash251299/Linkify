@@ -10,6 +10,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/firebase_call.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/get_greeting.dart';
@@ -40,6 +41,8 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
+int numberOfFrontPageCategories=5;
 
 class _HomeScreenState extends State<HomeScreen> {
 //   @override
@@ -212,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               CarouselSongs(state.carouselSongs),
                               // Spacer(),
 
-                              for (int k = 0; k < 10; k++) ...{
+                              for (int k = 0; k < numberOfFrontPageCategories; k++) ...{
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 7.0,
