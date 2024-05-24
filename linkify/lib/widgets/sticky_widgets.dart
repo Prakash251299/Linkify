@@ -113,20 +113,21 @@ Widget footer(var context) {
             ),
             onPressed: () async {
               StaticStore.screen = 2;
-              
-              StaticStore.requestStatusValue?.clear();
-              StaticStore.requestStatusValue = [[],[],[]];
-              List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
-              List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
-              List<UserInfo>? allUsers = await fetchAllFriends(3);
+              // await userButtonCaller(context);
+              // StaticStore.requestStatusValue?.clear();
+              // StaticStore.requestStatusValue = [[],[],[]];
+              // List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
+              // List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
+              // List<UserInfo>? allUsers = await fetchAllFriends(3);
 
-              await getRequestStatus(bestMatch,0);
-              await getRequestStatus(goodMatch,1);
-              await getRequestStatus(allUsers,2);
+              // await getRequestStatus(bestMatch,0);
+              // await getRequestStatus(goodMatch,1);
+              // await getRequestStatus(allUsers,2);
 
-              print(StaticStore.requestStatusValue);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
+              // print(StaticStore.requestStatusValue);
 
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion()));
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
             },
           ),
         ])),

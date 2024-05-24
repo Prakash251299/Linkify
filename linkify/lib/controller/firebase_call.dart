@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
@@ -38,7 +39,7 @@ class FirebaseCall{
   Future<void> writeUserData(UserInfo _userInfo,var topGenre)async{
     var db = FirebaseFirestore.instance;
     List<dynamic> topThreeGenres = getTopThreeGenres(topGenre);
-    db
+    await db
     .collection("users")
     .doc(StaticStore.currentUserId)
     .set({
@@ -360,15 +361,28 @@ Future<void> addFriend(userId)async{
 
 
 
-Future<List<dynamic>> fetchFriends()async{
-  List<dynamic> friends=[];
+Future<List<UserInfo>> fetchFriends()async{
+  List<UserInfo>? friends=[];
+  List<dynamic> friendIds=[];
+  NetworkFunction _networkFunction = NetworkFunction();
   var db = FirebaseFirestore.instance;
+  
   var a = await db
   .collection("friends")
   .doc(StaticStore.currentUserId)
   .get();
   if(a.exists){
-    friends = a['users'];
+    friendIds = a['users'];
+    // List<UserInfo> friends = [];
+      UserInfo temp;
+      for (int i = 0; i < friendIds.length; i++) {
+        temp = await _networkFunction.fetchUserInfo(friendIds[i]);
+        friends.add(temp);
+      }
+
+
+    print("friends");
+    print(friends);
     return friends;
   }
   return [];

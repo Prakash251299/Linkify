@@ -71,9 +71,9 @@ class NetworkFunction {
         for(int i=0;i<value.docs.length;i++){
           allUsersId.add(value.docs[i].id);
         }
-        // if(allUsersId.length>2){
-        //   allUsersId.remove(StaticStore.currentUserId);
-        // }
+        if(allUsersId.length>2){
+          allUsersId.remove(StaticStore.currentUserId);
+        }
         if(numberOfUsers<0){
           for (int i = 0;i < allUsersId.length;i++) {
             allUsersInfo.add(await fetchUserInfo(allUsersId[i]));

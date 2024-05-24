@@ -17,6 +17,7 @@ import 'package:linkify/widgets/Network/show_more_suggestion.dart';
 import 'package:linkify/widgets/Network/user_network.dart';
 import 'package:linkify/widgets/album_view.dart';
 import 'package:linkify/widgets/carousel_view.dart';
+import 'package:linkify/widgets/loading_user_img.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
 class Suggestion extends StatefulWidget {
@@ -25,8 +26,8 @@ class Suggestion extends StatefulWidget {
   List<UserInfo>? bestMatch;
   List<UserInfo>? goodMatch;
   List<UserInfo>? allUsers;
-  // List<List<String>> requestStatusValue;
-  Suggestion(this.bestMatch, this.goodMatch, this.allUsers);
+  // Suggestion(this.bestMatch, this.goodMatch, this.allUsers);
+  Suggestion();
   @override
   State<Suggestion> createState() => _SuggestionState();
 }
@@ -44,7 +45,7 @@ class _SuggestionState extends State<Suggestion> {
   @override
   void initState() {
     // TODO: implement initState
-    // widget.allUsers = fetchAllFriends(context) as List<UserInfo>?;
+    // snapshot.data?[2] = fetchAllFriends(context) as List<UserInfo>?;
     super.initState();
   }
 
@@ -53,438 +54,553 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   Widget build(BuildContext context) {
-    // StaticStore.requestStatusValue=[List.filled(widget.bestMatch!.length, "0"),null,List.filled(widget.allUsers!.length, "0")];
+    // StaticStore.requestStatusValue=[List.filled(snapshot.data?[0]!.length, "0"),null,List.filled(snapshot.data?[2]!.length, "0")];
     print("Called Suggestion");
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              )),
-              // title: Text("Networks",style: TextStyle(color: Colors.white),),
-          backgroundColor: Colors.black,
-        ),
-        body: widget.bestMatch?.length == 0 &&
-                widget.goodMatch?.length == 0 &&
-                widget.allUsers?.length == 0
-            ? Center(
-                child: Stack(
-                alignment: Alignment.topCenter,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // friendOptions(context, widget.allUsers),
-                  friendOptions(context),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("No users available"),
-                    ],
-                  ),
-                ],
-              ))
-            : 
-            // StreamBuilder(
-            //   stream: FirebaseFirestore.instance.collection('users').doc(StaticStore.currentUserId).snapshots(),
-            //   builder: (context, snapshot) {
-                // if(snapshot.hasData){
-                //   print("snapshot data");
-                //   // print(snapshot.data?.data());
-                // }else{
-                //   print("No data");
-                // }
-                // return SizedBox();
-                // if(snapshot.connectionState==ConnectionState.waiting){
-                //   return const Center(
-                //     child:CircularProgressIndicator()
-                //   );
-                // }
-                // return 
-                ListView.builder(
-                    itemCount: 1,
-                    itemBuilder: (context, snapshot) {
-                      return Column(
-                        children: [
-                          // friendOptions(context, widget.allUsers),
-                          friendOptions(context),
-                
-                          // for (int i = 0; i < 2; i++) ...{
-                          if (widget.bestMatch?.length != 0) ...{
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, top: 18.0, bottom: 15),
-                                    child: Text(
-                                      "Mostly same",
-                                      style: TextStyle(fontSize: 22),
-                                    ),
-                                  ),
-                                  Container(
-                                    height:
-                                        widget.bestMatch?.length == 2 ? 200 : 100,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        // physics: NeverScrollableScrollPhysics(),
-                                        // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-                                        itemCount:
-                                            widget.bestMatch!=null && widget.bestMatch!.length >= 2 ? 2 : 1,
-                                        // itemCount:null,
-                                        itemBuilder: (context, i) {
-                                          return Card(
-                                            color: Colors.black,
-                                            child: Column(children: [
-                                              InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                onTap: () async {
+    return StreamBuilder(
+        stream: userButtonCaller().asStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          // print(snapshot.data?[2]?[2].displayName);
+          // return SizedBox();
+          return SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
+                // title: Text("Networks",style: TextStyle(color: Colors.white),),
+                backgroundColor: Colors.black,
+              ),
+              body: snapshot.data?[0]?.length == 0 &&
+                      snapshot.data?[2]?.length == 0 &&
+                      snapshot.data?[2]?.length == 0
+                  ? Center(
+                      child: Stack(
+                      alignment: Alignment.topCenter,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // friendOptions(context, snapshot.data?[2]),
+                        friendOptions(context),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("No users available"),
+                          ],
+                        ),
+                      ],
+                    ))
+                  :
+                  // StreamBuilder(
+                  //   stream: FirebaseFirestore.instance.collection('users').doc(StaticStore.currentUserId).snapshots(),
+                  //   builder: (context, snapshot) {
+                  // if(snapshot.hasData){
+                  //   print("snapshot data");
+                  //   // print(snapshot.data?.data());
+                  // }else{
+                  //   print("No data");
+                  // }
+                  // return SizedBox();
+                  // if(snapshot.connectionState==ConnectionState.waiting){
+                  //   return const Center(
+                  //     child:CircularProgressIndicator()
+                  //   );
+                  // }
+                  // return
+                  ListView.builder(
+                      itemCount: 1,
+                      itemBuilder: (context, snapshot1) {
+                        return Column(
+                          children: [
+                            // friendOptions(context, snapshot.data?[2]),
+                            friendOptions(context),
 
-                                                },
-                                                child: ListTile(
-                                                  leading: Column(children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topLeft: Radius.circular(3),
-                                                        bottomLeft:
-                                                            Radius.circular(3),
+                            // for (int i = 0; i < 2; i++) ...{
+                            if (snapshot.data?[0]?.length != 0) ...{
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, top: 18.0, bottom: 15),
+                                      child: Text(
+                                        "Mostly same",
+                                        style: TextStyle(fontSize: 22),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: snapshot.data != null &&
+                                              snapshot.data?[0] != null &&
+                                              snapshot.data![0]!.length >= 2
+                                          ? 200
+                                          : 100,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          // physics: NeverScrollableScrollPhysics(),
+                                          // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
+                                          itemCount: snapshot.data != null &&
+                                                  snapshot.data?[0] != null &&
+                                                  snapshot.data![0]!.length >= 2
+                                              ? 2
+                                              : 1,
+                                          // itemCount:null,
+                                          itemBuilder: (context, i) {
+                                            return Card(
+                                              color: Colors.black,
+                                              child: Column(children: [
+                                                InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  onTap: () async {},
+                                                  child: ListTile(
+                                                    leading: Column(children: [
+                                                      ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                        ),
+                                                        child:
+                                                            snapshot.data?[0]
+                                                                          ?[i].image?.length==0?
+                    
+                                                          Container(
+                                                            width: 55,
+                                                            height: 55,
+                                                            child:
+                                                            const LoadingUserImage(),
+                                                          ):
+                                                            CachedNetworkImage(
+                                                          // imageUrl: user.avatar!,
+
+                                                          // imageUrl: "${widget._albumTracks?[position].imgUrl}",
+                                                          imageUrl: snapshot
+                                                                      .data?[0]
+                                                                          ?[i]
+                                                                      .image
+                                                                      ?.length !=
+                                                                  0
+                                                              ? "${snapshot.data?[0]?[i].image?[0]['url']}"
+                                                              : "",
+                                                          // imageUrl: "",
+
+                                                          width: 55,
+                                                          height: 55,
+                                                          memCacheHeight: (55 *
+                                                                  devicePexelRatio)
+                                                              .round(),
+                                                          memCacheWidth: (55 *
+                                                                  devicePexelRatio)
+                                                              .round(),
+                                                          maxHeightDiskCache:
+                                                              (55 * devicePexelRatio)
+                                                                  .round(),
+                                                          maxWidthDiskCache:
+                                                              (55 * devicePexelRatio)
+                                                                  .round(),
+                                                          progressIndicatorBuilder:
+                                                              (context, url,
+                                                                      l) =>
+                                                                  LoadingImage(
+                                                                      icon: Icon(
+                                                                          LineIcons
+                                                                              .user)),
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
-                                                      child: CachedNetworkImage(
-                                                        // imageUrl: user.avatar!,
-                
-                                                        // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-                                                        imageUrl: widget
-                                                                    .bestMatch?[i]
-                                                                    .image
-                                                                    ?.length !=
-                                                                0
-                                                            ? "${widget.bestMatch?[i].image?[0]['url']}"
-                                                            : "",
-                                                        // imageUrl: "",
-                
-                                                        width: 55,
-                                                        height: 55,
-                                                        memCacheHeight:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        memCacheWidth:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        maxHeightDiskCache:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        maxWidthDiskCache:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        progressIndicatorBuilder:
-                                                            (context, url, l) =>
-                                                                LoadingImage(
-                                                                    icon: Icon(
-                                                                        LineIcons
-                                                                            .user)),
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                                    ]),
+                                                    title: Text(
+                                                      // "${widget._albumTracks?[position].name}",
+                                                      "${snapshot.data?[0]?[i].displayName}",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                     ),
-                                                  ]),
-                                                  title: Text(
-                                                    // "${widget._albumTracks?[position].name}",
-                                                    "${widget.bestMatch?[i].displayName}",
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  subtitle: Text(
-                                                    "${widget.bestMatch?[i].spotifyBasedGenre}",
-                                                    style: TextStyle(
-                                                        color: Colors.white70),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                  isThreeLine: true,
-                                                  trailing: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.center,
-                                                      children: [
-                                                        IconButton(
-                                                          onPressed: () async {
-                                                            print(
-                                                                "friend request sent");
-                                                            // print(
-                                                            // "friend request sent");
-                                                            await storeFriendRequest(widget.bestMatch?[i].id);
-                                                            await _friends
-                                                                .friendStatusStore(
-                                                                    widget
-                                                                        .bestMatch?[
-                                                                            i]
-                                                                        .id)
-                                                                .then((value) {
-                                                              setState(() {
-                                                                StaticStore
-                                                                        .requestStatusValue?[
-                                                                    2]?[i] = widget
-                                                                        .bestMatch![
-                                                                            i]
-                                                                        .id.toString();
-                                                              });
-                                                              print("updated");
-                                                            });
-                                                            // print(StaticStore.requestStatusValue?[0][i]);
-                                                          },
-                                                          icon: StaticStore.requestStatusValue?[
-                                                                          0]?[i] ==
-                                                                      "0" ||
+                                                    subtitle: Text(
+                                                      "${snapshot.data?[0]?[i].spotifyBasedGenre}",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.white70),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    isThreeLine: true,
+                                                    trailing: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              print(
+                                                                  "friend request sent");
+                                                              // print(
+                                                              // "friend request sent");
+                                                              await storeFriendRequest(
+                                                                  snapshot
+                                                                      .data?[0]
+                                                                          ?[i]
+                                                                      .id);
+                                                              await _friends
+                                                                  .friendStatusStore(
+                                                                      widget
+                                                                          .bestMatch?[
+                                                                              i]
+                                                                          .id)
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {
                                                                   StaticStore.requestStatusValue?[
-                                                                          0]?[i] ==
-                                                                      ""
-                                                              ? Icon(Icons.send,
-                                                                  color:
-                                                                      Colors.white)
-                                                              : StaticStore.requestStatusValue?[
-                                                                          0]?[i] ==
-                                                                      "1"?Icon(
-                                                                  Icons
-                                                                      .done_outline,
-                                                                  color:
-                                                                      Colors.white,
-                                                                ):Icon(Icons.pending,color:Colors.white),
-                                                        )
-                                                      ]),
-                                                ),
-                                              ),
-                                            ]),
-                                          );
-                                        }),
-                                  ),
-                                  widget.bestMatch != null
-                                      ? (widget.bestMatch!.length > 2
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 18.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  InkWell(
-                                                    child: Text(
-                                                      "show more",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    onTap: () async {
-                                                      print("show more tapped");
-                                                      List<UserInfo>?totalUsers = await fetchAllFriends(-1);
-                                                      await getRequestStatus(totalUsers,0);
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowmoreSuggestion(totalUsers,"Mostly same")));
-
-                                                    },
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          : SizedBox())
-                                      : SizedBox(),
-                                ])
-                          },
-                
-                          if (widget.allUsers?.length != 0) ...{
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, top: 18.0, bottom: 15),
-                                    child: Text(
-                                      "All users",
-                                      style: TextStyle(fontSize: 22),
-                                    ),
-                                  ),
-                                  Container(
-                                    height:
-                                        widget.allUsers!=null && widget.allUsers!.length >= 2 ? 200 : 100,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        // physics: NeverScrollableScrollPhysics(),
-                                        // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-                                        itemCount:
-                                            // widget.allUsers!=null?widget.allUsers!.length:0,
-                                            widget.allUsers!=null && widget.allUsers!.length >= 2 ? 2 : 1,
-                                        // itemCount:null,
-                                        itemBuilder: (context, i) {
-                                          return Card(
-                                            color: Colors.black,
-                                            child: Column(children: [
-                                              InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                onTap: () async {},
-                                                child: ListTile(
-                                                  leading: Column(children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topLeft: Radius.circular(3),
-                                                        bottomLeft:
-                                                            Radius.circular(3),
-                                                      ),
-                                                      child: CachedNetworkImage(
-                                                        // imageUrl: user.avatar!,
-                
-                                                        // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-                                                        imageUrl: widget
-                                                                    .allUsers?[i]
-                                                                    .image
-                                                                    ?.length !=
-                                                                0
-                                                            ? "${widget.allUsers?[i].image?[0]['url']}"
-                                                            : "",
-                                                        // imageUrl: "",
-                
-                                                        width: 55,
-                                                        height: 55,
-                                                        memCacheHeight:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        memCacheWidth:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        maxHeightDiskCache:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        maxWidthDiskCache:
-                                                            (55 * devicePexelRatio)
-                                                                .round(),
-                                                        progressIndicatorBuilder:
-                                                            (context, url, l) =>
-                                                                LoadingImage(
-                                                                    icon: Icon(
-                                                                        LineIcons
-                                                                            .user)),
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ]),
-                                                  title: Text(
-                                                    // "${widget._albumTracks?[position].name}",
-                                                    "${widget.allUsers?[i].displayName}",
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  subtitle: Text(
-                                                    "${widget.allUsers?[i].spotifyBasedGenre}",
-                                                    style: TextStyle(
-                                                        color: Colors.white70),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                  isThreeLine: true,
-                                                  trailing: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.center,
-                                                      children: [
-                                                        IconButton(
-                                                          onPressed: () async {
-                                                            print(
-                                                                "friend request sent");
-                
-                                                            await storeFriendRequest(widget.allUsers?[i].id);
-                
-                                                            await _friends
-                                                                .friendStatusStore(
-                                                                    widget
-                                                                        .allUsers?[
-                                                                            i]
-                                                                        .id)
-                                                                .then((value) {
-                                                              setState(() {
-                                                                StaticStore
-                                                                        .requestStatusValue?[
-                                                                    2]?[i] = widget
-                                                                        .allUsers![
-                                                                            i]
-                                                                        .id.toString();
+                                                                              2]
+                                                                          ?[i] =
+                                                                      widget
+                                                                          .bestMatch![
+                                                                              i]
+                                                                          .id
+                                                                          .toString();
+                                                                });
+                                                                print(
+                                                                    "updated");
                                                               });
-                                                              print("updated");
-                                                            });
-                                                            print(StaticStore
-                                                                    .requestStatusValue?[
-                                                                2]?[i]);
-                                                          },
-                                                          icon:
-                                                              StaticStore.requestStatusValue?[
-                                                                          2]?[i] ==
-                                                                      "0" || StaticStore.requestStatusValue?[
-                                                                          2]?[i] ==
-                                                                      ""
-                                                                  ? Icon(Icons.send,
-                                                                      color: Colors
-                                                                          .white)
-                                                                  : StaticStore.requestStatusValue?[
-                                                                          2]?[i] ==
-                                                                      "1"?Icon(
-                                                                  Icons
-                                                                      .done_outline,
-                                                                  color:
-                                                                      Colors.white,
-                                                                ):Icon(Icons.pending,color:Colors.white),
-                                                                  
-                                                        )
-                                                      ]),
+                                                              // print(StaticStore.requestStatusValue?[0][i]);
+                                                            },
+                                                            icon: StaticStore.requestStatusValue?[0]?[
+                                                                            i] ==
+                                                                        "0" ||
+                                                                    StaticStore.requestStatusValue?[0]
+                                                                            ?[
+                                                                            i] ==
+                                                                        ""
+                                                                ? Icon(
+                                                                    Icons.send,
+                                                                    color: Colors
+                                                                        .white)
+                                                                : StaticStore.requestStatusValue?[0]
+                                                                            ?[
+                                                                            i] ==
+                                                                        "1"
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .done_outline,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      )
+                                                                    : Icon(
+                                                                        Icons.pending,
+                                                                        color: Colors.white),
+                                                          )
+                                                        ]),
+                                                  ),
                                                 ),
-                                              ),
-                                            ]),
-                                          );
-                                        }),
-                                  ),
-                                  widget.allUsers != null
-                                      ? (widget.allUsers!.length > 2
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 18.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  InkWell(
-                                                    child: Text(
-                                                      "show more",
+                                              ]),
+                                            );
+                                          }),
+                                    ),
+                                    snapshot.data != null &&
+                                            snapshot.data?[0] != null
+                                        ? (snapshot.data![0]!.length > 2
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 18.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        "show more",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      onTap: () async {
+                                                        print(
+                                                            "show more tapped");
+                                                        List<UserInfo>?
+                                                            totalUsers =
+                                                            await fetchAllFriends(
+                                                                -1);
+                                                        await getRequestStatus(
+                                                            totalUsers, 0);
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    ShowmoreSuggestion(
+                                                                        totalUsers,
+                                                                        "Mostly same")));
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            : SizedBox())
+                                        : SizedBox(),
+                                  ])
+                            },
+
+                            if (snapshot.data?[2]?.length != 0) ...{
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, top: 18.0, bottom: 15),
+                                      child: Text(
+                                        "All users",
+                                        style: TextStyle(fontSize: 22),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: snapshot.data != null &&
+                                              snapshot.data?[2] != null &&
+                                              snapshot.data![2]!.length >= 2
+                                          ? 200
+                                          : 100,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          // physics: NeverScrollableScrollPhysics(),
+                                          // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
+                                          itemCount:
+                                              // snapshot.data?[2]!=null?snapshot.data?[2]!.length:0,
+                                              snapshot.data != null &&
+                                                      snapshot.data?[2] !=
+                                                          null &&
+                                                      snapshot.data![2]!
+                                                              .length >=
+                                                          2
+                                                  ? 2
+                                                  : 1,
+                                          // itemCount:null,
+                                          itemBuilder: (context, i) {
+                                            return Card(
+                                              color: Colors.black,
+                                              child: Column(children: [
+                                                InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  onTap: () async {},
+                                                  child: ListTile(
+                                                    leading: Column(children: [
+                                                      ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                        ),
+                                                        child:
+                                                            snapshot.data?[2]
+                                                                          ?[i].image?.length==0?
+                    
+                                                          Container(
+                                                            width: 55,
+                                                            height: 55,
+                                                            child:
+                                                            const LoadingUserImage(),
+                                                          ):
+                                                            CachedNetworkImage(
+                                                          // imageUrl: user.avatar!,
+
+                                                          // imageUrl: "${widget._albumTracks?[position].imgUrl}",
+                                                          imageUrl: snapshot.data?[2]?[
+                                                                          i]
+                                                                      .image
+                                                                      ?.length !=
+                                                                  0
+                                                              ? "${snapshot.data?[2]?[i].image?[0]['url']}"
+                                                              : "",
+                                                          // imageUrl: "",
+
+                                                          width: 55,
+                                                          height: 55,
+                                                          memCacheHeight: (55 *
+                                                                  devicePexelRatio)
+                                                              .round(),
+                                                          memCacheWidth: (55 *
+                                                                  devicePexelRatio)
+                                                              .round(),
+                                                          maxHeightDiskCache:
+                                                              (55 * devicePexelRatio)
+                                                                  .round(),
+                                                          maxWidthDiskCache:
+                                                              (55 * devicePexelRatio)
+                                                                  .round(),
+                                                          progressIndicatorBuilder:
+                                                              (context, url,
+                                                                      l) =>
+                                                                  LoadingImage(
+                                                                      icon: Icon(
+                                                                          LineIcons
+                                                                              .user)),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                    title: Text(
+                                                      // "${widget._albumTracks?[position].name}",
+                                                      "${snapshot.data?[2]?[i].displayName}",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                     ),
-                                                    onTap: () async {
-                                                      print("allusers show more tapped");
-                                                      List<UserInfo>?totalUsers = await fetchAllFriends(-1);
-                                                      await getRequestStatus(totalUsers,2);
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowmoreSuggestion(totalUsers,"Allusers")));
-                                                    },
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          : SizedBox())
-                                      : SizedBox(),
-                                ])
-                          }
-                
-                          // }
-                        ],
-                      );
-                    }
-              //       );
-              //   // }
-              // }
+                                                    subtitle: Text(
+                                                      "${snapshot.data?[2]?[i].spotifyBasedGenre}",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.white70),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    isThreeLine: true,
+                                                    trailing: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              print(
+                                                                  "friend request sent");
+
+                                                              await storeFriendRequest(
+                                                                  snapshot
+                                                                      .data?[2]
+                                                                          ?[i]
+                                                                      .id);
+
+                                                              await _friends
+                                                                  .friendStatusStore(
+                                                                      widget
+                                                                          .allUsers?[
+                                                                              i]
+                                                                          .id)
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {
+                                                                  StaticStore.requestStatusValue?[
+                                                                              2]
+                                                                          ?[i] =
+                                                                      widget
+                                                                          .allUsers![
+                                                                              i]
+                                                                          .id
+                                                                          .toString();
+                                                                });
+                                                                print(
+                                                                    "updated");
+                                                              });
+                                                              print(StaticStore
+                                                                      .requestStatusValue?[
+                                                                  2]?[i]);
+                                                            },
+                                                            icon: StaticStore.requestStatusValue?[2]?[
+                                                                            i] ==
+                                                                        "0" ||
+                                                                    StaticStore.requestStatusValue?[2]
+                                                                            ?[
+                                                                            i] ==
+                                                                        ""
+                                                                ? Icon(
+                                                                    Icons.send,
+                                                                    color: Colors
+                                                                        .white)
+                                                                : StaticStore.requestStatusValue?[2]
+                                                                            ?[
+                                                                            i] ==
+                                                                        "1"
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .done_outline,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      )
+                                                                    : Icon(
+                                                                        Icons.watch_later_outlined,
+                                                                        color: Colors.white),
+                                                          )
+                                                        ]),
+                                                  ),
+                                                ),
+                                              ]),
+                                            );
+                                          }),
+                                    ),
+                                    snapshot.data != null &&
+                                            snapshot.data?[2] != null
+                                        ? (snapshot.data![2]!.length > 2
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 18.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        "show more",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      onTap: () async {
+                                                        print(
+                                                            "allusers show more tapped");
+                                                        List<UserInfo>?
+                                                            totalUsers =
+                                                            await fetchAllFriends(
+                                                                -1);
+                                                        await getRequestStatus(
+                                                            totalUsers, 2);
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    ShowmoreSuggestion(
+                                                                        totalUsers,
+                                                                        "Allusers")));
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            : SizedBox())
+                                        : SizedBox(),
+                                  ])
+                            }
+
+                            // }
+                          ],
+                        );
+                      }
+                      //       );
+                      //   // }
+                      // }
+                      ),
             ),
-      ),
-    );
+          );
+        });
   }
 }
-
 
 /* For Connected people */
 Widget friendOptions(context) {
@@ -519,16 +635,16 @@ Widget friendOptions(context) {
       )),
     ),
     onTap: () async {
-      NetworkFunction _networkFunction = NetworkFunction();
-      List<dynamic> friendIds = await fetchFriends();
-      List<UserInfo> friends = [];
-      UserInfo temp;
-      for(int i=0;i<friendIds.length;i++){
-        temp = await _networkFunction.fetchUserInfo(friendIds[i]);
-        friends.add(temp);
-      }
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => NetworkUser(friends,"Friends")));
+      // NetworkFunction _networkFunction = NetworkFunction();
+      // List<dynamic> friendIds = await fetchFriends();
+      // List<UserInfo> friends = [];
+      // UserInfo temp;
+      // for (int i = 0; i < friendIds.length; i++) {
+      //   temp = await _networkFunction.fetchUserInfo(friendIds[i]);
+      //   friends.add(temp);
+      // }
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => NetworkUser("Friends")));
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NetworkUser(friends)));
     },
   );

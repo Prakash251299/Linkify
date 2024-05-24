@@ -15,6 +15,7 @@ class StaticStore{
     []
   ];
   static List<String>? userGenre;
+  static Map<dynamic,dynamic>? userGenreWithCount;
   static String dateStored = "1-1-2024";
   static String dateStored2 = "1-1-2024";
   static var carouselInd = -10;
@@ -41,4 +42,5 @@ class StaticStore{
   static int nextPlay=1;
   static int screen = 0;
   static List<List<String>?>? requestStatusValue=[[],[],[]];
+  static int notificationCounts=0;
 }

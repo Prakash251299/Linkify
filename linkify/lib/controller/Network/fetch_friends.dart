@@ -3,6 +3,7 @@ import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
+import 'package:linkify/widgets/Network/friend_suggestion.dart';
 import 'package:linkify/widgets/Network/user_network.dart';
 
 Future<List<UserInfo>?> fetchAllFriends(int numberOfUsers) async {
@@ -25,8 +26,9 @@ Future<List<UserInfo>?> fetchGoodMatchFriends(int numberOfUsers) async {
   return goodMatch;
 }
 
-Future<void> getRequestStatus(List<UserInfo>? users,int recommendaionIndex) async {
-  // List<dynamic> 
+Future<void> getRequestStatus(
+    List<UserInfo>? users, int recommendaionIndex) async {
+  // List<dynamic>
   List<String>? temp = [];
   temp = StaticStore.requestStatusValue?[recommendaionIndex];
   if (users != null) {
@@ -38,4 +40,21 @@ Future<void> getRequestStatus(List<UserInfo>? users,int recommendaionIndex) asyn
   } else {
     StaticStore.requestStatusValue?.add([]);
   }
+}
+
+Future<List<List<UserInfo>?>> userButtonCaller() async {
+  StaticStore.requestStatusValue?.clear();
+  StaticStore.requestStatusValue = [[], [], []];
+  List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
+  List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
+  List<UserInfo>? allUsers = await fetchAllFriends(3);
+
+  await getRequestStatus(bestMatch, 0);
+  await getRequestStatus(goodMatch, 1);
+  await getRequestStatus(allUsers, 2);
+
+  // print(StaticStore.requestStatusValue);
+  // Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (context) => Suggestion(bestMatch, goodMatch, allUsers)));
+      return [bestMatch,goodMatch,allUsers];
 }

@@ -62,11 +62,11 @@ Future<List<String>> fetchTopTrackGenres() async {
         for(int i=1;i<topArtists.length;i++){
           artistIds+=",${topArtists[i]}";
         }
-        // print(artistIds);
-        var allTrackGenres = await getArtistsGenres(artistIds);
-        for(int j=0;j<allTrackGenres.length;j++){
-          genres.add(allTrackGenres[j]);
-        }
+        genres = await getArtistsGenres(artistIds);
+        // print(allTrackGenres);
+        // for(int j=0;j<allTrackGenres.length;j++){
+        //   genres.add(allTrackGenres[j]);
+        // }
         // print(genres);
         for(int i=0;i<genres.length;i++){
           // print(m[genres[i]]);
@@ -79,8 +79,9 @@ Future<List<String>> fetchTopTrackGenres() async {
 
           // }
         }
-        var l = await sort(m);
+        Map<dynamic,dynamic> l = await sort(m);
         // print(l);
+        StaticStore.userGenreWithCount = l;
         List<String> temp=[];
         for(var k in l.keys){
           // print(k);

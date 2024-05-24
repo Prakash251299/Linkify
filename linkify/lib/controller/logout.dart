@@ -61,4 +61,5 @@ Future<void> deleteAllStaticData()async{
   StaticStore.nextPlay=1;
   StaticStore.screen = 0;
   StaticStore.requestStatusValue=[];
+  StaticStore.userGenreWithCount = null;
 }

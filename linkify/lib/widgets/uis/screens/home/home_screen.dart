@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:linkify/controller/Network/recommend_knn.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/first_page_categories.dart';
@@ -120,24 +121,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             Row(
                               children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    List<dynamic>? friendRequests = await fetchFriendRequests();
-                                    List<UserInfo>? _userInfo = friendRequests?.length!=0?
-                                    await FetchRequestNotifications(friendRequests):null;
 
-
-
-
+                                StreamBuilder(
+                                  stream: FetchRequestNotifications().asStream(),
+                                  builder: (context, snapshot) {
+                                    // print(snapshot.data!.length);
+                                    if(snapshot.data!=null && snapshot.data!.length>StaticStore.notificationCounts){
+                                      return IconButton(
+                                        onPressed: () async {
+                                          setState(() {});
+                                          StaticStore.notificationCounts = snapshot.data!=null?snapshot.data!.length:0;
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
+                                        }, 
+                                        icon: Icon(Icons.notifications_active,color: Colors.red,)
+                                      );
+                                    }
+                                    return IconButton(
+                                      onPressed: () async {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
+                                      }, 
+                                      icon: Icon(Icons.notifications,color: Colors.white,)
+                                    );
                                     
-                                    // NetworkFunction _fetchUserInfo = NetworkFunction();
-
-                                    // _fetchUserInfo.fetchUserInfo();
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen(_userInfo)));
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationScreen(_userInfo)));
-                                    // 
-                                  }, 
-                                  icon: Icon(Icons.notifications,color: Colors.white,)
+                                  }
                                 ),
                                 IconButton(
                                   onPressed: () async {
@@ -277,7 +283,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 // alignment: Alignment.topRight,
                                 children: [
-                                  Container(
+                                    menuWidth==200?
+                                            Center(
+                                              child: InkWell(
+                                                child: 
+                                                Container(
                                     height:40,
                                     // width:menuWidth==200?menuWidth:200,
                                     width: 200,
@@ -285,17 +295,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.all(Radius.circular(5)),
                                       color: Colors.red,
                                     ),
-                                    child: 
-                                    menuWidth==200?
-                                            Center(
-                                              child: InkWell(
-                                                child: Text("Logout",style: TextStyle(color: Colors.white),),
+                                    child:
+                                                
+                                                Center(child: Text("Logout",style: TextStyle(color: Colors.white),))
+                                              ),
                                                 onTap: () async {
                                                   await callSignOutApi(context);
                                                 },
                                               ),
                                             ):SizedBox(),
-                                  ),
+                                  // ),
+                                  SizedBox(height: 5,),
+                                    menuWidth==200?
+                                            Center(
+                                              child: InkWell(
+                                                child: 
+                                                Container(
+                                    height:300,
+                                    // width:menuWidth==200?menuWidth:200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      color: Colors.red,
+                                    ),
+                                    child:
+                                                
+                                                Center(child: Text("Genres",style: TextStyle(color: Colors.white),)),
+                                              ),
+                                                onTap: () async {
+                                                  await recommender();
+                                                },
+                                              ),
+                                            ):SizedBox(),
+                                  // ),
                                 ],
                               )
                             ),

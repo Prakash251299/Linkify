@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
+import 'package:linkify/widgets/loading_user_img.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
 class ShowmoreSuggestion extends StatefulWidget {
@@ -54,7 +55,17 @@ class _ShowmoreSuggestionState extends State<ShowmoreSuggestion> {
                                                           bottomLeft:
                                                               Radius.circular(3),
                                                         ),
-                                                        child: CachedNetworkImage(
+                                                        child: 
+                                                        widget.totalUsers?[i].image?.length==0?
+                    
+                                                          Container(
+                                                            width: 55,
+                                                            height: 55,
+                                                            child:
+                                                            const LoadingUserImage(),
+                                                          )
+                                                          :
+                                                        CachedNetworkImage(
                                                           // imageUrl: user.avatar!,
                   
                                                           // imageUrl: "${widget._albumTracks?[position].imgUrl}",
