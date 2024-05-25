@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:linkify/controller/Network/recommend_knn.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/firebase_call.dart';
 import 'package:linkify/controller/static_store.dart';
@@ -20,20 +21,19 @@ Future<List<UserInfo>?> fetchBestMatchFriends(int numberOfUsers) async {
   return bestMatch;
 }
 
-Future<List<UserInfo>?> fetchGoodMatchFriends(int numberOfUsers) async {
+Future<List<UserInfo>?> fetchGoodMatchFriends() async {
   NetworkFunction _networkFunction = NetworkFunction();
-  List<UserInfo>? goodMatch;
+  List<UserInfo>? goodMatch = await KNN_recommender();
   return goodMatch;
 }
 
-Future<void> getRequestStatus(
-    List<UserInfo>? users, int recommendaionIndex) async {
+Future<void> getRequestStatus(List<UserInfo>? users, int recommendaionIndex) async {
   // List<dynamic>
   List<String>? temp = [];
   temp = StaticStore.requestStatusValue?[recommendaionIndex];
   if (users != null) {
-    print("bestmatch has data");
-    for (int i = 0; i < 3 && i < users.length; i++) {
+    // print("bestmatch has data");
+    for (int i = 0; i < 3 && i < users.length; i++){
       temp?.add(await getFriendStatus(users[i].id));
     }
     StaticStore.requestStatusValue?.add(temp);
@@ -46,8 +46,10 @@ Future<List<List<UserInfo>?>> userButtonCaller() async {
   StaticStore.requestStatusValue?.clear();
   StaticStore.requestStatusValue = [[], [], []];
   List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
-  List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
+  List<UserInfo>? goodMatch = await fetchGoodMatchFriends();
+  // List<UserInfo>? goodMatch = await KNN_recommender();
   List<UserInfo>? allUsers = await fetchAllFriends(3);
+  // List<UserInfo>? allUsers = await KNN_recommender();
 
   await getRequestStatus(bestMatch, 0);
   await getRequestStatus(goodMatch, 1);

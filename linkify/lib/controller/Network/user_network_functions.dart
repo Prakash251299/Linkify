@@ -51,8 +51,14 @@ class NetworkFunction {
 
 
       likeUsersId?.remove(StaticStore.currentUserId);
-      for (int i = 0; likeUsersId != null && i < likeUsersId!.length && i<numberOfUsers; i++) {
-        likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+      if(numberOfUsers<0){
+        for (int i = 0; likeUsersId != null && i < likeUsersId!.length; i++) {
+          likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+        }
+      }else{
+        for (int i = 0; likeUsersId != null && i < likeUsersId!.length && i<numberOfUsers; i++) {
+          likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+        }
       }
       return likeUsersInfo;
     });

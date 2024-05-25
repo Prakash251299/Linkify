@@ -114,7 +114,7 @@ class FirebaseCall{
 
 
 
-String requestIdGenerator(var otherUser){
+String requestIdGenerator(String otherUser){
   List<String?> s = [StaticStore.currentUserId,otherUser];
   s.sort();
   String requestId = "${s[0]}_${s[1]}";

@@ -34,7 +34,7 @@ Future<void> deleteAllStaticData()async{
     [],
     []
   ];
-  StaticStore.userGenre;
+  StaticStore.userGenre=null;
   StaticStore.dateStored = "1-1-2024";
   StaticStore.dateStored2 = "1-1-2024";
   StaticStore.carouselInd = -10;

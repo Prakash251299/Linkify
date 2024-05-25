@@ -323,7 +323,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Center(child: Text("Genres",style: TextStyle(color: Colors.white),)),
                                               ),
                                                 onTap: () async {
-                                                  await recommender();
+                                                  List<UserInfo>userInfo = 
+                                                  await KNN_recommender();
+                                                  print(userInfo);
                                                 },
                                               ),
                                             ):SizedBox(),
