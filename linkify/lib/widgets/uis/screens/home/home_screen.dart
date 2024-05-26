@@ -18,6 +18,7 @@ import 'package:linkify/controller/get_greeting.dart';
 import 'package:linkify/controller/get_user_info.dart';
 import 'package:linkify/controller/logout.dart';
 import 'package:linkify/controller/notification/notification_functions.dart';
+import 'package:linkify/controller/playlist_controller.dart/playlist_data_handler.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:linkify/widgets/Network/request_notification_screen.dart';
@@ -323,9 +324,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Center(child: Text("Genres",style: TextStyle(color: Colors.white),)),
                                               ),
                                                 onTap: () async {
-                                                  List<UserInfo>userInfo = 
-                                                  await KNN_recommender();
-                                                  print(userInfo);
+
+                                                  await fetchPlaylists();
+                                                  // List<UserInfo>userInfo = 
+                                                  // await KNN_recommender();
+                                                  // print(userInfo);
                                                 },
                                               ),
                                             ):SizedBox(),
