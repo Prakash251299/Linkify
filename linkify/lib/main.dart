@@ -45,6 +45,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    // if(loginController.getLoginStatus()==0){
+    //   loginController.login(context);
+    // }
     super.initState();
     // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     //   statusBarColor: Colors.black,
@@ -136,7 +139,60 @@ class MyAppState extends State<MyApp> {
       ),
       
       
-      home:
+      home: 
+      // App()
+      // Builder(
+      //   builder: (context) {
+      //     // return 
+      //     if(loginController.getLoginStatus()==1){
+      //            Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+      //           //  return App();
+
+
+
+
+
+
+      //           //  print("Already logged in");
+      //         }else{
+      //           try{
+      //             loginController.login(context);
+      //             if(loginController.loginStatus==1){
+      //               print("logged in");
+
+      //               Navigator.pop(context);
+      //               Navigator.of(context).push(MaterialPageRoute(builder: (context) => App()));
+      //             }
+      //           }catch(e){
+      //               print("something at start went wrong while login");
+      //           }
+      //         }
+          
+      //     return App();
+      //   }
+      // )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       Builder(
         builder: (context) => Center(
           child: 
@@ -146,9 +202,6 @@ class MyAppState extends State<MyApp> {
           ElevatedButton(
             child: Text("Device Song"),
             onPressed: () async => {
-
-
-
 
 
               if(SongDataController.loaded==true){
@@ -215,6 +268,17 @@ class MyAppState extends State<MyApp> {
 
         ),
       ),
+
+
+
+
+
+
+
+
+
+
+
     );
     
     
