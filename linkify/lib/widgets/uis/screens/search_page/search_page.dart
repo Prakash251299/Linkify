@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:linkify/controller/genre_playlist/genre_playlist.dart';
 import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/model/playlists/playlist.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 import 'package:linkify/widgets/uis/models/loading_enum.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
 import 'package:linkify/widgets/uis/screens/search/cubit/search_cubit.dart';
+import 'package:linkify/widgets/uis/screens/search_page/genre_playlist_screen.dart';
 import 'package:linkify/widgets/uis/utils/bottom_nav_bar/models/persisten-bottom-nav-item.widget.dart';
 import '../../controllers/main_controller.dart';
 import '../../methods/string_methods.dart';
@@ -23,88 +26,6 @@ class SearchPage extends StatelessWidget {
     Key? key,
     // required this.con,
   }) : super(key: key);
-
-  // List<PersistentBottomNavBarItem> _navBarsItems(var context) {
-  //   return [
-  //     PersistentBottomNavBarItem(
-  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.home),onPressed: (){
-  //         //   Navigator.of(context).push(
-  //         //   MaterialPageRoute(
-  //         //       builder: (_) => HomeScreen(),
-  //         //       )).then((value) => Navigator.pop(context));
-  //         // },),
-  //         icon: const Icon(Icons.home),
-  //         inactiveIcon: const Icon(LineIcons.home),
-  //         activeColorSecondary: Colors.white,
-  //         activeColorPrimary: Colors.grey),
-  //     PersistentBottomNavBarItem(
-  //         // inactiveIcon: IconButton(icon:const Icon(LineIcons.search),onPressed: (){
-  //         //   Navigator.of(context).push(
-  //         //   MaterialPageRoute(
-  //         //       builder: (_) =>
-  //         //       SearchPage()
-  //         //       // AppStateManager.persistentTabController.jumpToTab(0);
-  //         //       ));
-  //         // },),
-  //         // routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
-  //         onPressed: (_) {
-  //           print("hello");
-  //           Navigator.of(context).pushAndRemoveUntil(
-  //             CupertinoPageRoute(
-  //               builder: (BuildContext context) {
-  //                 return SearchPage();
-  //               },
-  //             ),
-  //             (_) => false,
-  //           );
-  //         },
-  //         icon: const Icon(CupertinoIcons.search),
-  //         inactiveIcon: const Icon(CupertinoIcons.search),
-  //         activeColorSecondary: Colors.white,
-  //         activeColorPrimary: Colors.grey),
-  //     PersistentBottomNavBarItem(
-  //         // inactiveIcon: IconButton(icon:const Icon(CupertinoIcons.music_albums),onPressed: (){
-  //         //   Navigator.of(context).push(
-  //         //   MaterialPageRoute(
-  //         //       builder: (_) => Library(),
-  //         //       )).then((value) => Navigator.pop(context));
-  //         // },),
-  //         icon: const Icon(CupertinoIcons.music_albums),
-  //         inactiveIcon: const Icon(CupertinoIcons.music_albums),
-  //         activeColorSecondary: Colors.white,
-  //         activeColorPrimary: Colors.grey),
-  //   ];
-  // }
-
-  // Widget footer(var context){
-  //   return Container(
-  //     padding: EdgeInsets.only(left:20,right:20),
-  //               color:Colors.black,
-  //               child:
-  //             Row(children: [
-  //                 IconButton(icon:const Icon(LineIcons.home,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => HomeScreen(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //                 Spacer(),
-  //                 IconButton(icon:const Icon(CupertinoIcons.search,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => SearchPage(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //                 Spacer(),
-  //                 IconButton(icon:const Icon(CupertinoIcons.music_albums,color: Colors.white,),onPressed: (){
-  //                   Navigator.of(context).push(
-  //                   MaterialPageRoute(
-  //                       builder: (_) => Library(),
-  //                       )).then((value) => Navigator.pop(context));
-  //                 },),
-  //             ])
-  //             );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +72,7 @@ class SearchPage extends StatelessWidget {
                                       "Search",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline4!
+                                          .headlineMedium!
                                           .copyWith(
                                             fontSize: 36,
                                           ),
@@ -182,7 +103,7 @@ class SearchPage extends StatelessWidget {
                                     "Your Top genre",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline4!
+                                        .headlineMedium!
                                         .copyWith(
                                           fontSize: 18,
                                         ),
@@ -218,7 +139,7 @@ class SearchPage extends StatelessWidget {
                                     "Browse all",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline4!
+                                        .headlineMedium!
                                         .copyWith(
                                           fontSize: 18,
                                         ),
@@ -286,15 +207,13 @@ class TagWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        List<MyPlaylist>_playlist = await fetchGenrePlaylists(genreName);
+        // print(_playlist[0].imgUrl);
+        // return;
         Navigator.push(
             context,
-            CupertinoPageRoute(builder: (context) => SizedBox()
-                // GenrePage(
-                // tag: tag,
-                // con: con,
-                // )
-                ));
+            CupertinoPageRoute(builder: (context) => GenrePlaylistScreen(_playlist)));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),

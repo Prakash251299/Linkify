@@ -19,6 +19,7 @@ import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:linkify/widgets/Network/friend_suggestion.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
+import 'package:linkify/widgets/playlists/playlist_screen.dart';
 import 'package:linkify/widgets/uis/models/genreTag.dart';
 import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 import 'package:linkify/widgets/uis/screens/library/library.dart';
@@ -113,21 +114,22 @@ Widget footer(var context) {
             ),
             onPressed: () async {
               StaticStore.screen = 2;
-              // await userButtonCaller(context);
-              // StaticStore.requestStatusValue?.clear();
-              // StaticStore.requestStatusValue = [[],[],[]];
-              // List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
-              // List<UserInfo>? goodMatch = await fetchGoodMatchFriends(3);
-              // List<UserInfo>? allUsers = await fetchAllFriends(3);
-
-              // await getRequestStatus(bestMatch,0);
-              // await getRequestStatus(goodMatch,1);
-              // await getRequestStatus(allUsers,2);
-
-              // print(StaticStore.requestStatusValue);
 
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion()));
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion(bestMatch, goodMatch, allUsers)));
+            },
+          ),
+          Spacer(),
+          IconButton(
+            icon: StaticStore.screen==3?Icon(
+              Icons.library_add,
+              color: Colors.white,
+            ):Icon(
+              Icons.library_add,
+              color: Colors.white70,
+            ),
+            onPressed: () async {
+              StaticStore.screen = 3;
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PlaylistScreen()));
             },
           ),
         ])),
