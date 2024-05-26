@@ -7,8 +7,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
+import 'package:linkify/controller/Network/recommend_knn.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/firebase_call.dart';
+import 'package:linkify/controller/first_page_categories.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/get_greeting.dart';
@@ -33,17 +36,33 @@ import '../../utils/horizontal_songs_list.dart';
 import '../../../carousel_songs.dart';
 import 'cubit/home_cubit.dart';
 
-class HomeScreen extends StatelessWidget {
-  // final MainController con;
-  const HomeScreen({
-    Key? key,
-    // required this.con,
-  }) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+int numberOfFrontPageCategories=5;
+
+class _HomeScreenState extends State<HomeScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+// class HomeScreen extends StatelessWidget {
+//   // final MainController con;
+//   HomeScreen({
+//     Key? key,
+//     // required this.con,
+//   }) : super(key: key);
+//   @override
   // void initState(){
 
   //   super.initState();
   // }
+  double menuWidth=0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +101,10 @@ class HomeScreen extends StatelessWidget {
             var greet = greeting();
             return SafeArea(
               child: Scaffold(
-                body: Column(children: [
+                body: 
+                Column(
+                  children: [
                   Stack(children: [
-                    // Text("gsas"),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 7.0),
                       child: Container(
@@ -101,28 +121,34 @@ class HomeScreen extends StatelessWidget {
 
                             Row(
                               children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    List<dynamic>? friendRequests = await fetchFriendRequests();
-                                    List<UserInfo>? _userInfo = friendRequests?.length!=0?
-                                    await FetchRequestNotifications(friendRequests):null;
 
-
-
-
+                                StreamBuilder(
+                                  stream: FetchRequestNotifications().asStream(),
+                                  builder: (context, snapshot) {
+                                    // print(snapshot.data!.length);
+                                    if(snapshot.data!=null && snapshot.data!.length>StaticStore.notificationCounts){
+                                      return IconButton(
+                                        onPressed: () async {
+                                          setState(() {});
+                                          StaticStore.notificationCounts = snapshot.data!=null?snapshot.data!.length:0;
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
+                                        }, 
+                                        icon: Icon(Icons.notifications_active,color: Colors.red,)
+                                      );
+                                    }
+                                    return IconButton(
+                                      onPressed: () async {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
+                                      }, 
+                                      icon: Icon(Icons.notifications,color: Colors.white,)
+                                    );
                                     
-                                    // NetworkFunction _fetchUserInfo = NetworkFunction();
-
-                                    // _fetchUserInfo.fetchUserInfo();
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen(_userInfo)));
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationScreen(_userInfo)));
-                                    // 
-                                  }, 
-                                  icon: Icon(Icons.notifications,color: Colors.white,)
+                                  }
                                 ),
                                 IconButton(
                                   onPressed: () async {
                                     print('Sign out called');
+                                    // menu=1;
                                     // RestartWidget.restartApp(context);
                                     /* Below code is for signout */
                                 //                       var appDir = (await getTemporaryDirectory()).path;
@@ -130,11 +156,37 @@ class HomeScreen extends StatelessWidget {
                                     // await DefaultCacheManager().emptyCache();
                                 
                                     // StaticStore.player ;
+                                    if(menuWidth == 0){
+                                      setState((){
+                                        menuWidth = 200;
+                                      });
+                                    }else{
+                                      setState((){
+                                        menuWidth = 0;
+                                      });
+
+                                    }
+
+                                    // setState((){
+                                    //   menuWidth = 200;
+
+                                    // });
+
                                 
-                                    await callSignOutApi(context);
                                     // RestartWidget.restartApp(context);
+
+
+
+
+
+
+
+
+
+
+                                    // await callSignOutApi(context);
                                   },
-                                  icon: Icon(
+                                  icon: menuWidth==200?Icon(Icons.cancel,color: Colors.white,):Icon(
                                     Icons.more_vert,
                                     color: Colors.white,
                                   ), // more_vert _icon
@@ -146,6 +198,15 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // //////////////////////////////
+                    // menu==0?
+                    // AnimatedContainer (
+                    //   duration: Duration (seconds: 3),
+                    //   width: 200,
+                    //   height: 400,
+                    //   color: Colors.red,
+                    // ):SizedBox(),
+                    // //////////////////////////////
                   ]),
 
                   Stack(
@@ -160,7 +221,7 @@ class HomeScreen extends StatelessWidget {
                               CarouselSongs(state.carouselSongs),
                               // Spacer(),
 
-                              for (int k = 0; k < 10; k++) ...{
+                              for (int k = 0; k < numberOfFrontPageCategories; k++) ...{
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 7.0,
@@ -204,9 +265,82 @@ class HomeScreen extends StatelessWidget {
                                 : const SizedBox();
                           }),
 
-                      // Opacity(
-                      //   opacity: 0.5,
-                      // child:
+                      //////////////////////////////
+                      // menu==1?
+                      Container(
+                        padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-88-400),
+                        // margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-128),
+                        child: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            AnimatedContainer (
+                              duration: Duration (milliseconds: 500),
+                              width: menuWidth,
+                              height: 400,
+                              // color: Colors.black,
+                              child:
+                              Column(
+                                // alignment: Alignment.topRight,
+                                children: [
+                                    menuWidth==200?
+                                            Center(
+                                              child: InkWell(
+                                                child: 
+                                                Container(
+                                    height:40,
+                                    // width:menuWidth==200?menuWidth:200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      color: Colors.red,
+                                    ),
+                                    child:
+                                                
+                                                Center(child: Text("Logout",style: TextStyle(color: Colors.white),))
+                                              ),
+                                                onTap: () async {
+                                                  await callSignOutApi(context);
+                                                },
+                                              ),
+                                            ):SizedBox(),
+                                  // ),
+                                  SizedBox(height: 5,),
+                                    menuWidth==200?
+                                            Center(
+                                              child: InkWell(
+                                                child: 
+                                                Container(
+                                    height:300,
+                                    // width:menuWidth==200?menuWidth:200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      color: Colors.red,
+                                    ),
+                                    child:
+                                                
+                                                Center(child: Text("Genres",style: TextStyle(color: Colors.white),)),
+                                              ),
+                                                onTap: () async {
+                                                  List<UserInfo>userInfo = 
+                                                  await KNN_recommender();
+                                                  print(userInfo);
+                                                },
+                                              ),
+                                            ):SizedBox(),
+                                  // ),
+                                ],
+                              )
+                            ),
+                          ],
+                        ),
+                      )
+                      // :SizedBox()
+                      //////////////////////////////
+                      ,
+
+
                       footer(context),
                     ],
                   ),

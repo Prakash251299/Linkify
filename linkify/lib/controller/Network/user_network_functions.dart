@@ -51,8 +51,14 @@ class NetworkFunction {
 
 
       likeUsersId?.remove(StaticStore.currentUserId);
-      for (int i = 0; likeUsersId != null && i < likeUsersId!.length && i<numberOfUsers; i++) {
-        likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+      if(numberOfUsers<0){
+        for (int i = 0; likeUsersId != null && i < likeUsersId!.length; i++) {
+          likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+        }
+      }else{
+        for (int i = 0; likeUsersId != null && i < likeUsersId!.length && i<numberOfUsers; i++) {
+          likeUsersInfo.add(await fetchUserInfo(likeUsersId?[i]));
+        }
       }
       return likeUsersInfo;
     });
@@ -67,21 +73,27 @@ class NetworkFunction {
         .collection('users')
         .get()
         .then((value) async {
-      // try{
+      try{
         for(int i=0;i<value.docs.length;i++){
           allUsersId.add(value.docs[i].id);
         }
         if(allUsersId.length>2){
           allUsersId.remove(StaticStore.currentUserId);
         }
-        for (int i = 0;i < allUsersId.length && i < numberOfUsers;i++) {
-          allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
+        if(numberOfUsers<0){
+          for (int i = 0;i < allUsersId.length;i++) {
+            allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
+          }
+        }else{
+          for (int i = 0;i < allUsersId.length && i < numberOfUsers;i++) {
+            allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
+          }
         }
         return allUsersInfo;
-      // }catch(e){
-        // print("Error happened while callling for the alluserInfo");
-        // return allUsersInfo;
-      // }
+      }catch(e){
+        print("Error happened while callling for the alluserInfo");
+        return allUsersInfo;
+      }
     });
 
     return allUsersInfo;

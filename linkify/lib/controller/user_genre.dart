@@ -62,11 +62,11 @@ Future<List<String>> fetchTopTrackGenres() async {
         for(int i=1;i<topArtists.length;i++){
           artistIds+=",${topArtists[i]}";
         }
-        // print(artistIds);
-        var allTrackGenres = await getArtistsGenres(artistIds);
-        for(int j=0;j<allTrackGenres.length;j++){
-          genres.add(allTrackGenres[j]);
-        }
+        genres = await getArtistsGenres(artistIds);
+        // print(allTrackGenres);
+        // for(int j=0;j<allTrackGenres.length;j++){
+        //   genres.add(allTrackGenres[j]);
+        // }
         // print(genres);
         for(int i=0;i<genres.length;i++){
           // print(m[genres[i]]);
@@ -79,8 +79,9 @@ Future<List<String>> fetchTopTrackGenres() async {
 
           // }
         }
-        var l = await sort(m);
+        Map<dynamic,dynamic> l = await sortMapByValue(m,null);
         // print(l);
+        StaticStore.userGenreWithCount = l;
         List<String> temp=[];
         for(var k in l.keys){
           // print(k);
@@ -200,57 +201,14 @@ Future<List<String>> fetchUserTopArtistGenre() async {
 
           // }
         }
-        var l = await sort(m);
-        // print(l);
-        // m = (await sort(m)) as Map<String, int>;
-        // m = Map<String,int>.from((await sort(m)));
-        
-        // StaticStore.userGenre.add(m);
-        // print(StaticStore.userGenre[0].entries.elementAt(5).key);
+        var l = await sortMapByValue(m,null);
         List<String> temp=[];
         for(var k in l.keys){
           // print(k);
           temp.add(k);
         }
         StaticStore.userGenre = temp;
-        // print(StaticStore.userGenre);
 
-        // print(StaticStore.userGenre[5].entries.elementAt(4).key);
-        // for (var k in m.keys) {
-        //   print("$k\n${m[k]}");
-        //   // StaticStore.userGenre[k]=m[k];
-        //   // StaticStore.userGenre.add({k:m[k]});
-
-        // }
-
-
-        
-        // print(StaticStore.userGenre);
-        // for (int i = 0; i < 50; i++) {
-        //   // fetching 50 similar songs
-        //   name.add(data['tracks'][i]['name']);
-        //   id.add(data['tracks'][i]['id']);
-        //   // imgUrl.add(data['items'][i]['track']['album']['images'][2]['url']);
-        // }
-        // print(imgUrl);
-        // DateTime now = DateTime.now(); // 30/09/2021 15:54:30
-        // var dateToday = now.day.toString();
-        // dateToday += "-";
-        // dateToday += now.month.toString();
-        // dateToday += "-";
-        // dateToday += now.year.toString();
-        // if (StaticStore.dateStored != dateToday || StaticStore.m1[ind] == {}) {
-        //   print(dateToday);
-          // StaticStore.m1[ind].addEntries({'id': id}.entries);
-          // StaticStore.m1[ind].addEntries({'name': name}.entries);
-          // StaticStore.dateStored = dateToday;
-          // StaticStore.carouselInd = ind;
-          // m1.addEntries({'date':dateOnly}.entries);
-        // }
-        // return;
-        // print();
-        // m.addEntries({'image':imgUrl}.entries);
-        // print(m1['name']);
         return temp;
       } else {
         AccessError e = AccessError();
@@ -262,15 +220,25 @@ Future<List<String>> fetchUserTopArtistGenre() async {
     }
   }
 
-Future<LinkedHashMap> sort(var m) async {
+Future<LinkedHashMap> sortMapByValue(var m,int? rev) async {
+  if(rev==null){
+    var sortedKeys = m.keys.toList(growable:false)
+      // ..sort((k1, k2) => (m[k1] as num).compareTo(m[k2] as num));
+      /* For reverse sorted order just do the below line in place of above line */
+      ..sort((k1, k2) => (m[k2] as num).compareTo(m[k1] as num));
+    LinkedHashMap sortedMap = new LinkedHashMap
+        .fromIterable(sortedKeys, key: (k) => k, value: (k) => m[k]);
+    // print(sortedMap);
+    return sortedMap;
+  }
   var sortedKeys = m.keys.toList(growable:false)
-    // ..sort((k1, k2) => (m[k1] as num).compareTo(m[k2] as num));
-    /* For reverse sorted order just do the below line in place of above line */
-    ..sort((k1, k2) => (m[k2] as num).compareTo(m[k1] as num));
-  LinkedHashMap sortedMap = new LinkedHashMap
-      .fromIterable(sortedKeys, key: (k) => k, value: (k) => m[k]);
-  // print(sortedMap);
-  return sortedMap;
+      ..sort((k1, k2) => (m[k1] as num).compareTo(m[k2] as num));
+      /* For reverse sorted order just do the below line in place of above line */
+      // ..sort((k1, k2) => (m[k2] as num).compareTo(m[k1] as num));
+    LinkedHashMap sortedMap = new LinkedHashMap
+        .fromIterable(sortedKeys, key: (k) => k, value: (k) => m[k]);
+    // print(sortedMap);
+    return sortedMap;
 }
 
 

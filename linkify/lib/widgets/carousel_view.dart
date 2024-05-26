@@ -14,6 +14,7 @@ import 'package:linkify/controller/youtube_player.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/widgets/album_play_pause_button/button_album_play_pause.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
+import 'package:linkify/widgets/sticky_widgets.dart';
 // import 'package:linkify/widgets/music_screen.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
@@ -265,10 +266,12 @@ class CarouselViewState extends State<CarouselView> {
                                       // if(StaticStore.pause==true){
       
                                       // }
-                                      StaticStore.playing=true;
-                                      StaticStore.pause=false;
+                                      // StaticStore.playing=true;
+                                      // StaticStore.pause=false;
                                       if(StaticStore.currentSong==widget.trackInfo[position].name){
                                         await _player.youtubeResume();
+                                        StaticStore.playing=true;
+                                        StaticStore.pause=false;
                                       }else{
                                         await _player.youtubeStop();
       
@@ -282,7 +285,9 @@ class CarouselViewState extends State<CarouselView> {
                                           StaticStore.currentSong = widget.trackInfo[position].name!;
                                           StaticStore.currentSongImg = widget.trackInfo[position].imgUrl!;
                                           StaticStore.currentArtists = List.from(widget.trackInfo[position].trackArtists);
-                                          Navigator.pop(context);
+                                          StaticStore.playing=true;
+                                          StaticStore.pause=false;
+                                          // Navigator.pop(context);
         
                                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
                                             widget.trackInfo[position].name,
@@ -579,6 +584,23 @@ class CarouselViewState extends State<CarouselView> {
                     ),
                   )
                 ]),
+              ),
+              StaticStore.playing == true ||
+                                    StaticStore.pause == true
+                                ?Container(
+                padding: EdgeInsets.only(top:MediaQuery.of(context).size.height-137),
+                child:StreamBuilder<Object>(
+                  stream: StaticStore.player.playerStateStream,
+                  builder: (context, snapshot) {
+                    return miniplayer(context);
+                  }
+                ),
+              ):SizedBox(),
+
+              Container(
+                padding: EdgeInsets.only(top:MediaQuery.of(context).size.height-78),
+                child:
+                footer(context),
               ),
             ]),
           ),
