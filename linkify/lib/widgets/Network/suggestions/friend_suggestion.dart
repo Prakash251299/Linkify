@@ -917,11 +917,15 @@ Widget friendOptions(context) {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(right: 18.0),
-            child: Icon(
-              Icons.navigate_next,
-              color: Colors.red,
+          Container(
+            margin: const EdgeInsets.only(right: 18.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.navigate_next,
+                  color: Colors.red,
+                ),
+              ],
             ),
           ),
         ],

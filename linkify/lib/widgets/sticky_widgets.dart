@@ -83,14 +83,20 @@ Widget footer(var context) {
               //     ));
 
               if(StaticStore.screen==0){
-                Navigator.pop(context);
-              }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => HomeScreen(),
+                  )).then((value) =>
+                Navigator.pop(context));
+              }else{
 
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => HomeScreen(),
                   ));
+              }
               // .then((value) => Navigator.pop(context));
             },
           ),
@@ -109,13 +115,19 @@ Widget footer(var context) {
               // StaticStore.screen = 1;
 
               if (StaticStore.screen != 0) {
-                Navigator.pop(context);
-              }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SearchPage(),
+                  )).then((value) => 
+                Navigator.pop(context));
+              }else{
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => SearchPage(),
                   ));
+              }
 
               // .then((value) => Navigator.pop(context));
 
@@ -141,10 +153,13 @@ Widget footer(var context) {
               // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>PlaylistScreen()));
               // StaticStore.screen != 3?
               if (StaticStore.screen != 0) {
-                Navigator.pop(context);
-              }
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PlaylistScreen())).then((value) => 
+                Navigator.pop(context));
+              }else{
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PlaylistScreen()));
+              }
             },
           ),
           Spacer(),
@@ -161,11 +176,14 @@ Widget footer(var context) {
             onPressed: () async {
               // StaticStore.screen = 2;
               if (StaticStore.screen != 0) {
-                Navigator.pop(context);
-              }
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Suggestion())).then((value) => Navigator.pop(context));
+                // Navigator.pop(context);
+              }else{
               // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Suggestion()));
+              }
             },
           ),
           
