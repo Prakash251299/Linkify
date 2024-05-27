@@ -128,27 +128,6 @@ Widget footer(var context) {
           ),
           Spacer(),
           IconButton(
-            icon: StaticStore.screen == 2
-                ? Icon(
-                    LineIcons.userPlus,
-                    color: Colors.white,
-                  )
-                : Icon(
-                    LineIcons.userPlus,
-                    color: Colors.white70,
-                  ),
-            onPressed: () async {
-              // StaticStore.screen = 2;
-              if (StaticStore.screen != 0) {
-                Navigator.pop(context);
-              }
-              // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Suggestion()));
-            },
-          ),
-          Spacer(),
-          IconButton(
             icon: StaticStore.screen == 3
                 ? Icon(
                     Icons.library_add,
@@ -168,6 +147,28 @@ Widget footer(var context) {
                     MaterialPageRoute(builder: (context) => PlaylistScreen()));
             },
           ),
+          Spacer(),
+          IconButton(
+            icon: StaticStore.screen == 2
+                ? Icon(
+                    LineIcons.userPlus,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    LineIcons.userPlus,
+                    color: Colors.white70,
+                  ),
+            onPressed: () async {
+              // StaticStore.screen = 2;
+              if (StaticStore.screen != 0) {
+                Navigator.pop(context);
+              }
+              // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Suggestion()));
+            },
+          ),
+          
         ])),
   );
 }

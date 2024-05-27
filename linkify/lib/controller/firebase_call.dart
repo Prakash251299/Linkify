@@ -381,8 +381,8 @@ Future<List<UserInfo>> fetchFriends()async{
       }
 
 
-    print("friends");
-    print(friends);
+    // print("friends");
+    // print(friends);
     return friends;
   }
   return [];
