@@ -47,23 +47,14 @@ class HomeScreen extends StatefulWidget {
 int numberOfFrontPageCategories=5;
 
 class _HomeScreenState extends State<HomeScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-// class HomeScreen extends StatelessWidget {
-//   // final MainController con;
-//   HomeScreen({
-//     Key? key,
-//     // required this.con,
-//   }) : super(key: key);
-//   @override
-  // void initState(){
-
-  //   super.initState();
-  // }
   double menuWidth=0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    StaticStore.screen = 0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

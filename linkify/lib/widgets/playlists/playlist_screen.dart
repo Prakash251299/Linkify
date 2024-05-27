@@ -18,6 +18,12 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    StaticStore.screen = 3;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -25,13 +31,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: Colors.white,),
             onPressed: (){
+              StaticStore.screen=0;
               Navigator.pop(context);
             },
           ),
           backgroundColor: Colors.black,
           title: Text("Playlists",style:TextStyle(color: Colors.white)),
         ),
-        body: Stack(
+        body: 
+        Stack(
           alignment: Alignment.bottomCenter,
           children: [
             BlocProvider(
@@ -186,6 +194,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             footer(context),
           ],
         ),
-      ));
+      )
+    );
   }
 }

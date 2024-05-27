@@ -17,7 +17,7 @@ import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
 // import 'package:linkify/model/album.dart';
 import 'package:linkify/model/user_info.dart';
-import 'package:linkify/widgets/Network/friend_suggestion.dart';
+import 'package:linkify/widgets/Network/suggestions/friend_suggestion.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
 import 'package:linkify/widgets/playlists/playlist_screen.dart';
 import 'package:linkify/widgets/uis/models/genreTag.dart';
@@ -61,40 +61,63 @@ Widget footer(var context) {
         // ),
         child: Row(children: [
           IconButton(
-            icon:StaticStore.screen==0?Icon(Icons.home,color: Colors.white,):Icon(LineIcons.home,color: Colors.white70,),
+            icon: StaticStore.screen == 0
+                ? Icon(
+                    Icons.home,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    LineIcons.home,
+                    color: Colors.white70,
+                  ),
 
             // icon: const Icon(
             //   LineIcons.home,
-              // color: Colors.white,
+            // color: Colors.white,
             // ),
             onPressed: () {
               StaticStore.screen = 0;
-
 
               // Navigator.of(context).push(MaterialPageRoute(
               //       builder: (_) => HomeScreen(),
               //     ));
 
+              if(StaticStore.screen==0){
+                Navigator.pop(context);
+              }
 
-              Navigator.pushReplacement(context, MaterialPageRoute(
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
                     builder: (_) => HomeScreen(),
                   ));
-                  // .then((value) => Navigator.pop(context));
+              // .then((value) => Navigator.pop(context));
             },
           ),
           const Spacer(),
           IconButton(
-            icon: StaticStore.screen==1? Icon(
-              Icons.search,
-              color: Colors.white,
-            ):Icon(Icons.search,color: Colors.white70,),
+            icon: StaticStore.screen == 1
+                ? Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    Icons.search,
+                    color: Colors.white70,
+                  ),
             onPressed: () {
-              StaticStore.screen = 1;
-               Navigator.pushReplacement(context,MaterialPageRoute(
+              // StaticStore.screen = 1;
+
+              if (StaticStore.screen != 0) {
+                Navigator.pop(context);
+              }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
                     builder: (_) => SearchPage(),
                   ));
-                  // .then((value) => Navigator.pop(context));
 
+              // .then((value) => Navigator.pop(context));
 
               // Navigator.of(context)
               //     .push(MaterialPageRoute(
@@ -105,31 +128,44 @@ Widget footer(var context) {
           ),
           Spacer(),
           IconButton(
-            icon: StaticStore.screen==2?Icon(
-              LineIcons.userPlus,
-              color: Colors.white,
-            ):Icon(
-              LineIcons.userPlus,
-              color: Colors.white70,
-            ),
+            icon: StaticStore.screen == 2
+                ? Icon(
+                    LineIcons.userPlus,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    LineIcons.userPlus,
+                    color: Colors.white70,
+                  ),
             onPressed: () async {
-              StaticStore.screen = 2;
-
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Suggestion()));
+              // StaticStore.screen = 2;
+              if (StaticStore.screen != 0) {
+                Navigator.pop(context);
+              }
+              // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Suggestion()));
             },
           ),
           Spacer(),
           IconButton(
-            icon: StaticStore.screen==3?Icon(
-              Icons.library_add,
-              color: Colors.white,
-            ):Icon(
-              Icons.library_add,
-              color: Colors.white70,
-            ),
+            icon: StaticStore.screen == 3
+                ? Icon(
+                    Icons.library_add,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    Icons.library_add,
+                    color: Colors.white70,
+                  ),
             onPressed: () async {
-              StaticStore.screen = 3;
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PlaylistScreen()));
+              // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>PlaylistScreen()));
+              // StaticStore.screen != 3?
+              if (StaticStore.screen != 0) {
+                Navigator.pop(context);
+              }
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PlaylistScreen()));
             },
           ),
         ])),
@@ -144,12 +180,12 @@ Widget miniplayer(BuildContext context) {
   int d = StaticStore.currentSong.length * 4 % 34;
   // int d = StaticStore.currentSong.length * 4 % 34;
   YoutubeSongPlayer _player = YoutubeSongPlayer();
-  int e = d+1;
+  int e = d + 1;
   while (excludedColorList.contains(d)) {
     d++;
     d = d % 34;
   }
-  while (excludedColorList.contains(e) || e==d) {
+  while (excludedColorList.contains(e) || e == d) {
     e++;
     e = e % 34;
   }
@@ -212,13 +248,16 @@ Widget miniplayer(BuildContext context) {
                         width: 45,
                         height: 45,
                         // decoration: TextDecoration.none,
-                        decoration: StaticStore.currentSongImg!=""?BoxDecoration(
-                          // color: Colors.red,
-                          // decoration: TextDecoration.none
-                          image: DecorationImage(
-                              image: NetworkImage(StaticStore.currentSongImg),
-                              fit: BoxFit.cover),
-                        ):BoxDecoration(),
+                        decoration: StaticStore.currentSongImg != ""
+                            ? BoxDecoration(
+                                // color: Colors.red,
+                                // decoration: TextDecoration.none
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        StaticStore.currentSongImg),
+                                    fit: BoxFit.cover),
+                              )
+                            : BoxDecoration(),
                       ),
                       SizedBox(width: 8),
                       Column(
@@ -267,7 +306,7 @@ Widget miniplayer(BuildContext context) {
                             // show-creator
                             SizedBox(
                               // width: MediaQuery.of(context).size.width / 1.5,
-                              width: MediaQuery.of(context).size.width/1.5,
+                              width: MediaQuery.of(context).size.width / 1.5,
                               child: Text(
                                   // list[index].creator ?? '',
 
@@ -294,8 +333,7 @@ Widget miniplayer(BuildContext context) {
                             ),
                           ]),
                       // Spacer(),
-                      
-                      
+
                       // Icon(Icons.menu),
                       Container(
                         // height: 20,
@@ -325,11 +363,10 @@ Widget miniplayer(BuildContext context) {
                       ),
                       // SizedBox(width:13),
                       Container(
-                        // height: ,
-                        width: 40,
-                        // color: Colors.amber,
-                        child: playNext(_player)
-                      ),
+                          // height: ,
+                          width: 40,
+                          // color: Colors.amber,
+                          child: playNext(_player)),
                     ],
                   ),
                 ),
@@ -395,50 +432,49 @@ var duration = const Duration(seconds: 1);
 // @override
 
 Widget playNext(_player) {
-  return 
-  IconButton(
-      onPressed: () async {
-        if (StaticStore.nextPlay == 1) {
-          StaticStore.nextPlay = 0;
-          // }
-          StaticStore.queueIndex++;
-          if (StaticStore.queueIndex <= StaticStore.myQueueTrack.length - 1) {
-            // setState(() {
-            // });
-            await _player.youtubeStop().then((value) async {
-              // if(StaticStore.queueIndex>=StaticStore.myQueueTrack.length){
-              //   StaticStore.queueIndex--;
-              //   return;
-              // }
-    
-              await _player
-                  .youtubePlay(
-                      StaticStore.myQueueTrack[StaticStore.queueIndex].name,
-                      StaticStore
-                          .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
-                  .then((value) {
-                StaticStore.currentSong =
-                    StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-                StaticStore.currentArtists =
-                    StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-                StaticStore.currentSongImg =
-                    StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-                StaticStore.playing = true;
-                StaticStore.pause = false;
-              });
+  return IconButton(
+    onPressed: () async {
+      if (StaticStore.nextPlay == 1) {
+        StaticStore.nextPlay = 0;
+        // }
+        StaticStore.queueIndex++;
+        if (StaticStore.queueIndex <= StaticStore.myQueueTrack.length - 1) {
+          // setState(() {
+          // });
+          await _player.youtubeStop().then((value) async {
+            // if(StaticStore.queueIndex>=StaticStore.myQueueTrack.length){
+            //   StaticStore.queueIndex--;
+            //   return;
+            // }
+
+            await _player
+                .youtubePlay(
+                    StaticStore.myQueueTrack[StaticStore.queueIndex].name,
+                    StaticStore
+                        .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
+                .then((value) {
+              StaticStore.currentSong =
+                  StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+              StaticStore.currentArtists =
+                  StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+              StaticStore.currentSongImg =
+                  StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+              StaticStore.playing = true;
+              StaticStore.pause = false;
             });
-            // setState(() {});
-          } else {
-            StaticStore.queueIndex--;
-            StaticStore.nextPlay = 1;
-          }
+          });
+          // setState(() {});
+        } else {
+          StaticStore.queueIndex--;
+          StaticStore.nextPlay = 1;
         }
-      },
-      // iconSize: 45,
-      icon: const Icon(
-        Icons.skip_next,
-        color: Colors.white,
-      ),
+      }
+    },
+    // iconSize: 45,
+    icon: const Icon(
+      Icons.skip_next,
+      color: Colors.white,
+    ),
     // ),
   );
 }
@@ -512,8 +548,10 @@ Widget _buildBar(
                   const SizedBox.expand(),
                   AnimatedContainer(
                     duration: duration,
-                    width: StaticStore.player.duration==null?0:(StaticStore.player.position.inSeconds * wid.width) /
-                        StaticStore.player.duration!.inSeconds,
+                    width: StaticStore.player.duration == null
+                        ? 0
+                        : (StaticStore.player.position.inSeconds * wid.width) /
+                            StaticStore.player.duration!.inSeconds,
                     // width: barWidth * status.value / 100,
                     // width: barWidth*1/2,
                     // width:MediaQuery.of(context).size.width,

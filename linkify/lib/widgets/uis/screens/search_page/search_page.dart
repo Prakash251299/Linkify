@@ -18,14 +18,33 @@ import '../../methods/string_methods.dart';
 import '../../models/genreTag.dart';
 import '../genre_page/genre_page.dart';
 import '../search_results/search_result.dart';
-
-class SearchPage extends StatelessWidget {
-  // final MainController con;
-
+class SearchPage extends StatefulWidget {
+  // const SearchPage({super.key});
   const SearchPage({
     Key? key,
     // required this.con,
   }) : super(key: key);
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+// class SearchPage extends StatelessWidget {
+//   // final MainController con;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    StaticStore.screen = 1;
+    super.initState();
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +64,11 @@ class SearchPage extends StatelessWidget {
             );
           } else {
             return Scaffold(
+              // appBar: AppBar(
+              //   leading: IconButton(icon:Icon(Icons.arrow_back),onPressed: (){
+              //     print("back pressed");
+              //   },),
+              // ),
               body: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
