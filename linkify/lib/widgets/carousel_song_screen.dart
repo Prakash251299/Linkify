@@ -127,38 +127,44 @@ class _SongScreenState extends State<CarouselSongScreen> {
                   right: 20,
                   // vertical: 200.0,
                 ),
-                child: Container(
-                  // height:30,
-                  //   child:
-                  // ClipRect(
-          
-                  child: 
-                  // StaticStore.myQueueTrack.length>StaticStore.queueIndex?
-
-                    StaticStore.currentSongImg!=""?
-                  Image.network(
-                    StaticStore.myQueueTrack.length>StaticStore.queueIndex?
-                    "${StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl}":widget.trackImg,
-                    // "",
+                child: Center(
+                  child: Container(
+                    height:MediaQuery.of(context).size.height/2-30,
+                    // width: MediaQuery.of(context).size.height/2,
 
 
-                    // widget.trackImg,
-                    // fit: BoxFit.fill,
-                    // width: 300 - _counter < 70 ? 70 : 300 - _counter,
-                    // height: 300 - _counter < 70 ? 70 : 300 - _counter,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  ):SizedBox(),
+
+                    //   child:
+                    // ClipRect(
+                            
+                    child: 
+                    // StaticStore.myQueueTrack.length>StaticStore.queueIndex?
+                  
+                      StaticStore.currentSongImg!=""?
+                    Image.network(
+                      StaticStore.myQueueTrack.length>StaticStore.queueIndex?
+                      "${StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl}":widget.trackImg,
+                      // "",
+                  
+                  
+                      // widget.trackImg,
+                      // fit: BoxFit.fill,
+                      // width: 300 - _counter < 70 ? 70 : 300 - _counter,
+                      // height: 300 - _counter < 70 ? 70 : 300 - _counter,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
+                    ):SizedBox(),
+                  ),
                 ),
               ),
               // ClipRect(

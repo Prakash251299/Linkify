@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/controller/playlist_track.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_view.dart';
 import 'package:linkify/widgets/playlists/playlist_cubit.dart';
 import 'package:linkify/widgets/playlists/playlist_track_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
@@ -55,7 +56,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         onTap: () async {
                                           print("playlist opened");
                                           List<AlbumTrack>? _albumTracks= await fetchPlaylistTracks(state.playlists[i].id);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PlaylistTracks(state.playlists[i].imgUrl,state.playlists[i].name,_albumTracks)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AlbumView(state.playlists[i].imgUrl,state.playlists[i].name,_albumTracks)));
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(

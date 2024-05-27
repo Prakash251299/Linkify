@@ -56,4 +56,17 @@ Widget playPauseAlbumButton(List<AlbumTrack>? _albumTracks,int position){
     }
   );
 }
-// StreamBuilder()
+
+
+Widget playPauseAlbumButtonTop(List<AlbumTrack>? _albumTracks,int position){
+  return StreamBuilder<Object>(
+    stream: StaticStore.player.playerStateStream,
+    builder: (context, snapshot) {
+      if(StaticStore.player.processingState==ProcessingState.completed){
+        playMine();
+        return Icon(Icons.play_circle,size:49,color: Colors.grey,);
+      }
+      return _albumTracks?[position].name!=StaticStore.currentSong?Icon(Icons.play_circle,size:49,color: Colors.grey,):StaticStore.playing == true?Icon(Icons.pause,size:49,color: Colors.white,):Icon(Icons.play_circle,size:49,color: Colors.yellow,);
+    }
+  );
+}
