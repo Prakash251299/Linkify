@@ -66,7 +66,26 @@ Widget playPauseAlbumButtonTop(List<AlbumTrack>? _albumTracks,int position){
         playMine();
         return Icon(Icons.play_circle,size:49,color: Colors.grey,);
       }
-      return _albumTracks?[position].name!=StaticStore.currentSong?Icon(Icons.play_circle,size:49,color: Colors.grey,):StaticStore.playing == true?Icon(Icons.pause,size:49,color: Colors.white,):Icon(Icons.play_circle,size:49,color: Colors.yellow,);
+      // _albumTracks!=null?
+      if(_albumTracks==null){
+        return Icon(Icons.play_circle,size:49,color:Colors.white);
+      }
+      var condition = false;
+      // condition = _albumTracks.contains(StaticStore.currentSong);
+      for(int i=0;i<_albumTracks.length;i++){
+        if(_albumTracks[i].name==StaticStore.currentSong){
+          condition = true;
+          break;
+        }
+      }
+      // print("Contains: $condition");
+      // return condition==true?Icon(Icons.pause,size:49,color: Colors.green,):Icon(Icons.play_circle,size:49,color: Colors.white,);
+      return condition==true?(StaticStore.playing==true?Icon(Icons.pause,size:49,color: Colors.green,):Icon(Icons.play_circle,size:49,color: Colors.green,)):Icon(Icons.play_circle,size:49,color: Colors.white,);
+
+
+
+
+      // return _albumTracks?[position].name!=StaticStore.currentSong?Icon(Icons.play_circle,size:49,color: Colors.grey,):StaticStore.playing == true?Icon(Icons.pause,size:49,color: Colors.white,):Icon(Icons.play_circle,size:49,color: Colors.yellow,);
     }
   );
 }
