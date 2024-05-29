@@ -55,7 +55,8 @@ Widget buildPageOne() {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(15),
                             onTap: () async {
-                              print(songList[index].displayName);
+                              // print(songList[index].artist);
+                              // return;
                               await playPauseLocal(songList[index].displayName,songList,index,context);
                               setState(() {});
                             },

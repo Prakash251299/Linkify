@@ -57,8 +57,8 @@ class SongPlayerController extends GetxController{
         tag: MediaItem(
         // Specify a unique ID for each media item:
         id: '1',
-        artist: "",
-        title: "songname",
+        artist: artists,
+        title: songName,
         artUri: null,
       ),
       ));

@@ -34,7 +34,7 @@ Widget playPauseAlbumButton(List<SongModel> _albumTracks, int position) {
       });
 }
 
-Future<void> playPauseLocal(name,songList,index,context) async {
+Future<void> playPauseLocal(name,List<SongModel> songList,index,context) async {
   SongPlayerController _songPlayerController = SongPlayerController();
   if (StaticStore.playing == true) {
     if (StaticStore.currentSong==name){
@@ -50,6 +50,7 @@ Future<void> playPauseLocal(name,songList,index,context) async {
     } else {
       // print(widget._albumTracks?[index].name);
       await _songPlayerController.playLocalSong(songList[index].data,songList[index].artist,songList[index].uri,name).then((value) {
+        StaticStore.currentArtists = [songList[index].artist];
         StaticStore.currentSong = name;
         StaticStore.playing = true;
         StaticStore.pause = false;
@@ -58,7 +59,7 @@ Future<void> playPauseLocal(name,songList,index,context) async {
             builder: (context) => CarouselSongScreen(
                 name,
                 "",
-                [],
+                [songList[index].artist],
                 ""
                 )));
     }
@@ -84,6 +85,7 @@ Future<void> playPauseLocal(name,songList,index,context) async {
         // StaticStore.myQueueTrack = widget._albumTracks!;
         // StaticStore.queueLoaded = 1;
         // StaticStore.queueIndex = index;
+        StaticStore.currentArtists = [songList[index].artist];
         StaticStore.currentSong = name;
         // StaticStore.currentSongImg = widget._albumTracks![index].imgUrl!;
         // StaticStore.currentArtists =
@@ -95,7 +97,7 @@ Future<void> playPauseLocal(name,songList,index,context) async {
             builder: (context) => CarouselSongScreen(
                 name,
                 "",
-                [],
+                [songList[index].artist],
                 ""
                 )));
       });
