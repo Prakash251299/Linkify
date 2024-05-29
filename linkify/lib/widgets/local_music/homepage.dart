@@ -14,14 +14,16 @@ import 'package:flutter/material.dart';
 // import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
+import 'package:http/http.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:linkify/controller/songPlayerController.dart';
-import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:linkify/widgets/local_songs.dart';
+import 'package:linkify/controller/local_songs/songPlayerController.dart';
+import 'package:linkify/controller/local_songs/song_data_contoller.dart';
+import 'package:linkify/widgets/local_music/local_songs.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  List<SongModel> songList = [];
+  Homepage(songList,{super.key});
 
   // const Homepage({super.key});
 
@@ -44,7 +46,7 @@ class _HomepageState extends State<Homepage> {
 // var currSong.value = 0;
   SongPlayerController songPlayerController = Get.put(SongPlayerController());
   SongDataController songDataController = Get.put(SongDataController());
-  RxList<SongModel> songList = <SongModel>[].obs;
+  // RxList<SongModel> widget.songList = <SongModel>[].obs;
 // var player = songPlayerController.player;
 
 // void playMusic(String url) async {
@@ -53,22 +55,24 @@ class _HomepageState extends State<Homepage> {
 //   player.play();
 // }
 
-  void loadMusic() async {
-    try {
-      // songList = await songDataController.getLocalSongs();
-      songList = SongDataController.songList;
-      setState(() {
-        // SongDataController.loaded = true;
-      });
-    } catch (e) {
-      print("Nothing found");
-    }
-  }
+  // void loadMusic() async {
+  //   try {
+  //     // widget.songList = await songDataController.getLocalSongs();
+  //     widget.songList = SongDataController.widget.songList;
+  //     print("Reading local song:");
+  //     print(widget.songList);
+  //     setState(() {
+  //       // SongDataController.loaded = true;
+  //     });
+  //   } catch (e) {
+  //     print("Nothing found");
+  //   }
+  // }
 
   @override
   void initState() {
     // await read();
-    loadMusic();
+    // loadMusic();
 // print(player.playerState);
 // if(player.playerState==ProcessingState.completed){
 
@@ -101,12 +105,16 @@ class _HomepageState extends State<Homepage> {
               Icons.more_vert,
               color: Colors.black,
             ),
-            onPressed: () {
+            onPressed: () async {
               // do something
-              // print(songList[0].title);
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => LocalSongList(songList: songList)));
+              // print(widget.songList[0].title);
+              print("widget.Songlist");
+              // print(widget.songList);
+              SongDataController _controller = SongDataController();
+              await _controller.read();
+              // Navigator.pop(context);
+              // Navigator.of(context).pushReplacement(MaterialPageRoute(
+              //     builder: (context) => Localwidget.SongList(widget.songList: widget.songList)));
             },
           )
         ],
@@ -122,7 +130,7 @@ class _HomepageState extends State<Homepage> {
           // 	borderRadius: BorderRadius.circular(8),
           // 	child: Image.network(
           // 	thumbnailImgUrl,
-          //   // songList[SongDataController.currSong.value].uri!,
+          //   // widget.songList[SongDataController.currSong.value].uri!,
           // 	height: 350,
           // 	width: 350,
           // 	fit: BoxFit.cover,
@@ -138,13 +146,13 @@ class _HomepageState extends State<Homepage> {
           //   children: [
           //     // SongDataController.loaded?
           //     // Flexible(
-          //     //   child: Text(songList.length>0?
-          //     //     "${songList[SongDataController.currSong.value].title}":"",
+          //     //   child: Text(widget.songList.length>0?
+          //     //     "${widget.songList[SongDataController.currSong.value].title}":"",
           //     //     maxLines: 1,
           //     //     style: Theme.of(context).textTheme.bodyLarge,
           //     //   ),
           //     // )
-          //     songList.length > 0
+          //     widget.songList.length > 0
           //         ? 
           //         Padding(
           //             padding: EdgeInsets.all(16),
@@ -160,7 +168,7 @@ class _HomepageState extends State<Homepage> {
           //                         // Text("sad"),
           //                         // Obx(() =>
           //                         Text(
-          //                             "${songList[SongDataController.currSong.value].title}", ////// Title
+          //                             "${widget.songList[SongDataController.currSong.value].title}", ////// Title
           //                             // "${SongPlayerController.songName.value}",
           //                             style: TextStyle(
           //                                 fontSize: 18,
@@ -173,7 +181,7 @@ class _HomepageState extends State<Homepage> {
           //                     scrollDirection: Axis.horizontal,
           //                     // padding: EdgeInsets.only(top: 50),
           //                     child: Text(
-          //                         "${songList[SongDataController.currSong.value].artist}",
+          //                         "${widget.songList[SongDataController.currSong.value].artist}",
           //                         style: TextStyle(fontSize: 14)),
           //                     // ],
           //                   )
@@ -224,12 +232,12 @@ class _HomepageState extends State<Homepage> {
                     SongPlayerController.paused = false;
                     SongPlayerController.playing.value = false;
                     // SongDataController.currSong.value =
-                    //     (SongDataController.currSong.value + 1) % songList.length;
+                    //     (SongDataController.currSong.value + 1) % widget.songList.length;
 
                     // try {
                     //   // playNext();
                     //   songPlayerController.playLocalSong(
-                    //       songList[SongDataController.currSong.value].data);
+                    //       widget.songList[SongDataController.currSong.value].data);
                     //   // if (SongPlayerController.playing.value == false) {
                     //   //   ++SongDataController.currSong.value;
                     //   //   title = "Not playing";
@@ -242,7 +250,7 @@ class _HomepageState extends State<Homepage> {
 
                     // } catch (e) {
                     //   SongDataController.currSong.value =
-                    //       (SongDataController.currSong.value + 1) % songList.length;
+                    //       (SongDataController.currSong.value + 1) % widget.songList.length;
                     // }
 
                   }
@@ -276,7 +284,7 @@ class _HomepageState extends State<Homepage> {
                       stream:
                           SongPlayerController.player.bufferedPositionStream,
                       builder: (context, snapshot2) {
-                        // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
+                        // if(snapshot2.data?.inMilliseconds==widget.songList[SongDataController.currSong.value].duration){
                         //   print("end it");
                         //   SongPlayerController.playing.value = false;
                         // }
@@ -313,13 +321,13 @@ class _HomepageState extends State<Homepage> {
                             children: [
                               // SongDataController.loaded?
                               // Flexible(
-                              //   child: Text(songList.length>0?
-                              //     "${songList[SongDataController.currSong.value].title}":"",
+                              //   child: Text(widget.songList.length>0?
+                              //     "${widget.songList[SongDataController.currSong.value].title}":"",
                               //     maxLines: 1,
                               //     style: Theme.of(context).textTheme.bodyLarge,
                               //   ),
                               // )
-                              songList.length > 0
+                              widget.songList.length > 0
                                   ? 
                                   Padding(
                                       padding: EdgeInsets.all(16),
@@ -335,7 +343,7 @@ class _HomepageState extends State<Homepage> {
                                                   // Text("sad"),
                                                   // Obx(() =>
                                                   Text(
-                                                      songList[SongDataController.currSong.value].title, ////// Title
+                                                      widget.songList[SongDataController.currSong].title, ////// Title
                                                       // "${SongPlayerController.songName.value}",
                                                       style: const TextStyle(
                                                           fontSize: 18,
@@ -348,7 +356,7 @@ class _HomepageState extends State<Homepage> {
                                               scrollDirection: Axis.horizontal,
                                               // padding: EdgeInsets.only(top: 50),
                                               child: Text(
-                                                  "${songList[SongDataController.currSong.value].artist}",
+                                                  "${widget.songList[SongDataController.currSong].artist}",
                                                   style: TextStyle(fontSize: 14)),
                                               // ],
                                             )
@@ -372,8 +380,8 @@ class _HomepageState extends State<Homepage> {
                               total: 
                               SongPlayerController.totalTime.value,
                               // SongPlayerController.player.duration ??
-                              //     Duration(seconds: songList[SongDataController.currSong.value].duration!),
-                                  // Duration(seconds: songList[0].duration!),
+                              //     Duration(seconds: widget.songList[SongDataController.currSong.value].duration!),
+                                  // Duration(seconds: widget.songList[0].duration!),
 
                               // total: SongPlayerController.player.duration ??
                               //     const Duration(seconds: 100),
@@ -437,9 +445,9 @@ class _HomepageState extends State<Homepage> {
                                 // SongPlayerController.paused = true;
                               } else {
                                 if (SongPlayerController.playing.value == false) {
-                                  songPlayerController.playLocalSong(
-                                      songList[SongDataController.currSong.value]
-                                          .data);
+                                  // songPlayerController.playLocalSong(
+                                  //     widget.songList[SongDataController.currSong]
+                                  //         .data);
                                   // SongPlayerController.playing = true;
                                   // SongPlayerController.paused = false;
                                 }
@@ -548,7 +556,7 @@ class _HomepageState extends State<Homepage> {
           //                     } else {
           //                       if (SongPlayerController.playing.value == false) {
           //                         songPlayerController.playLocalSong(
-          //                             songList[SongDataController.currSong.value]
+          //                             widget.songList[SongDataController.currSong.value]
           //                                 .data);
           //                         // SongPlayerController.playing = true;
           //                         // SongPlayerController.paused = false;
@@ -700,8 +708,8 @@ class _HomepageState extends State<Homepage> {
 // // var currSong.value = 0;
 //   SongPlayerController songPlayerController = Get.put(SongPlayerController());
 //   SongDataController songDataController = Get.put(SongDataController());
-//   // RxList<SongModel> songList = <SongModel>[].obs;
-//   RxList<SongModel> songList = SongDataController.songList;
+//   // RxList<SongModel> widget.songList = <SongModel>[].obs;
+//   RxList<SongModel> widget.songList = SongDataController.widget.songList;
 // // var player = songPlayerController.player;
 
 // // void playMusic(String url) async {
@@ -712,7 +720,7 @@ class _HomepageState extends State<Homepage> {
 
 //   void loadMusic() async {
 //     try {
-//       songList = await songDataController.getLocalSongs();
+//       widget.songList = await songDataController.getLocalSongs();
 //       setState(() {
 //         SongDataController.loaded = true;
 //       });
@@ -759,10 +767,10 @@ class _HomepageState extends State<Homepage> {
 //             ),
 //             onPressed: () {
 //               // do something
-//               // print(songList[0].title);
+//               // print(widget.songList[0].title);
 //               Navigator.pop(context);
 //               Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                   builder: (context) => LocalSongList(songList: songList)));
+//                   builder: (context) => Localwidget.SongList(widget.songList: widget.songList)));
 //             },
 //           )
 //         ],
@@ -778,7 +786,7 @@ class _HomepageState extends State<Homepage> {
 //           // 	borderRadius: BorderRadius.circular(8),
 //           // 	child: Image.network(
 //           // 	thumbnailImgUrl,
-//           //   // songList[SongDataController.currSong.value].uri!,
+//           //   // widget.songList[SongDataController.currSong.value].uri!,
 //           // 	height: 350,
 //           // 	width: 350,
 //           // 	fit: BoxFit.cover,
@@ -794,13 +802,13 @@ class _HomepageState extends State<Homepage> {
 //             children: [
 //               // SongDataController.loaded?
 //               // Flexible(
-//               //   child: Text(songList.length>0?
-//               //     "${songList[SongDataController.currSong.value].title}":"",
+//               //   child: Text(widget.songList.length>0?
+//               //     "${widget.songList[SongDataController.currSong.value].title}":"",
 //               //     maxLines: 1,
 //               //     style: Theme.of(context).textTheme.bodyLarge,
 //               //   ),
 //               // )
-//               songList.length > 0
+//               widget.songList.length > 0
 //                   ? 
 //                   Padding(
 //                       padding: EdgeInsets.all(16),
@@ -816,7 +824,7 @@ class _HomepageState extends State<Homepage> {
 //                                   // Text("sad"),
 //                                   // Obx(() =>
 //                                   Text(
-//                                       "${songList[SongDataController.currSong.value].title}", ////// Title
+//                                       "${widget.songList[SongDataController.currSong.value].title}", ////// Title
 //                                       // "${SongPlayerController.songName.value}",
 //                                       style: TextStyle(
 //                                           fontSize: 18,
@@ -829,7 +837,7 @@ class _HomepageState extends State<Homepage> {
 //                               scrollDirection: Axis.horizontal,
 //                               // padding: EdgeInsets.only(top: 50),
 //                               child: Text(
-//                                   "${songList[SongDataController.currSong.value].artist}",
+//                                   "${widget.songList[SongDataController.currSong.value].artist}",
 //                                   style: TextStyle(fontSize: 14)),
 //                               // ],
 //                             )
@@ -915,12 +923,12 @@ class _HomepageState extends State<Homepage> {
 //             //         SongPlayerController.player.stop();
 //             //         SongPlayerController.paused = false;
 //             //         SongDataController.currSong.value =
-//             //             (SongDataController.currSong.value + 1) % songList.length;
+//             //             (SongDataController.currSong.value + 1) % widget.songList.length;
 
 //             //         try {
 //             //           // playNext();
 //             //           songPlayerController.playLocalSong(
-//             //               songList[SongDataController.currSong.value].data);
+//             //               widget.songList[SongDataController.currSong.value].data);
 //             //           // if (SongPlayerController.playing.value == false) {
 //             //           //   ++SongDataController.currSong.value;
 //             //           //   title = "Not playing";
@@ -933,9 +941,9 @@ class _HomepageState extends State<Homepage> {
 
 //             //         } catch (e) {
 //             //           SongDataController.currSong.value =
-//             //               (SongDataController.currSong.value + 1) % songList.length;
+//             //               (SongDataController.currSong.value + 1) % widget.songList.length;
 //             //           // songPlayerController.playLocalSong(
-//             //           //     songList[SongDataController.currSong.value].data);
+//             //           //     widget.songList[SongDataController.currSong.value].data);
 
 
 //             //           // Navigator.of(context).push(MaterialPageRoute(
@@ -978,7 +986,7 @@ class _HomepageState extends State<Homepage> {
 
 
 
-//             //             // if(snapshot2.data?.inMilliseconds==songList[SongDataController.currSong.value].duration){
+//             //             // if(snapshot2.data?.inMilliseconds==widget.songList[SongDataController.currSong.value].duration){
 //             //             //   print("end it");
 //             //             //   SongPlayerController.playing.value = false;
 //             //             // }
@@ -996,7 +1004,7 @@ class _HomepageState extends State<Homepage> {
 
 //             //             Duration bufferedDuration = Duration(seconds:0);
 //             //             //  = SongDataController.loaded
-//             //             //     ? songList[SongDataController.currSong.value].duration
+//             //             //     ? widget.songList[SongDataController.currSong.value].duration
 //             //             //     : const Duration(seconds: 0);
 
 
@@ -1100,7 +1108,7 @@ class _HomepageState extends State<Homepage> {
                                     
 
 //                                   songPlayerController.playLocalSong(
-//                                       songList[SongDataController.currSong.value]
+//                                       widget.songList[SongDataController.currSong.value]
 //                                           .data);
 //                                   // SongPlayerController.playing = true;
 //                                   // SongPlayerController.paused = false;

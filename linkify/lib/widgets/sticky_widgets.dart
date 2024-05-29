@@ -220,7 +220,7 @@ Widget miniplayer(BuildContext context) {
         Container(
           // height:100,
           // padding: EdgeInsets.only(bottom:50),
-          margin: EdgeInsets.only(bottom: 50),
+          margin: EdgeInsets.only(bottom: StaticStore.miniplayerMargin),
 
           // color: Color(tags[0]['color']),
           decoration: BoxDecoration(
@@ -430,25 +430,6 @@ Widget miniplayer(BuildContext context) {
 // var trackHeight = 10.0;
 var curve = Curves.ease;
 var duration = const Duration(seconds: 1);
-//   });
-//   // : assert(trackAspectRatio >= 1, 'width:height must >= 1');
-
-//   /// The battery status.
-//   // final DefaultBatteryStatus status;
-
-//   /// The height of the track.
-//   final double trackHeight;
-
-//   /// The width of the track.
-//   final double trackAspectRatio;
-
-//   /// The curve of the animation.
-//   final Curve curve;
-
-//   /// The duration of the animation.
-//   final Duration duration;
-
-// @override
 
 Widget playNext(_player) {
   return IconButton(
@@ -507,7 +488,7 @@ Widget indicator(BuildContext context) {
       stream: StaticStore.player.playerStateStream,
       builder: (context, snapshot) {
         return Container(
-          margin: EdgeInsets.only(bottom: 50),
+          margin: EdgeInsets.only(bottom: StaticStore.miniplayerMargin),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [track],

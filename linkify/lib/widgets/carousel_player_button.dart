@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
-import 'package:linkify/widgets/homepage.dart';
+import 'package:linkify/widgets/local_music/homepage.dart';
 import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:linkify/controller/static_store.dart';

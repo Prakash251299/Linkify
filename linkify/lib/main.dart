@@ -1,10 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:linkify/controller/local_songs/fetch_localsong.dart';
 import 'package:linkify/controller/login.dart';
-import 'package:linkify/controller/song_data_contoller.dart';
-import 'package:linkify/widgets/homeNav.dart';
+import 'package:linkify/controller/local_songs/song_data_contoller.dart';
+import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/widgets/local_music/homeNav.dart';
+// import 'package:linkify/widgets/uis/models/song_model.dart';
+// import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +32,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   SongDataController c = SongDataController();
   LoginPage loginController = LoginPage();
+  List<SongModel> localSongs=[];
 
   @override
   void initState() {
@@ -95,6 +101,7 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Cloud Songs"),
                 onPressed: () async {
+                  StaticStore.miniplayerMargin=50;
                   if (await loginController.getLoginStatus() == 1) {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) => App()));
@@ -120,16 +127,20 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Device Songs"),
                 onPressed: () async => {
+                  StaticStore.miniplayerMargin=0,
                   if (SongDataController.loaded == true)
                     {
+                      localSongs = await read(),
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => HomeNav())),
+                          MaterialPageRoute(builder: (context) => HomeNav(localSongs))),
                     }
                   else
                     {
-                      if (await c.getLocalSongs() == 1)
+                      if (await c.getLocalSongs() == 1){
+                        localSongs = await read(),
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => HomeNav())),
+                            MaterialPageRoute(builder: (context) => HomeNav(localSongs))),
+                      }
                     }
                 },
               ),
