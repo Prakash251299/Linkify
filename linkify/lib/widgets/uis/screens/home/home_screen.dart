@@ -44,311 +44,310 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-int numberOfFrontPageCategories=5;
+int numberOfFrontPageCategories = 5;
 
 class _HomeScreenState extends State<HomeScreen> {
-  double menuWidth=0;
+  double menuWidth = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     StaticStore.screen = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => HomeCubit()..getAlbums(),
-        // create:(_){},
-        child: BlocBuilder<HomeCubit, HomeState>(
-            // child: BlocBuilder(
-            builder: (context, state) {
-          print("homescreen");
-          if (state.status == LoadPage.loading) {
-            return Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 10),
-                    Text("Loading front page data"),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "If it is taking too long check your internet",
-                          maxLines: 3,
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-          }
-          if (state.status == LoadPage.loaded) {
-            var greet = greeting();
-            return SafeArea(
-              child: Scaffold(
-                body: 
-                Column(
-                  children: [
-                  Stack(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 7.0),
-                      child: Container(
-                        // color: Colors.red,
-                        // padding:EdgeInsets.only(bottom: 10),
-                        height: 60,
-                        child: Row(
-                          children: [
-                            Text(
-                              greet,
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            Spacer(),
-
-                            Row(
-                              children: [
-
-                                StreamBuilder(
-                                  stream: FetchRequestNotifications().asStream(),
-                                  builder: (context, snapshot) {
-                                    // print(snapshot.data!.length);
-                                    if(snapshot.data!=null && snapshot.data!.length>StaticStore.notificationCounts){
-                                      return IconButton(
-                                        onPressed: () async {
-                                          setState(() {});
-                                          StaticStore.notificationCounts = snapshot.data!=null?snapshot.data!.length:0;
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
-                                        }, 
-                                        icon: Icon(Icons.notifications_active,color: Colors.red,)
-                                      );
-                                    }
-                                    return IconButton(
-                                      onPressed: () async {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestNotificationScreen()));
-                                      }, 
-                                      icon: Icon(Icons.notifications,color: Colors.white,)
-                                    );
-                                    
-                                  }
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    print('Sign out called');
-                                    // menu=1;
-                                    // RestartWidget.restartApp(context);
-                                    /* Below code is for signout */
-                                //                       var appDir = (await getTemporaryDirectory()).path;
-                                // new Directory(appDir).delete(recursive: true);
-                                    // await DefaultCacheManager().emptyCache();
-                                
-                                    // StaticStore.player ;
-                                    if(menuWidth == 0){
-                                      setState((){
-                                        menuWidth = 200;
-                                      });
-                                    }else{
-                                      setState((){
-                                        menuWidth = 0;
-                                      });
-
-                                    }
-
-                                    // setState((){
-                                    //   menuWidth = 200;
-
-                                    // });
-
-                                
-                                    // RestartWidget.restartApp(context);
-
-
-
-
-
-
-
-
-
-
-                                    // await callSignOutApi(context);
-                                  },
-                                  icon: menuWidth==200?Icon(Icons.cancel,color: Colors.white,):Icon(
-                                    Icons.more_vert,
-                                    color: Colors.white,
-                                  ), // more_vert _icon
-                                ),
-                              ],
-                            ),
-
-                          ],
-                        ),
-                      ),
-                    ),
-                    // //////////////////////////////
-                    // menu==0?
-                    // AnimatedContainer (
-                    //   duration: Duration (seconds: 3),
-                    //   width: 200,
-                    //   height: 400,
-                    //   color: Colors.red,
-                    // ):SizedBox(),
-                    // //////////////////////////////
-                  ]),
-
-                  Stack(
-                    alignment: Alignment.bottomCenter,
+    return GestureDetector(
+      onTap: (){
+        print("tapped");
+        setState(() {
+          menuWidth=0;
+        });
+      },
+      child: BlocProvider(
+          create: (context) => HomeCubit()..getAlbums(),
+          child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+            print("homescreen");
+            if (state.status == LoadPage.loading) {
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        // padding:EdgeInsets.only(bottom: 50),
-                        height: MediaQuery.of(context).size.height - 88,
-                        child: SingleChildScrollView(
-                          child: Column(
+                      CircularProgressIndicator(),
+                      SizedBox(height: 10),
+                      Text("Loading front page data"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "If it is taking too long check your internet",
+                            maxLines: 3,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+            if (state.status == LoadPage.loaded) {
+              var greet = greeting();
+              return SafeArea(
+                child: Scaffold(
+                  body: Column(children: [
+                    Stack(children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7.0),
+                        child: Container(
+                          // color: Colors.red,
+                          // padding:EdgeInsets.only(bottom: 10),
+                          height: 60,
+                          child: Row(
                             children: [
-                              CarouselSongs(state.carouselSongs),
-                              // Spacer(),
-
-                              for (int k = 0; k < numberOfFrontPageCategories; k++) ...{
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 7.0,
-                                    vertical: 8,
+                              Text(
+                                greet,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  StreamBuilder(
+                                      stream:
+                                          FetchRequestNotifications().asStream(),
+                                      builder: (context, snapshot) {
+                                        // print(snapshot.data!.length);
+                                        if (snapshot.data != null &&
+                                            snapshot.data!.length >
+                                                StaticStore.notificationCounts) {
+                                          return IconButton(
+                                              onPressed: () async {
+                                                setState(() {});
+                                                StaticStore.notificationCounts =
+                                                    snapshot.data != null
+                                                        ? snapshot.data!.length
+                                                        : 0;
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RequestNotificationScreen()));
+                                              },
+                                              icon: Icon(
+                                                Icons.notifications_active,
+                                                color: Colors.red,
+                                              ));
+                                        }
+                                        return IconButton(
+                                            onPressed: () async {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RequestNotificationScreen()));
+                                            },
+                                            icon: Icon(
+                                              Icons.notifications,
+                                              color: Colors.white,
+                                            ));
+                                      }),
+                                  IconButton(
+                                    onPressed: () async {
+                                      print('Sign out called');
+                                      if (menuWidth == 0) {
+                                        setState(() {
+                                          menuWidth = 200;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          menuWidth = 0;
+                                        });
+                                      }
+                                    },
+                                    icon: menuWidth == 200
+                                        ? Icon(
+                                            Icons.cancel,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.more_vert,
+                                            color: Colors.white,
+                                          ), // more_vert _icon
                                   ),
-                                  // EdgeInsets.only(top:16,left:7),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "${state.categories?[k].name}",
-                                        // style: TextStyle(color:Colors.white),
-                                        // TextStyle(color: Colors.red),TextTheme(titleMedium: )
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                HorizontalSongList(state.categories?[k]),
-                                const SizedBox(height: 12),
-                              },
-                              SizedBox(
-                                height: 30,
+                                ],
                               ),
                             ],
                           ),
                         ),
                       ),
-
-                      // StaticStore.player.processingState==ProcessingState.completed?
-
-                      StreamBuilder(
-                          stream: StaticStore.player.playerStateStream,
-                          builder: (context, snapshot1) {
-                            return StaticStore.playing == true ||
-                                    StaticStore.pause == true
-                                ?
-                                // Text("hi")
-                                miniplayer(context)
-                                : const SizedBox();
-                          }),
-
-                      //////////////////////////////
-                      // menu==1?
-                      Container(
-                        padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-88-400),
-                        // margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-128),
-                        child: 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            AnimatedContainer (
-                              duration: Duration (milliseconds: 500),
-                              width: menuWidth,
-                              height: 400,
-                              // color: Colors.black,
-                              child:
-                              Column(
-                                // alignment: Alignment.topRight,
-                                children: [
-                                    menuWidth==200?
-                                            Center(
-                                              child: InkWell(
-                                                child: 
-                                                Container(
-                                    height:40,
-                                    // width:menuWidth==200?menuWidth:200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      color: Colors.red,
+                      // //////////////////////////////
+                      // menu==0?
+                      // AnimatedContainer (
+                      //   duration: Duration (seconds: 3),
+                      //   width: 200,
+                      //   height: 400,
+                      //   color: Colors.red,
+                      // ):SizedBox(),
+                      // //////////////////////////////
+                    ]),
+      
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          // padding:EdgeInsets.only(bottom: 50),
+                          height: MediaQuery.of(context).size.height - 88,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                CarouselSongs(state.carouselSongs),
+                                // Spacer(),
+      
+                                for (int k = 0;
+                                    k < numberOfFrontPageCategories;
+                                    k++) ...{
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 7.0,
+                                      vertical: 8,
                                     ),
-                                    child:
-                                                
-                                                Center(child: Text("Logout",style: TextStyle(color: Colors.white),))
-                                              ),
+                                    // EdgeInsets.only(top:16,left:7),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${state.categories?[k].name}",
+                                          // style: TextStyle(color:Colors.white),
+                                          // TextStyle(color: Colors.red),TextTheme(titleMedium: )
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  HorizontalSongList(state.categories?[k]),
+                                  const SizedBox(height: 12),
+                                },
+                                SizedBox(
+                                  height: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+      
+                        // StaticStore.player.processingState==ProcessingState.completed?
+      
+                        StreamBuilder(
+                            stream: StaticStore.player.playerStateStream,
+                            builder: (context, snapshot1) {
+                              return StaticStore.playing == true ||
+                                      StaticStore.pause == true
+                                  ?
+                                  // Text("hi")
+                                  miniplayer(context)
+                                  : const SizedBox();
+                            }),
+      
+                        //////////////////////////////
+                        // menu==1?
+                        Container(
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).size.height - 88 - 400),
+                          // margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-128),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AnimatedContainer(
+                                  duration: Duration(milliseconds: 500),
+                                  width: menuWidth,
+                                  height: 400,
+                                  // color: Colors.black,
+                                  child: Column(
+                                    // alignment: Alignment.topRight,
+                                    children: [
+                                      menuWidth == 200
+                                          ? Center(
+                                              child: InkWell(
+                                                child: Container(
+                                                    height: 40,
+                                                    // width:menuWidth==200?menuWidth:200,
+                                                    width: 200,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(5)),
+                                                      color: Colors.red,
+                                                    ),
+                                                    child: Center(
+                                                        child: Text(
+                                                      "Logout",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ))),
                                                 onTap: () async {
                                                   await callSignOutApi(context);
                                                 },
                                               ),
-                                            ):SizedBox(),
-                                  // ),
-                                  SizedBox(height: 5,),
-                                    menuWidth==200?
-                                            Center(
-                                              child: InkWell(
-                                                child: 
-                                                Container(
-                                    height:300,
-                                    // width:menuWidth==200?menuWidth:200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      color: Colors.red,
-                                    ),
-                                    child:
-                                                
-                                                Center(child: Text("Genres",style: TextStyle(color: Colors.white),)),
-                                              ),
-                                                onTap: () async {
-
-                                                  await fetchPlaylists();
-                                                  // List<UserInfo>userInfo = 
-                                                  // await KNN_recommender();
-                                                  // print(userInfo);
-                                                },
-                                              ),
-                                            ):SizedBox(),
-                                  // ),
-                                ],
-                              )
-                            ),
-                          ],
-                        ),
-                      )
-                      // :SizedBox()
-                      //////////////////////////////
-                      ,
-
-
-                      footer(context),
-                    ],
-                  ),
-                  // ),
-                ]),
-              ),
+                                            )
+                                          : SizedBox(),
+                                      // ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      // menuWidth == 200
+                                      //     ? Center(
+                                      //         child: InkWell(
+                                      //           child: Container(
+                                      //             height: 300,
+                                      //             // width:menuWidth==200?menuWidth:200,
+                                      //             width: 200,
+                                      //             decoration: BoxDecoration(
+                                      //               borderRadius:
+                                      //                   BorderRadius.all(
+                                      //                       Radius.circular(5)),
+                                      //               color: Colors.red,
+                                      //             ),
+                                      //             child: Center(
+                                      //                 child: Text(
+                                      //               "Genres",
+                                      //               style: TextStyle(
+                                      //                   color: Colors.white),
+                                      //             )),
+                                      //           ),
+                                      //           onTap: () async {
+                                      //             // await fetchPlaylists();
+                                      //           },
+                                      //         ),
+                                      //       )
+                                      //     : SizedBox(),
+                                      // ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        )
+                        // :SizedBox()
+                        //////////////////////////////
+                        ,
+      
+                        footer(context),
+                      ],
+                    ),
+                    // ),
+                  ]),
+                ),
+              );
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("No data found"),
+              ],
             );
-          }
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("No data found"),
-            ],
-          );
-        }));
+          })),
+    );
   }
 }

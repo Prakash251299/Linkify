@@ -37,6 +37,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             },
           ),
           backgroundColor: Colors.black,
+          titleSpacing: 0,
           title: Text("Playlists",style:TextStyle(color: Colors.white)),
         ),
         body: 
@@ -60,12 +61,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 12.0,
+                                              left: 20.0,
                                               bottom: 12.0,
                                               top: 12.0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
+                                                // MainAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                 child: Row(
@@ -147,32 +149,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              // IconButton(
-                                              //   splashRadius: 20,
-                                              //   padding:
-                                              //       const EdgeInsets.all(0),
-                                              //   onPressed: () {
-                                              //     showModalBottomSheet(
-                                              //         useRootNavigator: true,
-                                              //         isScrollControlled: true,
-                                              //         elevation: 100,
-                                              //         backgroundColor:
-                                              //             Colors.black38,
-                                              //         context: context,
-                                              //         builder: (context) {
-                                              //           return SizedBox();
-                                              //           /* For shoowing search result song name with options */
-                                              //           // BottomSheetWidget(
-                                              //           //     // con: con,
-                                              //           //     // song: state.playlists[i]
-                                              //           // );
-                                              //         });
-                                              //   },
-                                                // icon: const Icon(
-                                                //   Icons.more_vert,
-                                                //   color: Colors.white,
-                                                // ),
-                                              // )
                                             ],
                                           ),
                                         ),

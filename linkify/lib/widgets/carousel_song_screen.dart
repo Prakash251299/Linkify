@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 // import 'package:line_icons/line_icons.dart';
 // import 'package:linkify/controller/queue_track.dart';
 // import 'package:get/get.dart';
@@ -129,7 +130,7 @@ class _SongScreenState extends State<CarouselSongScreen> {
                 ),
                 child: Center(
                   child: Container(
-                    height:MediaQuery.of(context).size.height/2-30,
+                    height:MediaQuery.of(context).size.height*45/100,
                     // width: MediaQuery.of(context).size.height/2,
 
 
@@ -263,13 +264,28 @@ class _MusicPlayer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    iconSize: 35,
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
+                  StreamBuilder<Object>(
+                    stream: StaticStore.player.loopModeStream,
+                    builder: (context, snapshot) {
+                      return IconButton(
+                        iconSize: 35,
+                        onPressed: () {
+                          print(StaticStore.player.loopMode);
+                          if(StaticStore.player.loopMode==LoopMode.one){
+                            StaticStore.player.setLoopMode(LoopMode.off);
+                          }else{
+                            StaticStore.player.setLoopMode(LoopMode.one);
+                          }
+                        },
+                        icon: StaticStore.player.loopMode==LoopMode.one?Icon(
+                          Icons.loop,
+                          color: Colors.green,
+                        ):Icon(
+                          Icons.loop,
+                          color: Colors.white,
+                        ),
+                      );
+                    }
                   ),
                   IconButton(
                     iconSize: 35,
