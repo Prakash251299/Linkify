@@ -178,7 +178,7 @@ Widget footer(var context) {
               // StaticStore.screen = 2;
               if (StaticStore.screen != 0) {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Suggestion())).then((value) => Navigator.pop(context));
+                    MaterialPageRoute(builder: (context) => Suggestion()));
                 // Navigator.pop(context);
               }else{
               // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
