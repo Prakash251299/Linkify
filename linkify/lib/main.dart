@@ -69,19 +69,19 @@ class MyAppState extends State<MyApp> {
           color: Colors.greenAccent[400],
           linearMinHeight: 10,
         ),
-        // textTheme: const TextTheme(
-        //   headline4: TextStyle(
-        //     color: Colors.white,
-        //     fontSize: 24,
-        //     fontFamily: 'Proxima Bold',
-        //     fontWeight: FontWeight.w600,
-        //   ),
-        //   bodyText2: TextStyle(
-        //     fontSize: 16,
-        //     color: Colors.white,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
+        textTheme: const TextTheme(
+          headline4: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontFamily: 'Proxima Bold',
+            fontWeight: FontWeight.w600,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         primarySwatch: Colors.blue,
       ),
 
@@ -134,11 +134,13 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Device Songs"),
                 onPressed: ()async{
-                  if(StaticStore.player.playing==true){
-                    StaticStore.player.stop();
-                    StaticStore.playing = false;
-                    StaticStore.pause= false;
-                  }
+                  // if(StaticStore.player.playing==true){
+                  //   StaticStore.player.stop();
+                  //   StaticStore.playing = false;
+                  //   StaticStore.pause= false;
+                  // }
+
+
                   // Navigator.popUntil(context, ModalRoute.withName('/MyApp'));
                   StaticStore.miniplayerMargin=0;
                   if (SongDataController.loaded == true)

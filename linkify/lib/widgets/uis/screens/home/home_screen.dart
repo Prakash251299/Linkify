@@ -341,11 +341,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("No data found"),
-              ],
+            return Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    IconButton(onPressed: (){
+                      callSignOutApi(context);
+                    }, icon: Icon(Icons.logout,color: Colors.white,))
+                  ],),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("No data found",style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
+                ],
+              ),
             );
           })),
     );
