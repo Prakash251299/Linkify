@@ -125,92 +125,15 @@ class _HomepageState extends State<Homepage> {
             flex: 2,
           ),
 
-          ////////  UNCOMMENT IT  //////////
-          // ClipRRect(
-          // 	borderRadius: BorderRadius.circular(8),
-          // 	child: Image.network(
-          // 	thumbnailImgUrl,
-          //   // widget.songList[SongDataController.currSong.value].uri!,
-          // 	height: 350,
-          // 	width: 350,
-          // 	fit: BoxFit.cover,
-          // 	),
-          // ),
           const Spacer(),
 
 
-          
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     // SongDataController.loaded?
-          //     // Flexible(
-          //     //   child: Text(widget.songList.length>0?
-          //     //     "${widget.songList[SongDataController.currSong.value].title}":"",
-          //     //     maxLines: 1,
-          //     //     style: Theme.of(context).textTheme.bodyLarge,
-          //     //   ),
-          //     // )
-          //     widget.songList.length > 0
-          //         ? 
-          //         Padding(
-          //             padding: EdgeInsets.all(16),
-          //             child: Container(
-          //               width: MediaQuery.of(context).size.width - 100,
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child:
-          //                         // Text("sad"),
-          //                         // Obx(() =>
-          //                         Text(
-          //                             "${widget.songList[SongDataController.currSong.value].title}", ////// Title
-          //                             // "${SongPlayerController.songName.value}",
-          //                             style: TextStyle(
-          //                                 fontSize: 18,
-          //                                 fontWeight: FontWeight.bold)),
-
-          //                         // ),
-          //                     // ],
-          //                   ),
-          //                   SingleChildScrollView(
-          //                     scrollDirection: Axis.horizontal,
-          //                     // padding: EdgeInsets.only(top: 50),
-          //                     child: Text(
-          //                         "${widget.songList[SongDataController.currSong.value].artist}",
-          //                         style: TextStyle(fontSize: 14)),
-          //                     // ],
-          //                   )
-          //                 ],
-          //               ),
-          //             ))
-          //         : Container()
-          //     // :Container()
-          //     ,
-          //   ],
-          // ),
-
-          // const Spacer(),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: StreamBuilder(
                 stream: SongPlayerController.player.positionStream,
                 builder: (context, snapshot1) {
-                  // setState(() {
-
-                  // });
-                  /* Returning to start after completion */
-                  // setState(() {
-
-                  // if(SongPlayerController.player.position==(SongPlayerController.player.duration)){
-                  //   print("completed");
-                  //   SongPlayerController.playing = false;
-                  // }
 
                   if (SongPlayerController.player.processingState ==
                       ProcessingState.completed) {

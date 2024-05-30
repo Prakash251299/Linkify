@@ -1,198 +1,14 @@
-// import 'dart:convert';
-// import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-// import 'package:http/http.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:linkify/controller/Network/fetch_friends.dart';
-import 'package:linkify/controller/firebase_call.dart';
-// import 'package:linkify/controller/accesstoken_error.dart';
-// import 'package:linkify/controller/firebase_call.dart';
-// import 'package:linkify/controller/read_write.dart';
+import 'package:linkify/controller/local_songs/prev_next_play.dart';
+import 'package:linkify/controller/local_songs/songPlayerController.dart';
 import 'package:linkify/controller/static_store.dart';
-import 'package:linkify/controller/get_user_info.dart';
-import 'package:linkify/controller/Network/user_network_functions.dart';
 import 'package:linkify/controller/youtube_player.dart';
-// import 'package:linkify/model/album.dart';
-import 'package:linkify/model/user_info.dart';
-import 'package:linkify/widgets/Network/suggestions/friend_suggestion.dart';
 import 'package:linkify/widgets/carousel_song_screen.dart';
-import 'package:linkify/widgets/playlists/playlist_screen.dart';
 import 'package:linkify/widgets/uis/models/genreTag.dart';
-import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
-import 'package:linkify/widgets/uis/screens/library/library.dart';
-import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
-import 'package:linkify/widgets/Network/user_network.dart';
-import 'package:linkify/widgets/uis/utils/loading.dart';
-// import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
-// class MyStickyWidgets extends StatelessWidget {
-
-bool _isNumeric(String str) {
-  if (str == "") {
-    return false;
-  }
-  return double.tryParse(str) != null;
-}
-// @override
-
-Widget footer(var context) {
-  return Opacity(
-    opacity: 1.0,
-    // opacity: 0.5,
-    child: Container(
-        // margin: EdgeInsets.only(top: MediaQuery.of(context).size.height-200),
-        height: 50,
-        padding: EdgeInsets.only(left: 20, right: 20),
-        color: Colors.black.withOpacity(0.7),
-        // color: Colors.red,
-        // decoration: BoxDecoration(
-        //   color: Colors.black.withOpacity(0.5),
-        //   gradient: LinearGradient(
-        //     begin: Alignment.bottomCenter,
-        //     end: Alignment.topCenter,
-        //     colors: [
-        //     Colors.black,
-        //     Colors.black,
-        //   ]
-
-        //   ),
-        // ),
-        child: Row(children: [
-          IconButton(
-            icon: StaticStore.screen == 0
-                ? Icon(
-                    Icons.home,
-                    color: Colors.white,
-                  )
-                : Icon(
-                    LineIcons.home,
-                    color: Colors.white70,
-                  ),
-
-            // icon: const Icon(
-            //   LineIcons.home,
-            // color: Colors.white,
-            // ),
-            onPressed: () {
-              StaticStore.screen = 0;
-
-              // Navigator.of(context).push(MaterialPageRoute(
-              //       builder: (_) => HomeScreen(),
-              //     ));
-
-              if(StaticStore.screen==0){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => HomeScreen(),
-                  )).then((value) =>
-                Navigator.pop(context));
-              }else{
-
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => HomeScreen(),
-                  ));
-              }
-              // .then((value) => Navigator.pop(context));
-            },
-          ),
-          const Spacer(),
-          IconButton(
-            icon: StaticStore.screen == 1
-                ? Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  )
-                : Icon(
-                    Icons.search,
-                    color: Colors.white70,
-                  ),
-            onPressed: () {
-              // StaticStore.screen = 1;
-
-              if (StaticStore.screen != 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SearchPage(),
-                  )).then((value) => 
-                Navigator.pop(context));
-              }else{
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SearchPage(),
-                  ));
-              }
-
-              // .then((value) => Navigator.pop(context));
-
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(
-              //       builder: (_) => SearchPage(),
-              //     ))
-              //     .then((value) => Navigator.pop(context));
-            },
-          ),
-          Spacer(),
-          IconButton(
-            icon: StaticStore.screen == 3
-                ? Icon(
-                    Icons.library_add,
-                    color: Colors.white,
-                  )
-                : Icon(
-                    Icons.library_add,
-                    color: Colors.white70,
-                  ),
-            onPressed: () async {
-              // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>PlaylistScreen()));
-              // StaticStore.screen != 3?
-              if (StaticStore.screen != 0) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PlaylistScreen())).then((value) => 
-                Navigator.pop(context));
-              }else{
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PlaylistScreen()));
-              }
-            },
-          ),
-          Spacer(),
-          IconButton(
-            icon: StaticStore.screen == 2
-                ? Icon(
-                    LineIcons.userPlus,
-                    color: Colors.white,
-                  )
-                : Icon(
-                    LineIcons.userPlus,
-                    color: Colors.white70,
-                  ),
-            onPressed: () async {
-              // StaticStore.screen = 2;
-              if (StaticStore.screen != 0) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Suggestion())).then((value) => Navigator.pop(context));
-                // Navigator.pop(context);
-              }else{
-              // List<List<UserInfo>?> recommendedUsers = userButtonCaller();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Suggestion()));
-              }
-            },
-          ),
-          
-        ])),
-  );
-}
-
-Widget miniplayer(BuildContext context) {
+Widget local_miniplayer(BuildContext context,songList) {
   // var c = [Color.fromARGB(221, 66, 37, 37),Color.fromARGB(221, 146, 72, 72),];
   // var random = Random().nextInt(34)-1;
   // if(8 in List)
@@ -390,7 +206,7 @@ Widget miniplayer(BuildContext context) {
                           // height: ,
                           width: 40,
                           // color: Colors.amber,
-                          child: playNext(_player)),
+                          child: playNextWidget(_player,songList)),
                     ],
                   ),
                 ),
@@ -410,70 +226,22 @@ Widget miniplayer(BuildContext context) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: ((context) => CarouselSongScreen(
               StaticStore.currentSong,
-              StaticStore.currentSong,
+              "",
               StaticStore.currentArtists,
-              StaticStore.currentSongImg))));
+              ""))));
     },
   );
 }
 
-// @override
-// Widget build(BuildContext context) {
-//   // TODO: implement build
-//   throw UnimplementedError();
-// }
-// }
-
-// import 'battery_status.dart';
-// import 'index.dart';
-
-/// A widget that displays the battery level and status.
-// class DefaultBatteryIndicator extends StatelessWidget {
-//   DefaultBatteryIndicator({
-//     super.key,
-//     // required this.status,
-// var trackHeight = 10.0;
 var curve = Curves.ease;
 var duration = const Duration(seconds: 1);
 
-Widget playNext(_player) {
+Widget playNextWidget(_player,List<SongModel>songList) {
+  // index = index%songList.length;
+  SongPlayerController _songPlayerController = SongPlayerController();
   return IconButton(
     onPressed: () async {
-      if (StaticStore.nextPlay == 1) {
-        StaticStore.nextPlay = 0;
-        // }
-        StaticStore.queueIndex++;
-        if (StaticStore.queueIndex <= StaticStore.myQueueTrack.length - 1) {
-          // setState(() {
-          // });
-          await _player.youtubeStop().then((value) async {
-            // if(StaticStore.queueIndex>=StaticStore.myQueueTrack.length){
-            //   StaticStore.queueIndex--;
-            //   return;
-            // }
-
-            await _player
-                .youtubePlay(
-                    StaticStore.myQueueTrack[StaticStore.queueIndex].name,
-                    StaticStore
-                        .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
-                .then((value) {
-              StaticStore.currentSong =
-                  StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-              StaticStore.currentArtists =
-                  StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
-              StaticStore.currentSongImg =
-                  StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-              StaticStore.playing = true;
-              StaticStore.pause = false;
-            });
-          });
-          // setState(() {});
-        } else {
-          StaticStore.queueIndex--;
-          StaticStore.nextPlay = 1;
-        }
-      }
+      await play_next_local(songList);
     },
     // iconSize: 45,
     icon: const Icon(
@@ -501,6 +269,7 @@ Widget indicator(BuildContext context) {
         );
       });
 }
+
 
 Widget _buildTrack(BuildContext context, ColorScheme colorScheme) {
   // final borderRadius = BorderRadius.circular(trackHeight / 4);

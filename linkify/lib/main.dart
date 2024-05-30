@@ -101,8 +101,15 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Cloud Songs"),
                 onPressed: () async {
+                  if(StaticStore.player.playing==true){
+                    StaticStore.player.stop();
+                    StaticStore.playing = false;
+                    StaticStore.pause= false;
+                  }
+                  // Navigator.popUntil(context, ModalRoute.withName('/MyApp'));
+                  // Navigator.of(context).popUntil((route) => route.settings.name == "MyApp");
                   StaticStore.miniplayerMargin=50;
-                  if (await loginController.getLoginStatus() == 1) {
+                  if (await loginController.getLoginStatus() == 1){
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) => App()));
                     print("Already logged in");
@@ -126,20 +133,26 @@ class MyAppState extends State<MyApp> {
               SizedBox(height: 20,),
               ElevatedButton(
                 child: Text("Device Songs"),
-                onPressed: () async => {
-                  StaticStore.miniplayerMargin=0,
+                onPressed: ()async{
+                  if(StaticStore.player.playing==true){
+                    StaticStore.player.stop();
+                    StaticStore.playing = false;
+                    StaticStore.pause= false;
+                  }
+                  // Navigator.popUntil(context, ModalRoute.withName('/MyApp'));
+                  StaticStore.miniplayerMargin=0;
                   if (SongDataController.loaded == true)
                     {
-                      localSongs = await read(),
+                      localSongs = await read();
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => HomeNav(localSongs))),
+                          MaterialPageRoute(builder: (context) => HomeNav(localSongs)));
                     }
                   else
                     {
                       if (await c.getLocalSongs() == 1){
-                        localSongs = await read(),
+                        localSongs = await read();
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => HomeNav(localSongs))),
+                            MaterialPageRoute(builder: (context) => HomeNav(localSongs)));
                       }
                     }
                 },

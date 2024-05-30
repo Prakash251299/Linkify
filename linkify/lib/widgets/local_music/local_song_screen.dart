@@ -12,10 +12,12 @@ import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/widgets/carousel_player_button.dart';
+import 'package:linkify/widgets/local_music/songplayer_buttons.dart';
 import 'package:linkify/widgets/queue_screen.dart';
 // import 'package:linkify/widgets/player_buttons.dart';
 import 'package:linkify/widgets/seekbar.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 // import 'package:linkify/widgets/uis/screens/home/home_screen.dart';
 // import 'package:linkify/widgets/uis/screens/library/library.dart';
 // import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
@@ -23,19 +25,21 @@ import 'package:linkify/widgets/sticky_widgets.dart';
 // import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:rxdart/rxdart.dart' as rxdart;
 
-class CarouselSongScreen extends StatefulWidget {
+class LocalSongScreen extends StatefulWidget {
   // SongModel songs;
   // widget.name[position],
   // widget.albumImg[position],
   // widget.trackId[position],
   // widget.trackArtists[position],
+  List<SongModel>songList=[];
   var name;
   // var albumImg;
   var trackId;
   var trackArtists;
   var trackImg;
 
-  CarouselSongScreen(
+  LocalSongScreen(
+    this.songList,
       this.name,
       // this.albumImg,
       this.trackId,
@@ -45,10 +49,10 @@ class CarouselSongScreen extends StatefulWidget {
 
   @override
   // State<SongScreen> createState() => _SongScreenState(songs);
-  State<CarouselSongScreen> createState() => _SongScreenState();
+  State<LocalSongScreen> createState() => _SongScreenState();
 }
 
-class _SongScreenState extends State<CarouselSongScreen> {
+class _SongScreenState extends State<LocalSongScreen> {
   // SongModel songs;
   // _SongScreenState(this.songs);
   // AudioPlayer audioPlayer = AudioPlayer();
@@ -59,16 +63,6 @@ class _SongScreenState extends State<CarouselSongScreen> {
     StaticStore.musicScreenEnabled = true;
     log('CheckState: initState');
     super.initState();
-
-    // audioPlayer.setAudioSource(
-    //   ConcatenatingAudioSource(
-    //     children: [
-    //       // AudioSource.uri(
-    //       //   Uri.parse('asset:///${song.url}'),
-    //       // ),
-    //     ],
-    //   ),
-    // );
   }
 
   @override
@@ -76,18 +70,6 @@ class _SongScreenState extends State<CarouselSongScreen> {
     // audioPlayer.dispose();
     super.dispose();
   }
-
-  // Stream<SeekBarData> get _seekBarDataStream =>
-  //     rxdart.Rx.combineLatest2<Duration, Duration?, SeekBarData>(
-  //         audioPlayer.positionStream, audioPlayer.durationStream, (
-  //       Duration position,
-  //       Duration? duration,
-  //     ) {
-  //       return SeekBarData(
-  //         position,
-  //         duration ?? Duration.zero,
-  //       );
-  //     });
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +98,7 @@ class _SongScreenState extends State<CarouselSongScreen> {
             children: [
               const _BackgroundFilter(),
               _MusicPlayer(
+                widget.songList,
                   widget.name,
                   // widget.albumImg,
                   widget.trackId,
@@ -144,8 +127,7 @@ class _SongScreenState extends State<CarouselSongScreen> {
                   
                       StaticStore.currentSongImg!=""?
                     Image.network(
-                      StaticStore.myQueueTrack.length>StaticStore.queueIndex?
-                      "${StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl}":widget.trackImg,
+                       StaticStore.currentSongImg,
                       // "",
                   
                   
@@ -179,13 +161,6 @@ class _SongScreenState extends State<CarouselSongScreen> {
                   ),
                 ),
               ),
-              // ClipRect(
-              //   child: CachedNetworkImage(imageUrl: song.coverUrl),
-              // ),
-              // Image.asset(
-              //   song.coverUrl,
-              //   fit: BoxFit.cover,
-              // ),
             ],
           );
         }
@@ -196,12 +171,14 @@ class _SongScreenState extends State<CarouselSongScreen> {
 
 class _MusicPlayer extends StatelessWidget {
   // SongModel songs;
+  List<SongModel>songList=[];
   var trackName;
   // var albumImg;
   var trackId;
   var trackArtists;
   var trackImg;
   _MusicPlayer(
+    this.songList,
       this.trackName,
       // this.albumImg,
       this.trackId,
@@ -224,12 +201,9 @@ class _MusicPlayer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                // song.title,
-                // "Song name",
-                // songs.name,
-                // this.name,
-                StaticStore.myQueueTrack.length>StaticStore.queueIndex?
-                "${StaticStore.myQueueTrack[StaticStore.queueIndex].name}":trackName,
+                StaticStore.currentSong,
+                // StaticStore.myQueueTrack.length>StaticStore.queueIndex?
+                // "${StaticStore.myQueueTrack[StaticStore.queueIndex].name}":trackName,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: Colors.white,
@@ -238,35 +212,19 @@ class _MusicPlayer extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                // "",
-                StaticStore.currentArtists.isEmpty?"unknown":
-                StaticStore.myQueueTrack.length>StaticStore.queueIndex?(
-                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=3
-                
-                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[2]}":
-                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=2 
-                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}"
-                    : "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}"):(trackArtists.length>=3?"${trackArtists[0]}, ${trackArtists[1]}, ${trackArtists[2]}":trackArtists.length>=2?"${trackArtists[0]}, ${trackArtists[1]}":"${trackArtists[0]}"),
+                StaticStore.currentArtists.isEmpty?"unknown":StaticStore.currentArtists[0],
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!
                     .copyWith(color: Colors.white),
                 overflow: TextOverflow.ellipsis,
               ),
-              // const SizedBox(height: 30),
-              // StreamBuilder<SeekBarData>(
-              //   stream: _seekBarDataStream,
-              //   builder: (context, snapshot) {
-              //     final positionData = snapshot.data;
-              //     return
-              // create the seekbar here
-              // SizedBox(),
               SeekBar(),
               //   },
               // ),
-              AlbumPlayerButtons(
+              SongPlayerButtons(
+                this.songList,
                 this.trackName,
-                // this.albumImg,
                 this.trackId,
                 this.trackArtists,
                 this.trackImg,
@@ -318,7 +276,7 @@ class _MusicPlayer extends StatelessWidget {
                     },
                     icon: const Icon(
                       Icons.menu,
-                      color: Colors.white,
+                      color: Colors.grey,
                     ),
                   ),
                 ],

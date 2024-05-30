@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:just_audio/just_audio.dart';
@@ -47,12 +49,13 @@ class SongPlayerController extends GetxController{
 
   }
 
-
-
-  Future<void> playLocalSong(String url,artists,uri,songName) async {
+  Future<int> playLocalSong(String url,String? artists,String songName) async {
+    File(url);
     try{
-    await StaticStore.player.setAudioSource(AudioSource.uri(
+    StaticStore.player.setAudioSource(AudioSource.uri(
         // Uri.parse(songUrl),
+        // Uri.fromFile('')),
+
         Uri.parse(url),
         tag: MediaItem(
         // Specify a unique ID for each media item:
@@ -64,88 +67,16 @@ class SongPlayerController extends GetxController{
       ));
       StaticStore.player.play().then((value) {
         StaticStore.currentSong = songName;
+        StaticStore.currentArtists = [artists];
+        StaticStore.currentSongImg = "";
         StaticStore.playing=true;
         StaticStore.pause=false;
       });
     }catch(e){
       print("Song format is not appropriate");
+      return 0;
     }
-    return;
-
-
-
-
-
-
-
-
-
-
-
-
-    await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-        // player.seek(Duration(milliseconds:player.position.inMilliseconds));
-        player.play();
-    // var _player = AudioPlayer();
-    // final duration = await StaticStore.player.setUrl(url);
-    // StaticStore.player.play();
-
-
-
-
-
-
-
-
-    // final audio2 =Audioplayer();
-    // StaticStore.player.play(AssetSource(url));
-    print("player tapped");
-    // StaticStore.player.play();
-    await StaticStore.player.setAudioSource(AudioSource.uri(
-        // Uri.parse(songUrl),
-        Uri.parse(url),
-        tag: MediaItem(
-        // Specify a unique ID for each media item:
-        id: url,
-        // artist: StaticStore.currentArtists.length>=2?"${StaticStore.currentArtists[0]}, ${StaticStore.currentArtists[1]}":StaticStore.currentArtists.length==1?"${StaticStore.currentArtists[0]}":"unknown",
-        title: "${StaticStore.currentSong}",
-        // artUri: Uri.parse(StaticStore.currentSongImg),
-      ),
-      ));
-        // player.seek(Duration(milliseconds:player.position.inMilliseconds));
-        StaticStore.player.play();
-        // await updatePosition();
-        print("played");
-        return;
-    playing.value = true;
-    completed = false;
-    if(paused==true){
-      // player.seek(Duration(milliseconds:player.position.inMilliseconds)); // For resuming
-      paused = false;
-      try{
-        player.play();
-        await updatePosition();
-      }
-      catch(e){
-        // SongDataController.currSong = (SongDataController.currSong+1)%SongDataController.songList.length;
-        // playLocalSong(SongDataController.songList[SongDataController.currSong].data);
-      }
-      // .then((value) => playing = false);
-      // playing = false;
-    }else{
-      try{
-        await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-        // player.seek(Duration(milliseconds:player.position.inMilliseconds));
-        player.play();
-        await updatePosition();
-        // .then((value) => playing = false);
-        // playing = false;
-      }
-      catch(e){
-        // playing.value = false;
-      }
-    }
-    // paused=false;
+    return 1;
   }
 
   Future<void> pauseLocalSong() async {

@@ -44,4 +44,5 @@ class StaticStore{
   static List<List<String>?>? requestStatusValue=[[],[],[]];
   static int notificationCounts=0;
   static double miniplayerMargin=50;
+  static int songIndex=0;
 }
