@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/Network/fetch_friends.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
@@ -13,19 +14,23 @@ import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/model/user_info.dart';
-import 'package:linkify/widgets/Network/show_more_suggestion.dart';
+import 'package:linkify/widgets/Network/suggestions/cubit/suggestion_cubit.dart';
+import 'package:linkify/widgets/Network/suggestions/show_more_suggestion.dart';
 import 'package:linkify/widgets/Network/user_network.dart';
 import 'package:linkify/widgets/album_view.dart';
 import 'package:linkify/widgets/carousel_view.dart';
 import 'package:linkify/widgets/loading_user_img.dart';
+import 'package:linkify/widgets/sticky_widgets.dart';
+import 'package:linkify/widgets/uis/models/loading_enum.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 
 class Suggestion extends StatefulWidget {
   // const Suggestion({super.key});
 
-  List<UserInfo>? bestMatch;
-  List<UserInfo>? goodMatch;
-  List<UserInfo>? allUsers;
+  // List<UserInfo>? bestMatch;
+  // List<UserInfo>? goodMatch;
+  // List<UserInfo>? allUsers;
+  // List<List<UserInfo>?> recommendedUsers;
   // Suggestion(this.bestMatch, this.goodMatch, this.allUsers);
   Suggestion();
   @override
@@ -44,8 +49,9 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   void initState() {
+    StaticStore.screen = 2;
     // TODO: implement initState
-    // snapshot.data?[2] = fetchAllFriends(context) as List<UserInfo>?;
+    // state.recommendedUsers[2] = fetchAllFriends(context) as List<UserInfo>?;
     super.initState();
   }
 
@@ -54,16 +60,42 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   Widget build(BuildContext context) {
-    // StaticStore.requestStatusValue=[List.filled(snapshot.data?[0]!.length, "0"),null,List.filled(snapshot.data?[2]!.length, "0")];
+    // StaticStore.requestStatusValue=[List.filled(state.recommendedUsers[0]!.length, "0"),null,List.filled(state.recommendedUsers[2]!.length, "0")];
     print("Called Suggestion");
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
-    return StreamBuilder(
-        stream: userButtonCaller().asStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          // print(snapshot.data?[2]?[2].displayName);
+    return 
+    // SizedBox();
+
+    BlocProvider(
+        create: (context) => SuggestionCubit()..getRecommendedUsers(),
+        // create:(_){},
+        child: BlocBuilder<SuggestionCubit, SuggestionState>(
+            // child: BlocBuilder(
+            builder: (context, state) {
+              // print("recommendedUsers:");
+              if(state.status==LoadPage.loading){
+                return Center(child: CircularProgressIndicator());
+              }
+              // print(state.recommendedUsers.length);
+
+              // return 
+              // SizedBox();
+            // }));
+
+
+    // StaticStore.usersLoaded==1?SizedBox():CircularProgressIndicator();
+    
+    
+    
+    
+    
+    // StreamBuilder(
+    //     stream: userButtonCaller().asStream(),
+    //     builder: (context, snapshot) {
+    //       if (snapshot.connectionState == ConnectionState.waiting) {
+    //         return Center(child: CircularProgressIndicator());
+    //       }
+          // print(state.recommendedUsers[2]?[2].displayName);
           // return SizedBox();
           return SafeArea(
             child: Scaffold(
@@ -79,15 +111,17 @@ class _SuggestionState extends State<Suggestion> {
                 // title: Text("Networks",style: TextStyle(color: Colors.white),),
                 backgroundColor: Colors.black,
               ),
-              body: snapshot.data?[0]?.length == 0 &&
-                      snapshot.data?[2]?.length == 0 &&
-                      snapshot.data?[2]?.length == 0
-                  ? Center(
+              body: 
+              state.recommendedUsers[0]?.length == 0 &&
+                      state.recommendedUsers[1]?.length == 0 &&
+                      state.recommendedUsers[2]?.length == 0
+                  ? 
+                  Center(
                       child: Stack(
                       alignment: Alignment.topCenter,
                       // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // friendOptions(context, snapshot.data?[2]),
+                        // friendOptions(context, state.recommendedUsers[2]),
                         friendOptions(context),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -96,20 +130,25 @@ class _SuggestionState extends State<Suggestion> {
                             Text("No users available"),
                           ],
                         ),
+                        // footer(context),
                       ],
                     ))
                   :
                   Stack(
-                    alignment: Alignment.topCenter,
+                    alignment: Alignment.bottomCenter,
                     children: [
                       // friendOptions(context),
+                      // Container(
+                      //   color: Colors.red,
+                      //   child: footer(context)
+                      // ),
                       ListView.builder(
                           itemCount: 1,
                           itemBuilder: (context1, snapshot1) {
                             return Stack(
                               alignment: Alignment.topCenter,
                               children: [
-                                // friendOptions(context, snapshot.data?[2]),
+                                // friendOptions(context, state.recommendedUsers[2]),
                                 
                                 // friendOptions(context),
                       
@@ -119,7 +158,7 @@ class _SuggestionState extends State<Suggestion> {
                                   child: Column(children:[
                                   
                                   // for (int i = 0; i < 2; i++) ...{
-                                  if (snapshot.data?[0]?.length != 0) ...{
+                                  if (state.recommendedUsers[0]?.length != 0) ...{
                                     Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -132,18 +171,18 @@ class _SuggestionState extends State<Suggestion> {
                                             ),
                                           ),
                                           Container(
-                                            height: snapshot.data != null &&
-                                                    snapshot.data?[0] != null &&
-                                                    snapshot.data![0]!.length >= 2
+                                            height: 
+                                                    state.recommendedUsers[0] != null &&
+                                                    state.recommendedUsers[0]!.length >= 2
                                                 ? 200
                                                 : 100,
                                             child: ListView.builder(
                                                 scrollDirection: Axis.vertical,
                                                 physics: NeverScrollableScrollPhysics(),
                                                 // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-                                                itemCount: snapshot.data != null &&
-                                                        snapshot.data?[0] != null &&
-                                                        snapshot.data![0]!.length >= 2
+                                                itemCount: 
+                                                        state.recommendedUsers[0] != null &&
+                                                        state.recommendedUsers[0]!.length >= 2
                                                     ? 2
                                                     : 1,
                                                 // itemCount:null,
@@ -168,7 +207,7 @@ class _SuggestionState extends State<Suggestion> {
                                                                         3),
                                                               ),
                                                               child:
-                                                                  snapshot.data?[0]
+                                                                  state.recommendedUsers[0]
                                                                                 ?[i].image?.length==0?
                                                       
                                                                 Container(
@@ -181,13 +220,12 @@ class _SuggestionState extends State<Suggestion> {
                                                                 // imageUrl: user.avatar!,
                                   
                                                                 // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-                                                                imageUrl: snapshot
-                                                                            .data?[0]
+                                                                imageUrl: state.recommendedUsers[0]
                                                                                 ?[i]
                                                                             .image
                                                                             ?.length !=
                                                                         0
-                                                                    ? "${snapshot.data?[0]?[i].image?[0]['url']}"
+                                                                    ? "${state.recommendedUsers[0]?[i].image?[0]['url']}"
                                                                     : "",
                                                                 // imageUrl: "",
                                   
@@ -218,14 +256,14 @@ class _SuggestionState extends State<Suggestion> {
                                                           ]),
                                                           title: Text(
                                                             // "${widget._albumTracks?[position].name}",
-                                                            "${snapshot.data?[0]?[i].displayName}",
+                                                            "${state.recommendedUsers[0]?[i].displayName}",
                                                             overflow:
                                                                 TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 color: Colors.white),
                                                           ),
                                                           subtitle: Text(
-                                                            "${snapshot.data?[0]?[i].spotifyBasedGenre}",
+                                                            "${state.recommendedUsers[0]?[i].spotifyBasedGenre}",
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.white70),
@@ -246,26 +284,21 @@ class _SuggestionState extends State<Suggestion> {
                                                                     // print(
                                                                     // "friend request sent");
                                                                     await storeFriendRequest(
-                                                                        snapshot
-                                                                            .data?[0]
+                                                                        state.recommendedUsers[0]
                                                                                 ?[i]
                                                                             .id);
                                                                     await _friends
                                                                         .friendStatusStore(
-                                                                            snapshot
-                                                                            .data?[0]?[
+                                                                            state.recommendedUsers[0]?[
                                                                                     i]
                                                                                 .id)
                                                                         .then(
                                                                             (value) {
                                                                       setState(() {
-                                                                        snapshot
-                                                                            .data!=null && snapshot
-                                                                            .data?[0]!=null?
+                                                                        state.recommendedUsers[0]!=null?
                                                                         StaticStore.requestStatusValue?[
                                                                                     0]
-                                                                                ?[i] = snapshot
-                                                                            .data![0]![i].id.toString():null;
+                                                                                ?[i] = state.recommendedUsers[0]![i].id.toString():null;
                                                                             // widget
                                                                             //     .bestMatch![i]
                                                                             //     .id
@@ -315,9 +348,9 @@ class _SuggestionState extends State<Suggestion> {
                                                   );
                                                 }),
                                           ),
-                                          snapshot.data != null &&
-                                                  snapshot.data?[0] != null
-                                              ? (snapshot.data![0]!.length > 2
+                                          
+                                                  state.recommendedUsers[0] != null
+                                              ? (state.recommendedUsers[0]!.length > 2
                                                   ? Padding(
                                                       padding: const EdgeInsets.only(
                                                           bottom: 18.0),
@@ -358,7 +391,7 @@ class _SuggestionState extends State<Suggestion> {
                                         ])
                                   },
                                   
-                                  if (snapshot.data?[1]?.length != 0) ...{
+                                  if (state.recommendedUsers[1]?.length != 0) ...{
                                     Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -371,18 +404,18 @@ class _SuggestionState extends State<Suggestion> {
                                             ),
                                           ),
                                           Container(
-                                            height: snapshot.data != null &&
-                                                    snapshot.data?[1] != null &&
-                                                    snapshot.data![1]!.length >= 2
+                                            height: 
+                                                    state.recommendedUsers[1] != null &&
+                                                    state.recommendedUsers[1]!.length >= 2
                                                 ? 200
                                                 : 100,
                                             child: ListView.builder(
                                                 scrollDirection: Axis.vertical,
                                                 physics: NeverScrollableScrollPhysics(),
                                                 // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
-                                                itemCount: snapshot.data != null &&
-                                                        snapshot.data?[1] != null &&
-                                                        snapshot.data![1]!.length >= 2
+                                                itemCount: 
+                                                        state.recommendedUsers[1] != null &&
+                                                        state.recommendedUsers[1]!.length >= 2
                                                     ? 2
                                                     : 1,
                                                 // itemCount:null,
@@ -407,7 +440,7 @@ class _SuggestionState extends State<Suggestion> {
                                                                         3),
                                                               ),
                                                               child:
-                                                                  snapshot.data?[1]
+                                                                  state.recommendedUsers[1]
                                                                                 ?[i].image?.length==0?
                                                       
                                                                 Container(
@@ -420,13 +453,12 @@ class _SuggestionState extends State<Suggestion> {
                                                                 // imageUrl: user.avatar!,
                                   
                                                                 // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-                                                                imageUrl: snapshot
-                                                                            .data?[1]
+                                                                imageUrl: state.recommendedUsers[1]
                                                                                 ?[i]
                                                                             .image
                                                                             ?.length !=
                                                                         0
-                                                                    ? "${snapshot.data?[1]?[i].image?[0]['url']}"
+                                                                    ? "${state.recommendedUsers[1]?[i].image?[0]['url']}"
                                                                     : "",
                                                                 // imageUrl: "",
                                   
@@ -457,14 +489,14 @@ class _SuggestionState extends State<Suggestion> {
                                                           ]),
                                                           title: Text(
                                                             // "${widget._albumTracks?[position].name}",
-                                                            "${snapshot.data?[1]?[i].displayName}",
+                                                            "${state.recommendedUsers[1]?[i].displayName}",
                                                             overflow:
                                                                 TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 color: Colors.white),
                                                           ),
                                                           subtitle: Text(
-                                                            "${snapshot.data?[1]?[i].spotifyBasedGenre}",
+                                                            "${state.recommendedUsers[1]?[i].spotifyBasedGenre}",
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.white70),
@@ -485,23 +517,22 @@ class _SuggestionState extends State<Suggestion> {
                                                                     // print(
                                                                     // "friend request sent");
                                                                     await storeFriendRequest(
-                                                                        snapshot
-                                                                            .data?[1]
+                                                                        state.recommendedUsers[1]
                                                                                 ?[i]
                                                                             .id);
                                                                     await _friends
                                                                         .friendStatusStore(
-                                                                            snapshot.data?[1]?[
+                                                                            state.recommendedUsers[1]?[
                                                                                     i]
                                                                                 .id)
                                                                         .then(
                                                                             (value) {
                                                                       setState(() {
-                                                                        snapshot.data!=null && snapshot.data?[1]!=null?
+                                                                        state.recommendedUsers[1]!=null?
                                                                         StaticStore.requestStatusValue?[
                                                                                     1]
                                                                                 ?[i] =
-                                                                            snapshot.data![1]![i].id
+                                                                            state.recommendedUsers[1]![i].id
                                                                                 .toString():null;
                                                                       });
                                                                       print(
@@ -541,9 +572,9 @@ class _SuggestionState extends State<Suggestion> {
                                                   );
                                                 }),
                                           ),
-                                          snapshot.data != null &&
-                                                  snapshot.data?[1] != null
-                                              ? (snapshot.data![1]!.length > 2
+                                          
+                                                  state.recommendedUsers[1] != null
+                                              ? (state.recommendedUsers[1]!.length > 2
                                                   ? Padding(
                                                       padding: const EdgeInsets.only(
                                                           bottom: 18.0),
@@ -566,13 +597,13 @@ class _SuggestionState extends State<Suggestion> {
                                                               //     await fetchAllFriends(
                                                               //         -1);
                                                               // await getRequestStatus(
-                                                              //     snapshot.data?[1], 1);
+                                                              //     state.recommendedUsers[1], 1);
                                                               Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
                                                                       builder: (context1) =>
                                                                           ShowmoreSuggestion(
-                                                                              snapshot.data?[1],
+                                                                              state.recommendedUsers[1],
                                                                               "Good match")));
                                                             },
                                                           )
@@ -586,7 +617,7 @@ class _SuggestionState extends State<Suggestion> {
                                   
                                   
                                   
-                                  if (snapshot.data?[2]?.length != 0) ...{
+                                  if (state.recommendedUsers[2]?.length != 0) ...{
                                     Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -599,9 +630,9 @@ class _SuggestionState extends State<Suggestion> {
                                             ),
                                           ),
                                           Container(
-                                            height: snapshot.data != null &&
-                                                    snapshot.data?[2] != null &&
-                                                    snapshot.data![2]!.length >= 2
+                                            height: 
+                                                    state.recommendedUsers[2] != null &&
+                                                    state.recommendedUsers[2]!.length >= 2
                                                 ? 200
                                                 : 100,
                                             child: ListView.builder(
@@ -609,11 +640,11 @@ class _SuggestionState extends State<Suggestion> {
                                                 physics: NeverScrollableScrollPhysics(),
                                                 // itemCount: _recommendedUserInfo!.length<=2?_recommendedUserInfo.length:2,
                                                 itemCount:
-                                                    // snapshot.data?[2]!=null?snapshot.data?[2]!.length:0,
-                                                    snapshot.data != null &&
-                                                            snapshot.data?[2] !=
+                                                    // state.recommendedUsers[2]!=null?state.recommendedUsers[2]!.length:0,
+                                                    
+                                                            state.recommendedUsers[2] !=
                                                                 null &&
-                                                            snapshot.data![2]!
+                                                            state.recommendedUsers[2]!
                                                                     .length >=
                                                                 2
                                                         ? 2
@@ -640,7 +671,7 @@ class _SuggestionState extends State<Suggestion> {
                                                                         3),
                                                               ),
                                                               child:
-                                                                  snapshot.data?[2]
+                                                                  state.recommendedUsers[2]
                                                                                 ?[i].image?.length==0?
                                                       
                                                                 Container(
@@ -653,12 +684,12 @@ class _SuggestionState extends State<Suggestion> {
                                                                 // imageUrl: user.avatar!,
                                   
                                                                 // imageUrl: "${widget._albumTracks?[position].imgUrl}",
-                                                                imageUrl: snapshot.data?[2]?[
+                                                                imageUrl: state.recommendedUsers[2]?[
                                                                                 i]
                                                                             .image
                                                                             ?.length !=
                                                                         0
-                                                                    ? "${snapshot.data?[2]?[i].image?[0]['url']}"
+                                                                    ? "${state.recommendedUsers[2]?[i].image?[0]['url']}"
                                                                     : "",
                                                                 // imageUrl: "",
                                   
@@ -689,14 +720,14 @@ class _SuggestionState extends State<Suggestion> {
                                                           ]),
                                                           title: Text(
                                                             // "${widget._albumTracks?[position].name}",
-                                                            "${snapshot.data?[2]?[i].displayName}",
+                                                            "${state.recommendedUsers[2]?[i].displayName}",
                                                             overflow:
                                                                 TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 color: Colors.white),
                                                           ),
                                                           subtitle: Text(
-                                                            "${snapshot.data?[2]?[i].spotifyBasedGenre}",
+                                                            "${state.recommendedUsers[2]?[i].spotifyBasedGenre}",
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.white70),
@@ -716,25 +747,22 @@ class _SuggestionState extends State<Suggestion> {
                                                                         "friend request sent");
                                   
                                                                     await storeFriendRequest(
-                                                                        snapshot
-                                                                            .data?[2]
+                                                                        state.recommendedUsers[2]
                                                                                 ?[i]
                                                                             .id);
                                   
                                                                     await _friends
                                                                         .friendStatusStore(
-                                                                            widget
-                                                                                .allUsers?[
-                                                                                    i]
+                                                                            state.recommendedUsers[2]?[i]
                                                                                 .id)
                                                                         .then(
                                                                             (value) {
                                                                       setState(() {
-                                                                        snapshot.data!=null && snapshot.data?[2]!=null?
+                                                                        state.recommendedUsers[2]!=null?
                                                                         StaticStore.requestStatusValue?[
                                                                                     2]
                                                                                 ?[i] =
-                                                                            snapshot.data![2]![i]
+                                                                            state.recommendedUsers[2]![i]
                                                                                 .id
                                                                                 .toString():null;
                                                                       });
@@ -777,9 +805,9 @@ class _SuggestionState extends State<Suggestion> {
                                                   );
                                                 }),
                                           ),
-                                          snapshot.data != null &&
-                                                  snapshot.data?[2] != null
-                                              ? (snapshot.data![2]!.length > 2
+                                          
+                                                  state.recommendedUsers[2] != null
+                                              ? (state.recommendedUsers[2]!.length > 2
                                                   ? Padding(
                                                       padding: const EdgeInsets.only(
                                                           bottom: 18.0),
@@ -824,6 +852,10 @@ class _SuggestionState extends State<Suggestion> {
                                   
                                                             ]),
                                 ),
+
+
+
+                                
                       
                       
                       
@@ -836,12 +868,30 @@ class _SuggestionState extends State<Suggestion> {
                           //   // }
                           // }
                           ),
-                          friendOptions(context),
+                          Container(
+                            margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height-120),
+                            // color: Colors.red,
+                            child: friendOptions(context),
+                          ),
+                          StreamBuilder(
+                          stream: StaticStore.player.playerStateStream,
+                          builder: (context, snapshot1) {
+                            return StaticStore.playing == true ||
+                                    StaticStore.pause == true
+                                ?
+                                // Text("hi")
+                                miniplayer(context)
+                                : const SizedBox();
+                          }),
+                          footer(context),
                     ],
                   ),
             ),
           );
-        });
+            
+        })
+        );
+        // }));
   }
 }
 
@@ -867,11 +917,15 @@ Widget friendOptions(context) {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(right: 18.0),
-            child: Icon(
-              Icons.navigate_next,
-              color: Colors.red,
+          Container(
+            margin: const EdgeInsets.only(right: 18.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.navigate_next,
+                  color: Colors.red,
+                ),
+              ],
             ),
           ),
         ],
@@ -886,7 +940,7 @@ Widget friendOptions(context) {
       //   temp = await _networkFunction.fetchUserInfo(friendIds[i]);
       //   friends.add(temp);
       // }
-      print("friends option tapped");
+      // print("friends option tapped");
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => NetworkUser("Friends")));
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NetworkUser(friends)));

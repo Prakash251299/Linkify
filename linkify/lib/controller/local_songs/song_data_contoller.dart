@@ -3,7 +3,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/state_manager.dart';
-import 'package:linkify/controller/songPlayerController.dart';
+import 'package:linkify/controller/local_songs/songPlayerController.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,7 +12,7 @@ class SongDataController extends GetxController{
   // RxList<SongModel> songList = <SongModel>[].obs;
   static var songList = <SongModel>[].obs;
   static var loaded = false;
-  static RxInt currSong = 0.obs; // static variable stores variable value in local cache, so state iis preserved
+  static int currSong = 0; // static variable stores variable value in local cache, so state iis preserved
   // static var loginHandler = 0;
 
 
@@ -29,7 +29,7 @@ class SongDataController extends GetxController{
 
     int a = await getPermission();
     if(a==1){
-      await read();
+      // await read();
       // await SongPlayerController.updatePosition();
       SongDataController.loaded = true;
       return 1;
@@ -39,14 +39,17 @@ class SongDataController extends GetxController{
   }
 
 /* Readin file */
-  Future<void> read() async {
-    songList.value = await audioQuery.querySongs(
+  Future<List<SongModel>?> read() async {
+    List<SongModel> localSongs = await audioQuery.querySongs(
       ignoreCase: false,
       orderType: OrderType.ASC_OR_SMALLER,
       sortType: null,
       uriType: UriType.EXTERNAL,
       // uriType: UriType.INTERNAL,
     );
+    
+    print("localSongs: ${localSongs[0].displayName}");
+    return localSongs;
   }
 
 

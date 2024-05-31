@@ -15,10 +15,14 @@ Future<void> callSignOutApi(context)async{
     // print("logoutStatuscode: ${a.statusCode}");
 
     await _readWrite.writeAccessToken("");
-    await _readWrite.writeRefreshToken("");
+    // await _readWrite.writeRefreshToken("");
     await _player.youtubeStop();
     await deleteAllStaticData();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WebContainer()));
+    Navigator.pushAndRemoveUntil<void>(
+      context,
+      MaterialPageRoute<void>(builder: (BuildContext context) => WebContainer()),
+      ModalRoute.withName('/'),
+    );
     return ;
   } catch (e) {
     print("Error while login after logout");

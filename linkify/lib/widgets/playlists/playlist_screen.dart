@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linkify/controller/playlist_track.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
+import 'package:linkify/widgets/album_view.dart';
 import 'package:linkify/widgets/playlists/playlist_cubit.dart';
 import 'package:linkify/widgets/playlists/playlist_track_screen.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
@@ -18,6 +19,12 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    StaticStore.screen = 3;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -25,13 +32,16 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: Colors.white,),
             onPressed: (){
+              StaticStore.screen=0;
               Navigator.pop(context);
             },
           ),
           backgroundColor: Colors.black,
+          titleSpacing: 0,
           title: Text("Playlists",style:TextStyle(color: Colors.white)),
         ),
-        body: Stack(
+        body: 
+        Stack(
           alignment: Alignment.bottomCenter,
           children: [
             BlocProvider(
@@ -47,16 +57,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         onTap: () async {
                                           print("playlist opened");
                                           List<AlbumTrack>? _albumTracks= await fetchPlaylistTracks(state.playlists[i].id);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PlaylistTracks(state.playlists[i].imgUrl,state.playlists[i].name,_albumTracks)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AlbumView(state.playlists[i].imgUrl,state.playlists[i].name,_albumTracks)));
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 12.0,
+                                              left: 20.0,
                                               bottom: 12.0,
                                               top: 12.0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
+                                                // MainAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                 child: Row(
@@ -138,32 +149,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              // IconButton(
-                                              //   splashRadius: 20,
-                                              //   padding:
-                                              //       const EdgeInsets.all(0),
-                                              //   onPressed: () {
-                                              //     showModalBottomSheet(
-                                              //         useRootNavigator: true,
-                                              //         isScrollControlled: true,
-                                              //         elevation: 100,
-                                              //         backgroundColor:
-                                              //             Colors.black38,
-                                              //         context: context,
-                                              //         builder: (context) {
-                                              //           return SizedBox();
-                                              //           /* For shoowing search result song name with options */
-                                              //           // BottomSheetWidget(
-                                              //           //     // con: con,
-                                              //           //     // song: state.playlists[i]
-                                              //           // );
-                                              //         });
-                                              //   },
-                                                // icon: const Icon(
-                                                //   Icons.more_vert,
-                                                //   color: Colors.white,
-                                                // ),
-                                              // )
                                             ],
                                           ),
                                         ),
@@ -186,6 +171,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             footer(context),
           ],
         ),
-      ));
+      )
+    );
   }
 }

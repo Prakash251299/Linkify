@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:linkify/widgets/local_music/homepage.dart';
 import 'package:linkify/widgets/uis/models/song_model.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:linkify/controller/static_store.dart';
@@ -125,7 +126,8 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
         //       } else if (!playing) {
         //         return
         StreamBuilder<Object>(
-          stream: StaticStore.player.playerStateStream,
+          // stream: StaticStore.player.playerStateStream,
+          stream: StaticStore.player.playbackEventStream,
           builder: (context, snapshot) {
             return IconButton(
               onPressed: () async {
@@ -140,21 +142,9 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                 }
                 
 
-
-                // if(StaticStore.playing==true){
-                //   _youtubePlayer.youtubePause();
-                //   StaticStore.playing = false;
-                //   StaticStore.pause = true;
-                // }else{
-                //   _youtubePlayer.youtubeResume();
-                //   StaticStore.playing = true;
-                //   StaticStore.pause = false;
-                // }
                 if(StaticStore.player.processingState == ProcessingState.completed){
                   print("completed1");
                   await StaticStore.player.seek(const Duration(seconds: 0));
-                  // StaticStore.player.play();
-                  // print("completed2");
                 }
               },
               iconSize: 75,

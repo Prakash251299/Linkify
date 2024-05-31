@@ -18,7 +18,7 @@ import 'package:linkify/controller/read_write.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album.dart';
 import 'package:linkify/model/album_track.dart';
-import 'package:linkify/widgets/carousel_view.dart';
+import 'package:linkify/widgets/album_view.dart';
 import 'package:marquee/marquee.dart';
 import 'uis/controllers/main_controller.dart';
 import '../controller/get_greeting.dart';
@@ -243,7 +243,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => 
-                                    CarouselView(
+                                    AlbumView(
                                       widget.albumInfo?['image']?[i],
                                       widget.albumInfo?['trackName']?[i],
                                       StaticStore.trackInfo[i],
