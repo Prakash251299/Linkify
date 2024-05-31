@@ -12,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/widgets/carousel_player_button.dart';
+import 'package:linkify/widgets/local_music/local_seekbar.dart';
 import 'package:linkify/widgets/local_music/songplayer_buttons.dart';
 import 'package:linkify/widgets/queue_screen.dart';
 // import 'package:linkify/widgets/player_buttons.dart';
@@ -219,7 +220,9 @@ class _MusicPlayer extends StatelessWidget {
                     .copyWith(color: Colors.white),
                 overflow: TextOverflow.ellipsis,
               ),
-              SeekBar(),
+              // SeekBar(),
+              LocalSeekBar(songList),
+              // LocalSee
               //   },
               // ),
               SongPlayerButtons(

@@ -6,8 +6,6 @@ import 'package:linkify/controller/login.dart';
 import 'package:linkify/controller/local_songs/song_data_contoller.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/widgets/local_music/homeNav.dart';
-// import 'package:linkify/widgets/uis/models/song_model.dart';
-// import 'package:linkify/widgets/uis/models/song_model.dart';
 import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

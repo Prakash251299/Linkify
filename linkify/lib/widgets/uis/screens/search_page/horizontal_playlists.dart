@@ -9,7 +9,6 @@ import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/model/playlists/playlist.dart';
 import 'package:linkify/widgets/album_view.dart';
-import 'package:linkify/widgets/carousel_view.dart';
 import 'package:linkify/widgets/uis/utils/loading.dart';
 // import '../controllers/main_controller.dart';
 // import '../models/song_model.dart';

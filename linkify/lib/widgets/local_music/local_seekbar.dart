@@ -4,23 +4,22 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:linkify/controller/local_songs/prev_next_play.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/controller/youtube_player.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
-// class SeekBarData {
-//   final Duration position;
-//   final Duration duration;
 
-//   SeekBarData(this.position, this.duration);
-// }
-
-class SeekBar extends StatefulWidget {
+class LocalSeekBar extends StatefulWidget {
   // final Duration position;
   // final Duration duration;
   // final ValueChanged<Duration>? onChanged;
   // final ValueChanged<Duration>? onChangeEnd;
+  List<SongModel>songList;
 
-  const SeekBar({
+  LocalSeekBar(
+    this.songList,
+    {
     Key? key,
     // required this.position,
     // required this.duration,
@@ -29,10 +28,10 @@ class SeekBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SeekBar> createState() => _SeekBarState();
+  State<LocalSeekBar> createState() => Local_SeekBarState();
 }
 
-class _SeekBarState extends State<SeekBar> {
+class Local_SeekBarState extends State<LocalSeekBar> {
   // double? _dragValue;
 
   // String _formatDuration(Duration? duration) {
@@ -52,32 +51,34 @@ class _SeekBarState extends State<SeekBar> {
         stream: StaticStore.player.positionStream,
         builder: (context, snapshot1) {
           if (StaticStore.player.processingState == ProcessingState.completed) {
-            YoutubeSongPlayer _player = YoutubeSongPlayer();
-            StaticStore.pause = false;
-            if (StaticStore.queueIndex == StaticStore.myQueueTrack.length - 1) {
-              StaticStore.playing = false;
-            }
-            if (StaticStore.queueIndex + 1 < StaticStore.myQueueTrack.length) {
-              // _player.youtubeStop();
-              if (StaticStore.nextPlay == 1) {
-                StaticStore.nextPlay = 0;
-                StaticStore.queueIndex++;
-                _player
-                    .youtubePlay(
-                        StaticStore.myQueueTrack[StaticStore.queueIndex].name,
-                        StaticStore.myQueueTrack[StaticStore.queueIndex]
-                            .trackArtists[0])
-                    .then((value) {
-                  StaticStore.playing = true;
-                  StaticStore.currentSong =
-                      StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-                  StaticStore.currentArtists = StaticStore
-                      .myQueueTrack[StaticStore.queueIndex].trackArtists;
-                  StaticStore.currentSongImg =
-                      StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
-                });
-              }
-            }
+            print("song completed");
+            play_next_local(widget.songList);
+            // YoutubeSongPlayer _player = YoutubeSongPlayer();
+            // StaticStore.pause = false;
+            // if (StaticStore.queueIndex == StaticStore.myQueueTrack.length - 1) {
+            //   StaticStore.playing = false;
+            // }
+            // if (StaticStore.queueIndex + 1 < StaticStore.myQueueTrack.length) {
+            //   // _player.youtubeStop();
+            //   if (StaticStore.nextPlay == 1) {
+            //     StaticStore.nextPlay = 0;
+            //     StaticStore.queueIndex++;
+            //     _player
+            //         .youtubePlay(
+            //             StaticStore.myQueueTrack[StaticStore.queueIndex].name,
+            //             StaticStore.myQueueTrack[StaticStore.queueIndex]
+            //                 .trackArtists[0])
+            //         .then((value) {
+            //       StaticStore.playing = true;
+            //       StaticStore.currentSong =
+            //           StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
+            //       StaticStore.currentArtists = StaticStore
+            //           .myQueueTrack[StaticStore.queueIndex].trackArtists;
+            //       StaticStore.currentSongImg =
+            //           StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
+            //     });
+            //   }
+            // }
             // print("hi");
           }
           // }

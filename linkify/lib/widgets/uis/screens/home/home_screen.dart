@@ -28,6 +28,7 @@ import 'package:linkify/widgets/restart_app.dart';
 import 'package:linkify/widgets/sticky_widgets.dart';
 import 'package:linkify/widgets/uis/screens/home/notification.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:linkify/widgets/uis/screens/library/library.dart';
 // import 'package:linkify/widgets/uis/screens/search_page/search_page.dart';
 // import '../../controllers/main_controller.dart';
@@ -57,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var optionColor = Color.fromARGB(255, 50, 76, 79);
     return GestureDetector(
       onTap: (){
         print("tapped");
@@ -279,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       borderRadius:
                                                           BorderRadius.all(
                                                               Radius.circular(5)),
-                                                      color: Colors.red,
+                                                      color: optionColor,
                                                     ),
                                                     child: Center(
                                                         child: Text(
@@ -297,33 +299,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      // menuWidth == 200
-                                      //     ? Center(
-                                      //         child: InkWell(
-                                      //           child: Container(
-                                      //             height: 300,
-                                      //             // width:menuWidth==200?menuWidth:200,
-                                      //             width: 200,
-                                      //             decoration: BoxDecoration(
-                                      //               borderRadius:
-                                      //                   BorderRadius.all(
-                                      //                       Radius.circular(5)),
-                                      //               color: Colors.red,
-                                      //             ),
-                                      //             child: Center(
-                                      //                 child: Text(
-                                      //               "Genres",
-                                      //               style: TextStyle(
-                                      //                   color: Colors.white),
-                                      //             )),
-                                      //           ),
-                                      //           onTap: () async {
-                                      //             // await fetchPlaylists();
-                                      //           },
-                                      //         ),
-                                      //       )
-                                      //     : SizedBox(),
-                                      // ),
+                                      menuWidth == 200
+                                          ? Center(
+                                              child: InkWell(
+                                                child: Container(
+                                                  height: 40,
+                                                  // width:menuWidth==200?menuWidth:200,
+                                                  width: 200,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
+                                                    color: optionColor,
+                                                  ),
+                                                  child: Center(
+                                                      child: Text(
+                                                    "Issues",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )),
+                                                ),
+                                                onTap: () async {
+                                                  await launchUrl(Uri.parse('https://github.com/Prakash251299/Linkify/issues'));
+                                                },
+                                              ),
+                                            )
+                                          : SizedBox(),
                                     ],
                                   )),
                             ],

@@ -272,10 +272,7 @@ Future<List<dynamic>?> fetchFriendRequests()async{
         .collection("friendRequest")
         .doc(StaticStore.currentUserId)
         .get();
-    print("fetching:");
-    print(StaticStore.currentUserId);
     if(a.exists){
-      print(a['users']);
       return a['users'];
     }
     return null;

@@ -145,8 +145,6 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                 if(StaticStore.player.processingState == ProcessingState.completed){
                   print("completed1");
                   await StaticStore.player.seek(const Duration(seconds: 0));
-                  // StaticStore.player.play();
-                  // print("completed2");
                 }
               },
               iconSize: 75,

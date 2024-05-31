@@ -8,7 +8,6 @@ import 'package:linkify/controller/recommendations.dart';
 import 'package:linkify/controller/static_store.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/widgets/album_view.dart';
-import 'package:linkify/widgets/carousel_view.dart';
 import '../controllers/main_controller.dart';
 import '../models/song_model.dart';
 import '../models/user.dart';
