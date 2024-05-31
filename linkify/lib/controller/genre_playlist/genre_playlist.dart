@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:linkify/controller/accesstoken_error.dart';
 import 'package:linkify/controller/first_page_categories.dart';
