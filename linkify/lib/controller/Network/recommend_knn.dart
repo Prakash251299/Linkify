@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
-import 'package:linkify/controller/firebase_call.dart';
-import 'package:linkify/controller/read_write.dart';
-import 'package:linkify/controller/static_store.dart';
-import 'package:linkify/controller/user_genre.dart';
+import 'package:linkify/controller/store_to_firebase/firebase_call.dart';
+import 'package:linkify/controller/local_storing/read_write.dart';
+import 'package:linkify/controller/variables/static_store.dart';
+import 'package:linkify/controller/genre/user_genre.dart';
 import 'package:linkify/model/user_info.dart';
 
 Future<List<UserInfo>> KNN_recommender() async {

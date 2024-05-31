@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:linkify/controller/local_songs/fetch_localsong.dart';
-import 'package:linkify/controller/login.dart';
-import 'package:linkify/controller/local_songs/song_data_contoller.dart';
-import 'package:linkify/controller/static_store.dart';
-import 'package:linkify/widgets/local_music/homeNav.dart';
-import 'package:linkify/widgets/uis/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:linkify/controller/local_songs/get_local_songs/fetch_localsong.dart';
+import 'package:linkify/controller/local_songs/get_local_songs/login.dart';
+import 'package:linkify/controller/local_songs/get_local_songs/permission/permission_handler.dart';
+import 'package:linkify/controller/variables/static_store.dart';
+import 'package:linkify/view/local_music/homeNav.dart';
+import 'package:linkify/view/home/bottom_nav_bar.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 Future<void> main() async {
@@ -106,8 +106,6 @@ class MyAppState extends State<MyApp> {
                     StaticStore.playing = false;
                     StaticStore.pause = false;
                   }
-                  // Navigator.popUntil(context, ModalRoute.withName('/MyApp'));
-                  // Navigator.of(context).popUntil((route) => route.settings.name == "MyApp");
                   StaticStore.miniplayerMargin = 50;
                   if (await loginController.getLoginStatus() == 1) {
                     Navigator.of(context)
@@ -135,21 +133,19 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Device Songs"),
                 onPressed: () async {
-                  // if(StaticStore.player.playing==true){
-                  //   StaticStore.player.stop();
-                  //   StaticStore.playing = false;
-                  //   StaticStore.pause= false;
-                  // }
-
-                  // Navigator.popUntil(context, ModalRoute.withName('/MyApp'));
+                  if (StaticStore.player.playing == true) {
+                    StaticStore.player.stop();
+                    StaticStore.playing = false;
+                    StaticStore.pause = false;
+                  }
                   StaticStore.miniplayerMargin = 0;
                   if (SongDataController.loaded == true) {
-                    localSongs = await read();
+                    localSongs = await readLocalSongs();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => HomeNav(localSongs)));
                   } else {
                     if (await c.getLocalSongs() == 1) {
-                      localSongs = await read();
+                      localSongs = await readLocalSongs();
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => HomeNav(localSongs)));
                     }

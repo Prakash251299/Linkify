@@ -1,6 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
-import 'package:linkify/controller/firebase_call.dart';
+import 'package:linkify/controller/store_to_firebase/firebase_call.dart';
 import 'package:linkify/model/user_info.dart';
 
 Future<List<UserInfo>?> FetchRequestNotifications()async{

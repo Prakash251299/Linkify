@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:linkify/controller/get_user_info.dart';
-import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/store_to_firebase/user_info/get_user_info.dart';
+import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/model/user_info.dart';
 
 class NetworkFunction {

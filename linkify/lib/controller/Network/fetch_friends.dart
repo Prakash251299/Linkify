@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:linkify/controller/Network/recommend_knn.dart';
 import 'package:linkify/controller/Network/user_network_functions.dart';
-import 'package:linkify/controller/firebase_call.dart';
-import 'package:linkify/controller/static_store.dart';
+import 'package:linkify/controller/store_to_firebase/firebase_call.dart';
+import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/model/user_info.dart';
-import 'package:linkify/widgets/Network/suggestions/friend_suggestion.dart';
-import 'package:linkify/widgets/Network/user_network.dart';
+import 'package:linkify/view/Network/suggestions/friend_suggestion.dart';
+import 'package:linkify/view/Network/user_network.dart';
 
 Future<List<UserInfo>?> fetchAllFriends(int numberOfUsers) async {
   NetworkFunction _networkFunction = NetworkFunction();
