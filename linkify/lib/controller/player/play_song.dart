@@ -27,16 +27,6 @@ Future<void> playSong(songUrl) async {
       ),
       ));
       StaticStore.player.play();
-
-      
-      // if(StaticStore.player.playing){
-      //   print("song playing");
-      // }
-      // if(StaticStore.player.processingState==ProcessingState.completed){
-      //   print("song completed plzz");
-      // }
-
-      // _player.youtubePlay("Mahiye jinna sohna","");
     } catch (e, stackTrace) {
       // Catch load errors: 404, invalid url ...
       print("Error loading playlist: $e");
