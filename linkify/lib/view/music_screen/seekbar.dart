@@ -39,13 +39,13 @@ class _SeekBarState extends State<SeekBar> {
                     .youtubePlay(
                         StaticStore.myQueueTrack[StaticStore.queueIndex].name,
                         StaticStore.myQueueTrack[StaticStore.queueIndex]
-                            .trackArtists[0])
+                            .trackArtists?[0])
                     .then((value) {
                   StaticStore.playing = true;
                   StaticStore.currentSong =
                       StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
                   StaticStore.currentArtists = StaticStore
-                      .myQueueTrack[StaticStore.queueIndex].trackArtists;
+                      .myQueueTrack[StaticStore.queueIndex].trackArtists??[];
                   StaticStore.currentSongImg =
                       StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
                 });

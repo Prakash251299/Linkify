@@ -92,14 +92,15 @@ class _QueueScreenState extends State<QueueScreen> {
                                         // print(_queueTracks?[position].name);
                                         await _player.youtubeStop();
                                         // Navigator.pop(context);
-                                        await _player.youtubePlay(_queueTracks[position].name,_queueTracks[position].trackArtists[0]).then((value) {
+                                        await _player.youtubePlay(_queueTracks[position].name,_queueTracks[position].trackArtists?[0]).then((value) {
 
                                         
                                           // StaticStore.pause = false;
                                           StaticStore.queueIndex = position;
-                                          StaticStore.currentSong = _queueTracks[position].name!;
-                                          StaticStore.currentSongImg = _queueTracks[position].imgUrl!;
-                                          StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists);
+                                          StaticStore.currentSong = _queueTracks[position].name??"";
+                                          StaticStore.currentSongImg = _queueTracks[position].imgUrl??"";
+
+                                          StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists??[]);
                                           // setState(() {
                                             StaticStore.playing = true;
                                             StaticStore.pause = false;
@@ -127,13 +128,13 @@ class _QueueScreenState extends State<QueueScreen> {
                                       }else{
                                         await _player.youtubeStop();
       
-                                        await _player.youtubePlay(_queueTracks[position].name, _queueTracks[position].trackArtists[0]).then((value) {
+                                        await _player.youtubePlay(_queueTracks[position].name, _queueTracks[position].trackArtists?[0]).then((value) {
 
                                         
                                         StaticStore.queueIndex = position;
                                         StaticStore.currentSong = _queueTracks[position].name!;
                                         StaticStore.currentSongImg = _queueTracks[position].imgUrl!;
-                                        StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists);
+                                        StaticStore.currentArtists = List.from(_queueTracks[position].trackArtists??[]);
                                         Navigator.pop(context);
       
                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarouselSongScreen(
@@ -208,11 +209,11 @@ class _QueueScreenState extends State<QueueScreen> {
                                     // Column(children: [
                                       // Expanded(child:
                                       // Column(children: [
-                                        _queueTracks!=[] && _queueTracks[position].trackArtists.length > 1?
-                                        Text('${_queueTracks[position].trackArtists[0]}, ${_queueTracks[position].trackArtists[1]}',overflow: TextOverflow.ellipsis,
+                                        _queueTracks!=[] && _queueTracks[position].trackArtists!=null && _queueTracks[position].trackArtists!.length > 1?
+                                        Text('${_queueTracks[position].trackArtists?[0]}, ${_queueTracks[position].trackArtists?[1]}',overflow: TextOverflow.ellipsis,
                                         style:TextStyle(color: Colors.white70)
                                                 ):
-                                        Text('${_queueTracks[position].trackArtists[0]}',overflow: TextOverflow.ellipsis,
+                                        Text('${_queueTracks[position].trackArtists?[0]}',overflow: TextOverflow.ellipsis,
                                             style:TextStyle(color: Colors.white70)
                                         ),
                                       // ]),

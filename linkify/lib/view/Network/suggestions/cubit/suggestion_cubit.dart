@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:linkify/controller/Network/fetch_friends.dart';
-import 'package:linkify/controller/home/first_page_categories.dart';
-import 'package:linkify/controller/recommendation/recommendations.dart';
+import 'package:linkify/model/home/first_page_categories.dart';
+import 'package:linkify/controller/home/front_page_data/recommendations.dart';
 import 'package:linkify/model/user_info.dart';
 import 'package:linkify/controller/variables/loading_enum.dart';
 // import '../../../models/loading_enum.dart';

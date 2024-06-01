@@ -6,7 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:linkify/controller/local_songs/player/play_pause_button.dart';
 import 'package:linkify/controller/local_songs/player/songPlayerController.dart';
 import 'package:linkify/controller/local_songs/get_local_songs/permission/permission_handler.dart';
-import 'package:linkify/controller/notification/play_song.dart';
+import 'package:linkify/controller/player/play_song.dart';
 import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/main.dart';
 import 'package:linkify/view/local_music/homepage.dart';

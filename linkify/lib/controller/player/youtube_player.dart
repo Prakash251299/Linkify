@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:linkify/controller/notification/background.dart';
-import 'package:linkify/controller/notification/play_song.dart';
+import 'package:linkify/controller/player/play_song.dart';
 import 'package:linkify/controller/variables/static_store.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

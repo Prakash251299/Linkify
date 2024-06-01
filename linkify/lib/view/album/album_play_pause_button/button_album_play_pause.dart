@@ -25,12 +25,12 @@ Future<void> playMine() async {
                   .youtubePlay(
                       StaticStore.myQueueTrack[StaticStore.queueIndex].name,
                       StaticStore
-                          .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
+                          .myQueueTrack[StaticStore.queueIndex].trackArtists?[0])
                   .then((value) {
                 StaticStore.currentSong =
                     StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
                 StaticStore.currentArtists =
-                    StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+                    StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists??[];
                 StaticStore.currentSongImg =
                     StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
                 StaticStore.playing = true;
