@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:linkify/controller/home/first_page_categories.dart';
+import 'package:linkify/model/home/first_page_categories.dart';
 import 'package:linkify/controller/playlist/playlist_track.dart';
 import 'package:linkify/model/album_track.dart';
 import 'package:linkify/view/album/album_view.dart';

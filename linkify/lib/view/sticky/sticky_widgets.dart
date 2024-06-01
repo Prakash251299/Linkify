@@ -454,12 +454,14 @@ Widget playNext(_player) {
                 .youtubePlay(
                     StaticStore.myQueueTrack[StaticStore.queueIndex].name,
                     StaticStore
-                        .myQueueTrack[StaticStore.queueIndex].trackArtists[0])
+                        .myQueueTrack[StaticStore.queueIndex].trackArtists?[0])
                 .then((value) {
               StaticStore.currentSong =
                   StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
-              StaticStore.currentArtists =
-                  StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists;
+              if(StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists!=null){
+                StaticStore.currentArtists =
+                  StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists!;
+              }
               StaticStore.currentSongImg =
                   StaticStore.myQueueTrack[StaticStore.queueIndex].imgUrl!;
               StaticStore.playing = true;

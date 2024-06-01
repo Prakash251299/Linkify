@@ -241,12 +241,14 @@ class _MusicPlayer extends StatelessWidget {
                 // "",
                 StaticStore.currentArtists.isEmpty?"unknown":
                 StaticStore.myQueueTrack.length>StaticStore.queueIndex?(
-                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=3
+                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists!=null?(
+                  StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists!.length>=3
                 
-                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[2]}":
-                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists.length>=2 
-                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[1]}"
-                    : "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists[0]}"):(trackArtists.length>=3?"${trackArtists[0]}, ${trackArtists[1]}, ${trackArtists[2]}":trackArtists.length>=2?"${trackArtists[0]}, ${trackArtists[1]}":"${trackArtists[0]}"),
+                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[1]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[2]}":
+                StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists!.length>=2 
+                    ? "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[0]}, ${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[1]}"
+                    : "${StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[0]}"):"unknown")
+                    :(trackArtists.length>=3?"${trackArtists[0]}, ${trackArtists[1]}, ${trackArtists[2]}":trackArtists.length>=2?"${trackArtists[0]}, ${trackArtists[1]}":"${trackArtists[0]}"),
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

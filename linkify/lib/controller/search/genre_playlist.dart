@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:linkify/controller/error/accesstoken_error.dart';
-import 'package:linkify/controller/home/first_page_categories.dart';
+import 'package:linkify/model/home/first_page_categories.dart';
 import 'package:linkify/controller/local_storing/read_write.dart';
 import 'package:linkify/model/playlists/playlist.dart';
 
