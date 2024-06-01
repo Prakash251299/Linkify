@@ -102,6 +102,8 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Cloud Songs"),
                 onPressed: () async {
+                  if(StaticStore.localPlaying==1){
+                    StaticStore.localPlaying=0;
                   if (StaticStore.player.playing == true) {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
@@ -127,6 +129,26 @@ class MyAppState extends State<MyApp> {
                       print("something at start went wrong while login");
                     }
                   }
+                  }else{
+                    if (await loginController.getLoginStatus() == 1) {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => App()));
+                    print("Already logged in");
+                  } else {
+                    try {
+                      await loginController.login(context);
+                      if (loginController.loginStatus == 1) {
+                        print("logged in");
+
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => App()));
+                      }
+                    } catch (e) {
+                      print("something at start went wrong while login");
+                    }
+                  }
+                  }
                 },
               ),
               SizedBox(
@@ -135,6 +157,8 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Device Songs"),
                 onPressed: () async {
+                  if(StaticStore.localPlaying==0){
+                    StaticStore.localPlaying=1;
                   if (StaticStore.player.playing == true) {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
@@ -153,6 +177,19 @@ class MyAppState extends State<MyApp> {
                           builder: (context) => HomeNav(localSongs)));
                     }
                   }
+                }else{
+                  if (SongDataController.loaded == true) {
+                    localSongs = await readLocalSongs();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomeNav(localSongs)));
+                  } else {
+                    if (await c.getLocalSongs() == 1) {
+                      localSongs = await readLocalSongs();
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomeNav(localSongs)));
+                    }
+                  }
+                }
                 },
               ),
             ]),
