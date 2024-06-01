@@ -1,7 +1,4 @@
-
-
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:just_audio/just_audio.dart';
@@ -50,13 +47,21 @@ class SongPlayerController extends GetxController{
   }
 
   Future<int> playLocalSong(String url,String? artists,String songName) async {
-    File(url);
+    print("playLocalSong state");
+    var uri;
+    try{
+      uri = Uri.parse(url);
+    }
+    catch(e){
+      print("uri has some error");
+    }
     try{
     StaticStore.player.setAudioSource(AudioSource.uri(
         // Uri.parse(songUrl),
         // Uri.fromFile('')),
 
-        Uri.parse(url),
+        // Uri.parse(url),
+        uri,
         tag: MediaItem(
         // Specify a unique ID for each media item:
         id: '1',
@@ -65,6 +70,8 @@ class SongPlayerController extends GetxController{
         artUri: null,
       ),
       ));
+      print("1p");
+
       StaticStore.player.play().then((value) {
         StaticStore.currentSong = songName;
         StaticStore.currentArtists = [artists];
