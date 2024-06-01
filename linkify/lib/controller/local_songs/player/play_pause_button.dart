@@ -25,8 +25,8 @@ Widget playPauseAlbumButton(List<SongModel> _albumTracks, int position) {
       });
 }
 
-Future<void> playPauseLocal(
-    name, List<SongModel> songList, index, context) async {
+Future<void> playPauseLocal(name, List<SongModel> songList, index, context) async {
+  print("play pause reached");
   SongPlayerController _songPlayerController = SongPlayerController();
   int played = 0;
   if (StaticStore.playing == true) {
