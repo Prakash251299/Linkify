@@ -227,7 +227,7 @@ class AlbumViewState extends State<AlbumView> {
                                                         widget._albumTracks![0]
                                                             .name,
                                                         widget._albumTracks![0]
-                                                            .trackArtists[0])
+                                                            .trackArtists?[0])
                                                     .then((value) {
                                                   // });
                                                   // StaticStore.pause = false;
@@ -244,7 +244,7 @@ class AlbumViewState extends State<AlbumView> {
                                                   StaticStore.currentArtists =
                                                       List.from(widget
                                                           ._albumTracks![0]
-                                                          .trackArtists);
+                                                          .trackArtists??[]);
                                                   StaticStore.playing = true;
                                                   StaticStore.pause = false;
                                                 });
@@ -285,7 +285,7 @@ class AlbumViewState extends State<AlbumView> {
                                         .youtubePlay(
                                             widget._albumTracks![index].name,
                                             widget._albumTracks![index]
-                                                .trackArtists[0])
+                                                .trackArtists?[0])
                                         .then((value) {
                                       // });
                                       // StaticStore.pause = false;
@@ -299,7 +299,7 @@ class AlbumViewState extends State<AlbumView> {
                                           widget._albumTracks![index].imgUrl!;
                                       StaticStore.currentArtists = List.from(
                                           widget._albumTracks![index]
-                                              .trackArtists);
+                                              .trackArtists??[]);
                                       // setState(() {
                                       StaticStore.playing = true;
                                       StaticStore.pause = false;
@@ -342,7 +342,7 @@ class AlbumViewState extends State<AlbumView> {
                                         .youtubePlay(
                                             widget._albumTracks![index].name,
                                             widget._albumTracks![index]
-                                                .trackArtists[0])
+                                                .trackArtists?[0])
                                         .then((value) {
                                       // });
                                       StaticStore.myQueueTrack =
@@ -355,7 +355,7 @@ class AlbumViewState extends State<AlbumView> {
                                           widget._albumTracks![index].imgUrl!;
                                       StaticStore.currentArtists = List.from(
                                           widget._albumTracks![index]
-                                              .trackArtists);
+                                              .trackArtists??[]);
                                       StaticStore.playing = true;
                                       StaticStore.pause = false;
 
@@ -421,16 +421,16 @@ class AlbumViewState extends State<AlbumView> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(color: Colors.white),
                                 ),
-                                subtitle: widget._albumTracks != null &&
-                                        widget._albumTracks![index].trackArtists
+                                subtitle: widget._albumTracks != null && widget._albumTracks![index].trackArtists!=null &&
+                                        widget._albumTracks![index].trackArtists!
                                                 .length >
                                             1
                                     ? Text(
-                                        '${widget._albumTracks?[index].trackArtists[0]}, ${widget._albumTracks?[index].trackArtists[1]}',
+                                        '${widget._albumTracks?[index].trackArtists?[0]}, ${widget._albumTracks?[index].trackArtists?[1]}',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(color: Colors.white70))
                                     : Text(
-                                        '${widget._albumTracks![index].trackArtists[0]}',
+                                        '${widget._albumTracks![index].trackArtists?[0]}',
                                         overflow: TextOverflow.ellipsis,
                                         style:
                                             TextStyle(color: Colors.white70)),
