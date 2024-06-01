@@ -105,6 +105,7 @@ class MyAppState extends State<MyApp> {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
                     StaticStore.pause = false;
+                    StaticStore.musicScreenEnabled=false;
                   }
                   StaticStore.miniplayerMargin = 50;
                   if (await loginController.getLoginStatus() == 1) {
@@ -137,6 +138,7 @@ class MyAppState extends State<MyApp> {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
                     StaticStore.pause = false;
+                    StaticStore.musicScreenEnabled=false;
                   }
                   StaticStore.miniplayerMargin = 0;
                   if (SongDataController.loaded == true) {

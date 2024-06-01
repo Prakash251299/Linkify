@@ -46,6 +46,7 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
         IconButton(
           onPressed: () async {
             await play_prev_local(widget.songList);
+            setState(() {});
           },
           iconSize: 45,
           icon: const Icon(
@@ -69,7 +70,7 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
                   }
 
                   if (StaticStore.player.processingState ==
-                      ProcessingState.completed) {
+                      ProcessingState.completed){
                     print("completed1");
                     await StaticStore.player.seek(const Duration(seconds: 0));
                   }
