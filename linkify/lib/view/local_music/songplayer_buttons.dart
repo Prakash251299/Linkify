@@ -45,7 +45,11 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
             )),
         IconButton(
           onPressed: () async {
+            if(StaticStore.player.loopMode==LoopMode.off)
             await play_prev_local(widget.songList);
+            else{
+              await StaticStore.player.seek(Duration(seconds:0));
+            }
             setState(() {});
           },
           iconSize: 45,
@@ -89,7 +93,11 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
             }),
         IconButton(
           onPressed: () async {
+            if(StaticStore.player.loopMode==LoopMode.off)
             await play_next_local(widget.songList);
+            else{
+              await StaticStore.player.seek(Duration(seconds:0));
+            }
             setState(() {});
           },
           iconSize: 45,

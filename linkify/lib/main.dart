@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:linkify/controller/local_songs/get_local_songs/fetch_localsong.dart';
 import 'package:linkify/controller/local_songs/get_local_songs/login.dart';
@@ -105,8 +106,8 @@ class MyAppState extends State<MyApp> {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
                     StaticStore.pause = false;
-                    StaticStore.musicScreenEnabled=false;
                   }
+                  StaticStore.musicScreenEnabled=false;
                   StaticStore.miniplayerMargin = 50;
                   if (await loginController.getLoginStatus() == 1) {
                     Navigator.of(context)
@@ -138,8 +139,8 @@ class MyAppState extends State<MyApp> {
                     StaticStore.player.stop();
                     StaticStore.playing = false;
                     StaticStore.pause = false;
-                    StaticStore.musicScreenEnabled=false;
                   }
+                  StaticStore.musicScreenEnabled=false;
                   StaticStore.miniplayerMargin = 0;
                   if (SongDataController.loaded == true) {
                     localSongs = await readLocalSongs();

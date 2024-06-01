@@ -72,7 +72,7 @@ class SongPlayerController extends GetxController{
       ));
       print("1p");
 
-      StaticStore.player.play().then((value) {
+      await StaticStore.player.play().then((value) {
         StaticStore.currentSong = songName;
         StaticStore.currentArtists = [artists];
         StaticStore.currentSongImg = "";
