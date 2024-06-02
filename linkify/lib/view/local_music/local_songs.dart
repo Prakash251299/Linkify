@@ -63,8 +63,7 @@ Widget buildPageOne() {
                               // return;
                               StaticStore.songIndex = index;
                               await playPauseLocal(widget.songList[index].displayName,widget.songList,index,context).then((value) {
-                              setState(() {});
-                              });
+                              setState(() {});});
                             },
                             child: ListTile(
                               // leading: const CircleAvatar(child: Icon(LineIcons.music)),

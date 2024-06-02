@@ -45,7 +45,22 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
             )),
         IconButton(
           onPressed: () async {
-            await play_prev_local(widget.songList);
+            if(StaticStore.nextPlay==1){
+              if(StaticStore.player.loopMode==LoopMode.one){
+                return;
+              }
+              StaticStore.nextPlay=0;
+            StaticStore.songIndex--;
+                if (StaticStore.songIndex <0) {
+                  StaticStore.songIndex = widget.songList.length-1;
+              setState((){
+                  StaticStore.currentSong = widget.songList[StaticStore.songIndex].displayName;
+                  StaticStore.currentArtists = [widget.songList[StaticStore.songIndex].artist];
+                  StaticStore.currentSongImg = "";
+              });
+                }
+              await play_prev_local(widget.songList);
+            }
           },
           iconSize: 45,
           icon: const Icon(
@@ -69,7 +84,7 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
                   }
 
                   if (StaticStore.player.processingState ==
-                      ProcessingState.completed) {
+                      ProcessingState.completed){
                     print("completed1");
                     await StaticStore.player.seek(const Duration(seconds: 0));
                   }
@@ -88,8 +103,22 @@ class _PlayerButtonsState extends State<SongPlayerButtons> {
             }),
         IconButton(
           onPressed: () async {
-            await play_next_local(widget.songList);
-            setState(() {});
+            if(StaticStore.nextPlay==1){
+              if(StaticStore.player.loopMode==LoopMode.one){
+                return;
+              }
+              StaticStore.nextPlay=0;
+                StaticStore.songIndex++;
+                if (StaticStore.songIndex >= widget.songList.length) {
+                  StaticStore.songIndex = StaticStore.songIndex % widget.songList.length;
+              setState((){
+                  StaticStore.currentSong = widget.songList[StaticStore.songIndex].displayName;
+                  StaticStore.currentArtists = [widget.songList[StaticStore.songIndex].artist];
+                  StaticStore.currentSongImg = "";
+              });
+                }
+              await play_next_local(widget.songList);
+            }
           },
           iconSize: 45,
           icon: const Icon(
