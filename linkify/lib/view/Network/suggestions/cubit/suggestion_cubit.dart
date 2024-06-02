@@ -33,7 +33,8 @@ class SuggestionCubit extends Cubit<SuggestionState> {
       ));
     } catch (e) {
       // print(e.toString());
-      print("Error happened at homecubit getalbums function");
+      print(e);
+      print("Error happened at Suggestion getalbums function");
       emit(state.copyWith(status: LoadPage.error));
     }
   }
