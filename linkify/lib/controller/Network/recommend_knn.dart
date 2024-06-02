@@ -117,7 +117,7 @@ Future<List<UserInfo>?> fetchKNearestNeighbours() async {
   }catch(e){
     print(e);
     print("error occurred");
-    return null;
+    return [];
   }
   // return [];
   List<UserInfo>? recommendedUsers = await getUsers(mapOfRecommendedUserIds);
@@ -179,7 +179,7 @@ Future<Map<dynamic,dynamic>> getUsersByNearness(double nearness, int topGenreNum
     .get();
     List<dynamic> userIds = [];
     userIds = await genres.data()?['${StaticStore.userGenre?[topGenreNumber]}']['${k.round()}'];
-    // userIds = await filter(userIds);
+    userIds = await filter(userIds);
     for(var u in userIds){
       if(mapOfRecommendedUserIds[u]==null){
         mapOfRecommendedUserIds[u] = nearness;
