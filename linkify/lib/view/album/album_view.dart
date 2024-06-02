@@ -206,6 +206,7 @@ class AlbumViewState extends State<AlbumView> {
                                           icon: playPauseAlbumButtonTop(
                                               widget._albumTracks, 0),
                                           onPressed: () async {
+                                            // if(widget._albumTracks!=null && widget._albumTracks!.contains(StaticStore.currentSong)){
                                             if (StaticStore.playing == true) {
                                               _player
                                                   .youtubePause()
@@ -250,6 +251,7 @@ class AlbumViewState extends State<AlbumView> {
                                                 });
                                               }
                                             }
+                                          // }
                                           },
                                         );
                                       }))
