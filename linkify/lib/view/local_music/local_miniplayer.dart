@@ -4,6 +4,7 @@ import 'package:linkify/controller/local_songs/player/prev_next_play.dart';
 import 'package:linkify/controller/local_songs/player/songPlayerController.dart';
 import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/controller/player/youtube_player.dart';
+import 'package:linkify/view/local_music/local_song_screen.dart';
 import 'package:linkify/view/music_screen/carousel_song_screen.dart';
 import 'package:linkify/view/search/genreTag.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -219,12 +220,9 @@ Widget local_miniplayer(BuildContext context,songList) {
       ],
     ),
     onTap: () {
-      // print(StaticStore.currentSong.length);
-      // return;
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
-
       Navigator.of(context).push(MaterialPageRoute(
-          builder: ((context) => CarouselSongScreen(
+          builder: ((context) => LocalSongScreen(
+            songList,
               StaticStore.currentSong,
               "",
               StaticStore.currentArtists,

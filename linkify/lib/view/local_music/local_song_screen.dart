@@ -265,7 +265,8 @@ class _MusicPlayer extends StatelessWidget {
                         }),
                   ],
                 ),
-                footer(context),
+                SizedBox(height: 30,),
+                // footer(context),
               ],
             );
           }),

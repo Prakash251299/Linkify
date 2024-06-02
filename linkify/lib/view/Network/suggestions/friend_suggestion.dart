@@ -75,6 +75,8 @@ class _SuggestionState extends State<Suggestion> {
               if (state.status == LoadPage.loading) {
                 return Center(child: CircularProgressIndicator());
               }
+              print("Length of recommended users");
+              print(state.recommendedUsers[2]?.length);
               // print(state.recommendedUsers.length);
 
               // return

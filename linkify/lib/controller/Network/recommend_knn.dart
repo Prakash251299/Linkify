@@ -8,18 +8,21 @@ import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/controller/genre/user_genre.dart';
 import 'package:linkify/model/user_info.dart';
 
-Future<List<UserInfo>> KNN_recommender() async {
-  // print(StaticStore.userGenreWithCount);
+Future<List<UserInfo>?> KNN_recommender() async {
+  print("knn start");
   // return;
   Map<dynamic,dynamic> mapOfRecommendedUserIds={};
   if(StaticStore.userGenre==null || StaticStore.userGenre==[]){
     await fetchTopTrackGenres();
   }
   await fetchTopTrackGenresPercentage();
+  // print("fetchTopTrackGenresPercentage");
   print("fetchTopTrackGenresPercentage called");
-  List<UserInfo> recommendedUsers = await fetchKNearestNeighbours();
+  // print(StaticStore.userGenre);
+  List<UserInfo>? recommendedUsers = await fetchKNearestNeighbours();
   /* remove current user and friends from mapOfRecommendedUserIds */
   // print(mapOfRecommendedUserIds);
+  print("recommendedUsers:");
 
   // await filterUsers(mapOfRecommendedUserIds);
   // print(StaticStore.userGenreWithCount);
@@ -76,8 +79,8 @@ Future<void> genreStoreWithPercentage() async {
 
 // Future<void> genreWiseUserWithPercentage() async {}
 
-Future<List<UserInfo>> fetchKNearestNeighbours() async {
-  Map<dynamic,dynamic> mapOfRecommendedUserIds={};
+Future<List<UserInfo>?> fetchKNearestNeighbours() async {
+  Map<dynamic,dynamic>? mapOfRecommendedUserIds={};
   var db = FirebaseFirestore.instance;
   List<List<double>> nearness = [[],[],[]];
   var a = await db
@@ -106,9 +109,18 @@ Future<List<UserInfo>> fetchKNearestNeighbours() async {
         // print(temp);
         nearness[i] = temp;
       }
+  print("nearness");
   // print(nearness);
-  mapOfRecommendedUserIds = await getAllRecommendationUsers(nearness);
-  List<UserInfo> recommendedUsers = await getUsers(mapOfRecommendedUserIds);
+  // return [];
+  try{
+    mapOfRecommendedUserIds = await getAllRecommendationUsers(nearness);
+  }catch(e){
+    print(e);
+    print("error occurred");
+    return [];
+  }
+  // return [];
+  List<UserInfo>? recommendedUsers = await getUsers(mapOfRecommendedUserIds);
   return recommendedUsers;
 }
 
@@ -123,7 +135,7 @@ double applyKNN(double x1,double y1,double x2,double y2){
   return res;
 }
 
-Future<Map<dynamic,dynamic>> getAllRecommendationUsers(List<List<double>> nearness)async{
+Future<Map<dynamic,dynamic>>? getAllRecommendationUsers(List<List<double>> nearness)async{
   Map<dynamic,dynamic>mapOfRecommendedUserIds = {};
   // List<List<dynamic>> recommendedUsers=[[],[],[]];
   // for(int j=0;StaticStore.userGenre!=null && j<StaticStore.userGenre!.length && j<3;j++){
@@ -141,6 +153,8 @@ Future<Map<dynamic,dynamic>> getAllRecommendationUsers(List<List<double>> nearne
       await getUsersByNearness(nearness[2][i],2,mapOfRecommendedUserIds);
       // print(nearness[2][i]);
     }
+    print(mapOfRecommendedUserIds);
+    // return {};
   // }
   // print("map: $mapOfRecommendedUserIds");
   // var timer = Timer(Duration(seconds: 4), () =>   print(recommendedUsers));
@@ -219,7 +233,7 @@ Future<String>getFriendStatus1(requestReceiver)async{
   }
 }
 
-Future<List<UserInfo>> getUsers(Map<dynamic,dynamic> mapOfRecommendedUserIds)async{
+Future<List<UserInfo>?> getUsers(Map<dynamic,dynamic>? mapOfRecommendedUserIds)async{
   Map<dynamic,dynamic> l = await sortMapByValue(mapOfRecommendedUserIds,0);
   NetworkFunction _networkFunction = NetworkFunction();
   // print(l);
