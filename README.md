@@ -17,10 +17,7 @@ To run this project run the command in the directory
 ## Installation
 
 Install my-project
-
-```bash
-  Will upload the apk file soon...
-```
+[Apk link (You can't use it without my consent right now (Contact: prakashpratapsingh6@gmail.com))](https://github.com/Prakash251299/Linkify/tree/main/linkify/myapk)
 
 App screenshots:
 
