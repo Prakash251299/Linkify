@@ -21,6 +21,9 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.2.6 <4.0.0'
 
+dependency_overrides:
+      win32: ^5.5.4
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -42,7 +45,7 @@ dependencies:
   spotify: ^0.12.0
   http: ^1.2.0
   # spotify_sdk: ^2.3.1
-  youtube_explode_dart: ^2.1.0
+  youtube_explode_dart: ^2.2.3
   # youtube_player_flutter: ^8.1.2
   crypto: ^3.0.2
   # flutter_web_auth: ^0.5.0
@@ -73,7 +76,6 @@ dependencies:
   cached_network_image: ^3.2.0
   flutter_bloc: ^8.0.1
   line_icons: ^2.0.1
-  assets_audio_player: ^3.0.5
   provider: ^6.0.2
   hive_flutter: ^1.1.0
   marquee: ^2.2.3
@@ -92,6 +94,7 @@ dependencies:
   # media_kit: ^1.1.10+1
   # media_kit_video: ^1.2.4
   # flutter_video_view: ^2.1.1
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:
@@ -140,9 +143,10 @@ flutter:
   fonts:
     - family: Proxima
       fonts:
-        - asset: fonts/Proxima-Nova-SBold.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
+        # - asset: fonts/Proxima-Nova-SBold.ttf
+          # - asset: fonts/Schyler-Italic.ttf
+          #   style: italic
+        - asset: fonts/Proxima-Nova2.ttf
     - family: Proxima Bold
       fonts:
         - asset: fonts/Proxima-Nova-Bold.ttf

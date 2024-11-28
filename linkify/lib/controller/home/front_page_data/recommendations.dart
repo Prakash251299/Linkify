@@ -10,6 +10,7 @@ import 'package:linkify/controller/local_storing/read_write.dart';
 // import 'package:http/http.dart' as http;
 import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/view/home/home_screen.dart';
+import 'package:spotify/spotify.dart';
 // import 'package:spotify/src/models/_models.dart';
 // import 'package:linkify/controller/webview.dart';
 // import 'package:linkify/main.dart';
@@ -99,6 +100,7 @@ Future<List<Items>?> fetchCategoryPlaylists(String categoryId) async {
         // 'https://api.spotify.com/v1/recommendations?seed_tracks=$trackId&limit=6&access_token=$accessToken'
         'https://api.spotify.com/v1/browse/categories/$categoryId/playlists?access_token=$accessToken'));
     print("CategoryPlaylistsState: ${res.statusCode}");
+    int c=0;
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       for (int i = 0; i < data['playlists']['items'].length && i < 10; i++) {
@@ -116,6 +118,10 @@ Future<List<Items>?> fetchCategoryPlaylists(String categoryId) async {
     } else {
       AccessError e = AccessError();
       await e.handleError(res);
+      c++;
+      if(c>=1){
+        return item;
+      }
     }
   }
   // return item;
@@ -139,6 +145,7 @@ Future<List<FrontPageCategories>> fetchCategory() async {
   List<FrontPageCategories> _categories = [];
 
   StaticStore.categoryInfo = _categories;
+  int c=0;
   while (true) {
     var accessToken = await _readWrite.getAccessToken();
     /* Fetching category playlsts */
@@ -149,7 +156,9 @@ Future<List<FrontPageCategories>> fetchCategory() async {
     print(res.statusCode);
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      // for(int i=0;i<data['categories']['items'].length;i++){
+
+
+
       for (int i = 0;i < data['categories']['items'].length && i < numberOfFrontPageCategories;i++) {
         // print(data['categories']['items'][i]['name']);
         List<Items>? item =
@@ -161,14 +170,15 @@ Future<List<FrontPageCategories>> fetchCategory() async {
         });
         _categories.add(k);
       }
-      // }
+
+      print(_categories);
+
       return _categories;
     } else {
       AccessError e = AccessError();
       await e.handleError(res);
     }
   }
-  // return;
 }
 
 Future<void> carouselRecommendation(var trackId) async {

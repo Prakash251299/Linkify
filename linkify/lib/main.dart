@@ -69,13 +69,18 @@ class MyAppState extends State<MyApp> {
           linearMinHeight: 10,
         ),
         textTheme: const TextTheme(
-          headline4: TextStyle(
+          headlineMedium: TextStyle(
             color: Colors.white,
             fontSize: 24,
             fontFamily: 'Proxima Bold',
             fontWeight: FontWeight.w600,
           ),
-          bodyText2: TextStyle(
+          headlineSmall: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyMedium: TextStyle(
             fontSize: 16,
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -94,6 +99,7 @@ class MyAppState extends State<MyApp> {
             fit: BoxFit.cover,
           ),
         ),
+
         child: Builder(
           builder: (context) => Center(
             child:
