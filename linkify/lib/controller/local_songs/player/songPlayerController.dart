@@ -72,13 +72,12 @@ class SongPlayerController extends GetxController{
       ));
       print("1p");
 
-      await StaticStore.player.play().then((value) {
-          StaticStore.currentSong = songName;
-          StaticStore.currentArtists = [artists];
-          StaticStore.currentSongImg = "";
+      StaticStore.player.play().then((value) {
+        StaticStore.currentSong = songName;
+        StaticStore.currentArtists = [artists];
+        StaticStore.currentSongImg = "";
         StaticStore.playing=true;
         StaticStore.pause=false;
-        StaticStore.nextPlay=1;
       });
     }catch(e){
       print("Song format is not appropriate");

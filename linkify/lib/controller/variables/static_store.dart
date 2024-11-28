@@ -45,5 +45,4 @@ class StaticStore{
   static int notificationCounts=0;
   static double miniplayerMargin=50;
   static int songIndex=0;
-  static int localPlaying=0;
 }

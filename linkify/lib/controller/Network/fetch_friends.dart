@@ -46,16 +46,9 @@ Future<List<List<UserInfo>?>?> userButtonCaller()  async {
   StaticStore.requestStatusValue?.clear();
   StaticStore.requestStatusValue = [[], [], []];
   List<UserInfo>? bestMatch = await fetchBestMatchFriends(3);
-  print("called1");
+  List<UserInfo>? goodMatch = await fetchGoodMatchFriends();
+  // List<UserInfo>? goodMatch = await KNN_recommender();
   List<UserInfo>? allUsers = await fetchAllFriends(3);
-  print("called2");
-  List<UserInfo>? goodMatch;
-  goodMatch = await KNN_recommender();
-  // goodMatch = await fetchGoodMatchFriends();
-  print("called3");
-
-
-
   // List<UserInfo>? allUsers = await KNN_recommender();
 
   await getRequestStatus(bestMatch, 0);
