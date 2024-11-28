@@ -142,8 +142,8 @@ class _SearchPageState extends State<SearchPage> {
                                   itemBuilder: (context, i) {
                                     return TagWidget(
                                         tag: allTags.sublist(0, 4)[i],
-                                        genreName: StaticStore.userGenre![i]
-                                        // genreName: "$i"
+                                        // genreName: StaticStore.userGenre!.length<4?"none":StaticStore.userGenre![i]
+                                        genreName: StaticStore.userGenre==null || StaticStore.userGenre!.length<4?"N/A":StaticStore.userGenre![i],
                                         // StaticStore.userGenre[i]
                                         );
                                     // return SizedBox();
@@ -225,10 +225,10 @@ class TagWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        List<MyPlaylist>_playlist = await fetchGenrePlaylists(genreName);
+        List<MyPlaylist>_playlist = genreName=="N/A"?[]:await fetchGenrePlaylists(genreName);
         // print(_playlist[0].imgUrl);
         // return;
-        Navigator.push(
+        genreName=="N/A"?null:Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => GenrePlaylistScreen(_playlist)));
       },

@@ -263,10 +263,30 @@ class _MusicPlayer extends StatelessWidget {
                                   ),
                           );
                         }),
+                    // IconButton(
+                    //   iconSize: 35,
+                    //   onPressed: () async {
+                    //     // await fetchQueueTrack(trackId);
+                    //     // print(StaticStore.myQueueTrack[0].imgUrl);
+
+                    //     // print(StaticStore.myQueueTrack[0].name);
+                    //     // await fetchQueueTrack(trackName,trackId,trackArtists,trackImg);
+
+                    //     Navigator.pop(context);
+                    //     Navigator.of(context).push(MaterialPageRoute(
+                    //         builder: (context) => QueueScreen()));
+
+                    //     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QueueScreen()));
+                    //     // Navigator.pop(context).then((v)=>{});
+                    //   },
+                    //   icon: const Icon(
+                    //     Icons.menu,
+                    //     color: Colors.grey,
+                    //   ),
+                    // ),
                   ],
                 ),
-                SizedBox(height: 30,),
-                // footer(context),
+                footer(context),
               ],
             );
           }),

@@ -89,8 +89,6 @@ class NetworkFunction {
             allUsersInfo.add(await fetchUserInfo(allUsersId[i]));
           }
         }
-        print("fetching all user info");
-        print(allUsersInfo);
         return allUsersInfo;
       }catch(e){
         print("Error happened while callling for the alluserInfo");
