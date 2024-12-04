@@ -20,6 +20,9 @@ class HorizontalSongList extends StatelessWidget {
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
     // print(_categories?.playlists?[0].imgUrl);
+    print("ishu");
+    print(_categories?.playlists);
+    // return SizedBox();
 
     return SizedBox(
       height: 210,
@@ -35,8 +38,6 @@ class HorizontalSongList extends StatelessWidget {
                 print("list album clicked");
                 List<AlbumTrack>? _albumTracks = await fetchPlaylistTracks(_categories?.playlists[i].id);
 
-                /* Stored queue for front page categories */
-                // StaticStore.myQueueTrack = _albumTracks!;
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AlbumView(_categories?.playlists[i].imgUrl, _categories?.playlists[i].name, _albumTracks)));
                 
                 
@@ -111,6 +112,9 @@ class HorizontalSongList extends StatelessWidget {
   }
 }
 
+
+
+/* 
 class HorizontalArtistList extends StatelessWidget {
   // final List<User> users;
   // final MainController con;
@@ -189,3 +193,4 @@ class HorizontalArtistList extends StatelessWidget {
     );
   }
 }
+*/

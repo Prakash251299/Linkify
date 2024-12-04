@@ -228,7 +228,7 @@ class TagWidget extends StatelessWidget {
         List<MyPlaylist>_playlist = genreName=="N/A"?[]:await fetchGenrePlaylists(genreName);
         // print(_playlist[0].imgUrl);
         // return;
-        genreName=="N/A"?null:Navigator.push(
+        genreName=="N/A"?null:_playlist.length<=0?null:Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => GenrePlaylistScreen(_playlist)));
       },

@@ -341,10 +341,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "No data found",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width-20,
+                      //   child: 
+                        Flexible(
+                          child: Text(
+                            "No data found login with other account",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      // ),
                     ],
                   ),
                 ],

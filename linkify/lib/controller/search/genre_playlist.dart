@@ -13,12 +13,19 @@ Future<List<MyPlaylist>> fetchGenrePlaylists(String genreName)async{
     var accessToken = await _readWrite.getAccessToken();
     /* Fetching category playlsts */
     var res = await get(Uri.parse(
-      'https://api.spotify.com/v1/search?query=$genreName&type=playlist&locale=en-GB%2Cen-US%3Bq%3D0.9%2Cen%3Bq%3D0.8&offset=0&limit=20&access_token=$accessToken'
+      'https://api.spotify.com/v1/search?q=$genreName&type=playlist&limit=50&access_token=$accessToken'
+      // 'https://api.spotify.com/v1/search?query=$genreName&type=playlist&locale=en-GB%2Cen-US%3Bq%3D0.9%2Cen%3Bq%3D0.8&offset=0&limit=20&access_token=$accessToken'
         ));
     if(res.statusCode==200){
       var data = jsonDecode(res.body);
+      print("genrePlayLists fetched");
+      print(genreName);
+      print(data['playlists'].length);
+      // print(accessToken);
+      // print(data);
       for(int i=0;i<data['playlists']['items'].length && i<20;i++){
-        _playlist.add(MyPlaylist.fromJson({'id':data['playlists']['items'][i]['id'],'name':data['playlists']['items'][i]['name'],'playlistImg':data['playlists']['items'][i]['images'][0]['url']}));
+        data['playlists']['items'][i]!=null?
+        _playlist.add(MyPlaylist.fromJson({'id':data['playlists']['items'][i]['id'],'name':data['playlists']['items'][i]['name'],'playlistImg':data['playlists']['items'][i]['images'][0]['url']})):null;
       }
       return _playlist;
     }else {

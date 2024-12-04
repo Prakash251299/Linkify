@@ -18,9 +18,8 @@ Future<List<MyPlaylist>> fetchPlaylists()async{
     if(res.statusCode==200){
       var data = jsonDecode(res.body);
       for(int i=0;i<data['items'].length;i++){
+        data['items'][i]==null?null:
         _playlist.add(MyPlaylist.fromJson({'id':data['items'][i]['id'],'name':data['items'][i]['name'],'playlistImg':data['items'][i]['images'][0]['url']}));
-        // print(data['items'][i]['name']);
-        // print(data['items'][i]['images'][0]['url']);
       }
       // print(_playlist[0].imgUrl);
       return _playlist;

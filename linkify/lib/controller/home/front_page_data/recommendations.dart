@@ -10,7 +10,7 @@ import 'package:linkify/controller/local_storing/read_write.dart';
 // import 'package:http/http.dart' as http;
 import 'package:linkify/controller/variables/static_store.dart';
 import 'package:linkify/view/home/home_screen.dart';
-import 'package:spotify/spotify.dart';
+// import 'package:spotify/spotify.dart';
 // import 'package:spotify/src/models/_models.dart';
 // import 'package:linkify/controller/webview.dart';
 // import 'package:linkify/main.dart';
@@ -29,7 +29,7 @@ Future<Map<String, List<dynamic>>?> getCarouselSongs() async {
   ReadWrite _readWrite = ReadWrite();
   while (true) {
     var accessToken = await _readWrite.getAccessToken();
-    print("Hhhhh");
+    // print("fetching carousel lists");
     var res = await get(Uri.parse(
         'https://api.spotify.com/v1/me/tracks?limit=30&time_range=medium_term&access_token=$accessToken'));
     // print(res.statusCode);
@@ -89,7 +89,7 @@ Future<Map<String, List<dynamic>>?> getCarouselSongs() async {
   }
 }
 
-Future<List<Items>?> fetchCategoryPlaylists(String categoryId) async {
+Future<List<Items>?> fetchCategoryPlaylists(String categoryId,String categoryName) async {
   List<Items>? item = [];
   // List<Map<String,dynamic>> item=[];
   ReadWrite _readWrite = ReadWrite();
@@ -98,21 +98,26 @@ Future<List<Items>?> fetchCategoryPlaylists(String categoryId) async {
     /* Fetching category playlsts */
     var res = await get(Uri.parse(
         // 'https://api.spotify.com/v1/recommendations?seed_tracks=$trackId&limit=6&access_token=$accessToken'
-        'https://api.spotify.com/v1/browse/categories/$categoryId/playlists?access_token=$accessToken'));
+        // 'https://api.spotify.com/v1/browse/categories/$categoryId/playlists?access_token=$accessToken'
+        'https://api.spotify.com/v1/search?q=$categoryName&limit=30&type=playlist&access_token=$accessToken'
+        ));
+    print("fetching category playlists");
     print("CategoryPlaylistsState: ${res.statusCode}");
     int c=0;
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
+      
       for (int i = 0; i < data['playlists']['items'].length && i < 10; i++) {
-        // print(data['playlists']['items'][i]['images'][0]['url']);
-        // item.add()
-        Items k = Items.fromJson({
-          "name": data['playlists']['items'][i]['name'],
-          "id": data['playlists']['items'][i]['id'],
-          "imgUrl": data['playlists']['items'][i]['images'][0]['url']
-        });
-
-        item.add(k);
+        // String s = data['playlists']['items'][i]['name'];
+        // print(data['playlists']['items'][i]['name']);
+      //   // print(data['playlists']['items'][i]['images'][0]['url']);
+      //   // item.add()
+        data['playlists']['items'][i]==null?null:
+        item.add(Items.fromJson({
+          "name": data['playlists']['items'][i]['name']==null?"NA":data['playlists']['items'][i]['name'],
+          "id": data['playlists']['items'][i]['id']==null?"NA":data['playlists']['items'][i]['id'],
+          "imgUrl": data['playlists']['items'][i]['images'][0]['url']==null?"":data['playlists']['items'][i]['images'][0]['url']
+        }));
       }
       return item;
     } else {
@@ -124,11 +129,11 @@ Future<List<Items>?> fetchCategoryPlaylists(String categoryId) async {
       }
     }
   }
-  // return item;
+  // return item;object
 }
 
 Future<List<FrontPageCategories>> fetchCategory() async {
-  DateTime now = DateTime.now(); // 30/09/2021 15:54:30
+  DateTime now = DateTime.now(); // 30/09/2023 15:54:30
   var dateToday = now.day.toString();
   dateToday += "-";
   dateToday += now.month.toString();
@@ -137,6 +142,7 @@ Future<List<FrontPageCategories>> fetchCategory() async {
   // if (StaticStore.dateStored == dateToday) {
   //   return [];
   // }
+  print("same date data doesn't fetched");
   if (StaticStore.dateStored2 == dateToday) {
     return StaticStore.categoryInfo;
   }
@@ -149,10 +155,12 @@ Future<List<FrontPageCategories>> fetchCategory() async {
   while (true) {
     var accessToken = await _readWrite.getAccessToken();
     /* Fetching category playlsts */
+    // print(accessToken);
 
     var res = await get(Uri.parse(
         'https://api.spotify.com/v1/browse/categories?access_token=$accessToken'));
     // var res = await http.get(Uri.parse('https://api.spotify.com/v1/browse/categories?access_token=$accessToken'));
+    print("fetched categories");
     print(res.statusCode);
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
@@ -162,13 +170,14 @@ Future<List<FrontPageCategories>> fetchCategory() async {
       for (int i = 0;i < data['categories']['items'].length && i < numberOfFrontPageCategories;i++) {
         // print(data['categories']['items'][i]['name']);
         List<Items>? item =
-            await fetchCategoryPlaylists(data['categories']['items'][i]['id']);
-        FrontPageCategories k = FrontPageCategories.fromJson({
+            data['categories']['items']==null?null:await fetchCategoryPlaylists(data['categories']['items'][i]['id'],data['categories']['items'][i]['name']);
+        data['categories']['items']==null?null:
+        _categories.add(FrontPageCategories.fromJson({
           "name": data['categories']['items'][i]['name'],
           "id": data['categories']['items'][i]['id'],
           "playlists": item,
-        });
-        _categories.add(k);
+        }));
+        // _categories.add(k);
       }
 
       print(_categories);

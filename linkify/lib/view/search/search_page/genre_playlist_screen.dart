@@ -39,7 +39,8 @@ class _GenrePlaylistScreenState extends State<GenrePlaylistScreen> {
             padding: const EdgeInsets.only(left:7.0,top:10,bottom:10),
             child: Text("General lists",style: TextStyle(fontSize: 24),),
           ),
-          HorizontalPlaylist(widget._playlist,10),
+          // HorizontalPlaylist(widget._playlist,10),
+          HorizontalPlaylist(widget._playlist,(widget._playlist.length/2).toInt()),
         ],)
       ),
     );

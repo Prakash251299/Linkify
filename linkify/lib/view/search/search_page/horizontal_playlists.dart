@@ -32,14 +32,15 @@ class HorizontalPlaylist extends StatelessWidget {
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
     // print(_playlist??[0].imgUrl);
-
+    int len = (_playlist!.length/2).toInt();
     return SizedBox(
       height: 210,
       // height: 230,
       child: _playlist!=null?ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemCount: songs.length,
-          itemCount: _playlist!.length-start,
+          // itemCount: _playlist!.length-start,
+          itemCount: len,
           itemBuilder: (context, i) {
             // final song = songs[i];
             return InkWell(

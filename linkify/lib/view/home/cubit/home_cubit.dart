@@ -25,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
         status: LoadPage.loaded,
       ));
     } catch (e) {
-      // print(e.toString());
+      print(e.toString());
       print("Error happened at homecubit getalbums function");
       emit(state.copyWith(status: LoadPage.error));
     }
