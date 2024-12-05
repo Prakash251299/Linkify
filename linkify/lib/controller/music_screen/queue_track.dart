@@ -42,7 +42,7 @@ Future<void>fetchQueueTrack(songName,songId,List<dynamic> songArtists,songImgUrl
   // var energy, valence;
   // print(songName);
   // return;
-  var (energy,valence) = await fetchTrackFeature(songId);
+  // var (energy,valence) = await fetchTrackFeature(songId);
   // print(energy);
   // print(valence);
   // return;
@@ -79,8 +79,8 @@ Future<void>fetchQueueTrack(songName,songId,List<dynamic> songArtists,songImgUrl
 
     /* Fetching album tracks */
     var res = await get(Uri.parse(
-      // ''
-        'https://api.spotify.com/v1/recommendations?target_energy=$energy&target_valence=$valence&seed_tracks=$songId&access_token=$accessToken'
+      'https://api.spotify.com/v1/search?q=$songName+like+songs&type=track&limit=30&access_token=$accessToken'
+        // 'https://api.spotify.com/v1/recommendations?target_energy=$energy&target_valence=$valence&seed_tracks=$songId&access_token=$accessToken'
         ));
     // var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
     print(res.statusCode);
@@ -88,21 +88,21 @@ Future<void>fetchQueueTrack(songName,songId,List<dynamic> songArtists,songImgUrl
       var data = jsonDecode(res.body);
       // print(data['tracks'].length);
       
-      for (int i = 0; i<50 && i<data['tracks'].length; i++) {
+      for (int i = 0; i<50 && i<data['tracks']['items'].length; i++) {
         trackArtists=[];
         // print(data['tracks'][i]['name']);
         // print(data['tracks'][i]['id']);
         // print(data['tracks'][i]['album']['images'][0]['url']);
-        if(data['tracks'][i]['name']==songName){
+        if(data['tracks']['items'][i]['name']==songName){
           continue;
         }
-        for(int j=0;j<data['tracks'][i]['artists'].length;j++){
-          trackArtists.add(data['tracks'][i]['artists'].length!=0?data['tracks'][i]['artists'][j]['name']:"unknown");
+        for(int j=0;j<data['tracks']['items'][i]['artists'].length;j++){
+          trackArtists.add(data['tracks']['items'][i]['artists'].length!=0?data['tracks']['items'][i]['artists'][j]['name']:"unknown");
         }
         AlbumTrack? _singleQueueTrack = AlbumTrack.fromJson({
-          "name":data['tracks'][i]['name'],
-          "id":data['tracks'][i]['id'],
-          "trackImg":data['tracks'][i]['album']['images'].length!=0?data['tracks'][i]['album']['images'][0]['url']:"",
+          "name":data['tracks']['items'][i]['name'],
+          "id":data['tracks']['items'][i]['id'],
+          "trackImg":data['tracks']['items'][i]['album']['images'].length!=0?data['tracks']['items'][i]['album']['images'][0]['url']:"",
           "trackArtists":trackArtists,
 
         });

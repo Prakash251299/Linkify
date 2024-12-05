@@ -180,7 +180,7 @@ Future<List<FrontPageCategories>> fetchCategory() async {
         // _categories.add(k);
       }
 
-      print(_categories);
+      // print(_categories);
 
       return _categories;
     } else {

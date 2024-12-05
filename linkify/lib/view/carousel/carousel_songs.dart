@@ -38,7 +38,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
     }
     StaticStore.dateStored = dateToday;
     String? id = "";
-    String? name = "";
+    String name = "";
 
     // DateTime now = DateTime.now(); // 30/09/2021 15:54:30
     // var dateToday = now.day.toString();
@@ -65,10 +65,9 @@ class _CarouselSongsState extends State<CarouselSongs> {
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
         id = data['items'][0]['id'];
-        name = data['items'][0]['name'];
+        name = data['items'][0]['name']??"";
 
-        await fetchSimilarTracks(id, ind);
-        // print("$name $id");
+        name==""?null:await fetchSimilarTracks(name, ind);
 
         return;
       } else {
@@ -81,7 +80,7 @@ class _CarouselSongsState extends State<CarouselSongs> {
       }
     }
   }
-  Future<void> fetchSimilarTracks(var songId, var ind) async {
+  Future<void> fetchSimilarTracks(String songName, var ind) async {
     
     // List<String>? name = [];
     // List<String>? id = [];
@@ -93,30 +92,33 @@ class _CarouselSongsState extends State<CarouselSongs> {
       var accessToken = await _readWrite.getAccessToken();
 
       /* Fetching album tracks */
-      var res = await get(Uri.parse(
-          'https://api.spotify.com/v1/recommendations?seed_tracks=$songId&limit=50&access_token=$accessToken'));
-      // var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'));
+      var res = await get(Uri.parse('https://api.spotify.com/v1/search?q=$songName+like+songs&type=track&limit=30&access_token=$accessToken'
+          // 'https://api.spotify.com/v1/recommendations?seed_tracks=$songId&limit=50&access_token=$accessToken'
+      // var res = await get(Uri.parse('https://api.spotify.com/v1/me/tracks?limit=30&time_range=short_term&access_token=$accessToken'
+      ));
       print(res.statusCode);
       if (res.statusCode == 200) {
         List<AlbumTrack>? carouselTrack=[];
         var data = jsonDecode(res.body);
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i<data['tracks']['items'].length && i < 30; i++) {
           trackArtists=[];
-          for(int j=0;j<data['tracks'][i]['artists'].length;j++){
-            trackArtists.add(data['tracks'][i]['artists'].length!=0?data['tracks'][i]['artists'][j]['name']:"unknown");
+          for(int j=0;data['tracks']['items'][i]!=null && data['tracks']['items'][i]['artists']!=null && j<data['tracks']['items'][i]['artists'].length;j++){
+            trackArtists.add(data['tracks']['items'][i]['artists'].length!=0?data['tracks']['items'][i]['artists'][j]['name']:"unknown");
           }
           AlbumTrack _albumTrack = AlbumTrack.fromJson({
-            "name":data['tracks'][i]['name'],
-            "id":data['tracks'][i]['id'],
-            "trackImg":data['tracks'][i]['album']['images'].length!=0?data['tracks'][i]['album']['images'][0]['url']:"",
+            "name":data['tracks']['items'][i]==null?"":data['tracks']['items'][i]['name'],
+            "id":data['tracks']['items'][i]==null?"":data['tracks']['items'][i]['id'],
+            "trackImg":data['tracks']['items'][i]==null?"":data['tracks']['items'][i]['album']['images'].length!=0?data['tracks']['items'][i]['album']['images'][0]['url']:"",
             "trackArtists":trackArtists,
           });
 
+          print(data['tracks']['items'][0]);
+
           if(_albumTrack.name=="" || _albumTrack.id=="" || _albumTrack.imgUrl==""){
-          continue;
-        }else{
-          carouselTrack.add(_albumTrack);
-        }
+            continue;
+          }else{
+            carouselTrack.add(_albumTrack);
+          }
 
           // fetching 50 similar songs
         //   name.add(data['tracks'][i]['name']);

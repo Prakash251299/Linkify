@@ -20,8 +20,8 @@ class HorizontalSongList extends StatelessWidget {
   Widget build(BuildContext context) {
     final devicePexelRatio = MediaQuery.of(context).devicePixelRatio;
     // print(_categories?.playlists?[0].imgUrl);
-    print("ishu");
-    print(_categories?.playlists);
+    // print("ishu");
+    // print(_categories?.playlists);
     // return SizedBox();
 
     return SizedBox(
