@@ -189,7 +189,7 @@ class AlbumViewState extends State<AlbumView> {
                                   width: 300 - _counter,
                                   padding: EdgeInsets.only(left: 10 + _counter),
                                   child: Text(
-                                    '${widget.albumName}',
+                                    '${widget.albumName}prakash',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 25),
                                     overflow: TextOverflow.ellipsis,
@@ -283,6 +283,8 @@ class AlbumViewState extends State<AlbumView> {
                                     // });
                                   } else {
                                     // print(widget._albumTracks?[index].name);
+                                    if(StaticStore.nextPlay==1){
+                                      StaticStore.nextPlay = 0;
                                     await _player.youtubeStop().then((v)async{
                                     await _player
                                         .youtubePlay(
@@ -326,7 +328,7 @@ class AlbumViewState extends State<AlbumView> {
                                                           ._albumTracks![index]
                                                           .imgUrl)));
                                     });
-                                    });
+                                    });}
                                   }
                                 } else {
                                   // if(StaticStore.pause==true){
@@ -340,6 +342,8 @@ class AlbumViewState extends State<AlbumView> {
                                     StaticStore.pause = false;
                                     await _player.youtubeResume();
                                   } else {
+                                    if(StaticStore.nextPlay==1){
+                                      StaticStore.nextPlay = 0;
                                     await _player.youtubeStop();
 
                                     await _player
@@ -382,6 +386,7 @@ class AlbumViewState extends State<AlbumView> {
                                                           ._albumTracks![index]
                                                           .imgUrl)));
                                     });
+                                    }
                                   }
                                 }
                               },
