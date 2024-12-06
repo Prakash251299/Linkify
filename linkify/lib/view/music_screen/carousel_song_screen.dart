@@ -311,7 +311,7 @@ class _MusicPlayer extends StatelessWidget {
                       // await fetchQueueTrack(trackName,trackId,trackArtists,trackImg);
 
 
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>QueueScreen()));
 
 

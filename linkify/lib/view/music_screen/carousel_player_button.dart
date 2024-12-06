@@ -77,7 +77,7 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
               // setState(() {
                 
               // });
-              // await _youtubePlayer.youtubeStop().then((value) async {
+              await _youtubePlayer.youtubeStop().then((value) async {
 
               await _youtubePlayer.youtubePlay(StaticStore.myQueueTrack[StaticStore.queueIndex].name,StaticStore.myQueueTrack[StaticStore.queueIndex].trackArtists?[0]).then((value) {
                 StaticStore.currentSong = StaticStore.myQueueTrack[StaticStore.queueIndex].name!;
@@ -89,7 +89,7 @@ class _PlayerButtonsState extends State<AlbumPlayerButtons> {
                 StaticStore.playing = true;
                 StaticStore.pause = false;
               });
-              // });
+              });
               // setState(() {});
             }else{
               StaticStore.queueIndex++;

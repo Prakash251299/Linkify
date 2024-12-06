@@ -222,6 +222,7 @@ class AlbumViewState extends State<AlbumView> {
                                                   StaticStore.playing = true;
                                                 });
                                               } else {
+                                                await _player.youtubeStop().then((v)async{
                                                 await _player
                                                     .youtubePlay(
                                                         widget._albumTracks![0]
@@ -247,6 +248,7 @@ class AlbumViewState extends State<AlbumView> {
                                                           .trackArtists??[]);
                                                   StaticStore.playing = true;
                                                   StaticStore.pause = false;
+                                                });
                                                 });
                                               }
                                             }
@@ -281,6 +283,7 @@ class AlbumViewState extends State<AlbumView> {
                                     // });
                                   } else {
                                     // print(widget._albumTracks?[index].name);
+                                    await _player.youtubeStop().then((v)async{
                                     await _player
                                         .youtubePlay(
                                             widget._albumTracks![index].name,
@@ -322,6 +325,7 @@ class AlbumViewState extends State<AlbumView> {
                                                       widget
                                                           ._albumTracks![index]
                                                           .imgUrl)));
+                                    });
                                     });
                                   }
                                 } else {
