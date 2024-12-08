@@ -14,7 +14,7 @@ class StaticStore{
     [],
     []
   ];
-  static List<String>? userGenre;
+  static List<String> userGenre = [];
   static Map<dynamic,dynamic>? userGenreWithCount;
   static String dateStored = "1-1-2024";
   static String dateStored2 = "1-1-2024";
