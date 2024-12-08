@@ -18,6 +18,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          cd $GITHUB_WORKSPACE  # This ensures you're in the root directory of your repository
+          flutter pub get
+
       # Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
@@ -39,9 +45,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
-      # Install dependencies
-      - name: Install dependencies
-        run: flutter pub get
+      # # Install dependencies
+      # - name: Install dependencies
+      #   run: |
+      #     cd $GITHUB_WORKSPACE  # This ensures you're in the root directory of your repository
+      #     flutter pub get
 
       # Additional setup for macOS (iOS builds)
       - name: Install CocoaPods dependencies (macOS only)
