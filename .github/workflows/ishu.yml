@@ -31,10 +31,10 @@ jobs:
       - name: storing in env
         # run: flutter build apk
         run: |
-          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" > .env
-          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" > ../linkify.env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> ../linkify.env
 
-          
+
 
       # - name: Build Flutter App
       #   run: flutter build apk --dart-define=CLIENT_ID=${{ secrets.CLIENT_ID }} --dart-define=CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
