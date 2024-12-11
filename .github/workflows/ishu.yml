@@ -32,8 +32,8 @@ jobs:
       - name: Inject secrets
         run: | 
           pwd
-          echo "client_id=${{ secrets.CLIENT_ID }}" >> ./linkify/.env
-          echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> ./linkify/.env
+          echo "client_id=${{ secrets.CLIENT_ID }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
+          echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
         # run: echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
 
 

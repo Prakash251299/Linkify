@@ -110,8 +110,9 @@ class MyAppState extends State<MyApp> {
                 onPressed: () async {
                   print('ishu');
                   await dotenv.load();
-                  final CI = dotenv.env['CLIENT_ID'];
-                  print(CI);
+                  // final CI = dotenv.env['CLIENT_ID'];
+                  // print(CI);
+                  print(String.fromEnvironment('CLIENT_ID'));
                   return;
                   if (StaticStore.player.playing == true) {
                     StaticStore.player.stop();
