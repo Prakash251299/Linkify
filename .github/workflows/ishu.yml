@@ -31,8 +31,9 @@ jobs:
       - name: storing in env
         # run: flutter build apk
         run: |
-          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" > ../linkify.env
-          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> ../linkify.env
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" > ../linkify/.env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> ../linkify/.env
+          echo "hi" >> ..linkify/.env
 
 
 
