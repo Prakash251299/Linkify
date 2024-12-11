@@ -29,13 +29,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: storing in env
-        run: |
-          env: 
+        run: flutter build apk
+        env: 
             CLIENT_ID: ${{secrets.CLIENT_ID}}
             CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
 
-      - name: Build Flutter App
-        run: flutter build apk --dart-define=CLIENT_ID=${{ secrets.CLIENT_ID }} --dart-define=CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+      # - name: Build Flutter App
+      #   run: flutter build apk --dart-define=CLIENT_ID=${{ secrets.CLIENT_ID }} --dart-define=CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
 
 
 
