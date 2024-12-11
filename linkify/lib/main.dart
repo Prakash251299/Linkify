@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:linkify/controller/local_songs/get_local_songs/fetch_localsong.dart';
 import 'package:linkify/controller/local_songs/get_local_songs/login.dart';
@@ -107,6 +108,11 @@ class MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text("Cloud Songs"),
                 onPressed: () async {
+                  print('ishu');
+                  await dotenv.load();
+                  final CI = dotenv.env['CLIENT_ID'];
+                  print(CI);
+                  return;
                   if (StaticStore.player.playing == true) {
                     StaticStore.player.stop();
                     StaticStore.playing = false;

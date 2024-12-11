@@ -28,6 +28,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+
+      - name: Inject secrets
+        run: | 
+          echo "client_id=${{ secrets.CLIENT_ID }}" > .env
+          echo "client_secret=${{ secrets.CLIENT_SECRET }}" > .env
+        # run: echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
+
+
+      # env:
+      #     client_id: ${{ secrets.CLIENT_ID }}
+      #     client_secret: ${{ secrets.client_secret }}
+
+
+
+
       # Set up Flutter
       # - name: Set up Flutter
       #   uses: subosito/flutter-action@v2
