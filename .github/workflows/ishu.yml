@@ -28,12 +28,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: storing in env
+        run: |
+          env: 
+            CLIENT_ID: ${{secrets.CLIENT_ID}}
+            CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
 
-      - name: Inject secrets
-        run: | 
-          pwd
-          echo "client_id=${{ secrets.CLIENT_ID }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
-          echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
+      - name: Build Flutter App
+        run: flutter build apk --dart-define=CLIENT_ID=${{ secrets.CLIENT_ID }} --dart-define=CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+
+
+
+      # - name: Inject secrets
+      #   run: | 
+      #     echo "client_id=${{ secrets.CLIENT_ID }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
+      #     echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> /home/dell/Desktop/saver/Linkify/linkify/.env
         # run: echo "client_secret=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
 
 
