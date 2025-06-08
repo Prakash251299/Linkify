@@ -1,5 +1,5 @@
 # Linkify
-A music player cum social media application which recommend people of the basis of their music likes.
+A music player cum social media application which connects people of the basis of their music taste.
 
 ## Deployment
 
@@ -42,4 +42,4 @@ Install my-project
 
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/Prakash251299)
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](linkedin.com/in/prakash-pratap-singh-3238101bb)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prakash-pratap-singh)
